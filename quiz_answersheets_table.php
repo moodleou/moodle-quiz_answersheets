@@ -74,4 +74,24 @@ class quiz_answersheets_table extends quiz_attempts_report_table {
         return html_writer::link($profileurl, $name);
     }
 
+    /**
+     * Generate the display of the attempt sheet column.
+     *
+     * @param object $row The raw data for this row.
+     * @return string The value for this cell of the table.
+     */
+    public function col_attempt_sheet($row) {
+        if ($row->state == quiz_attempt::IN_PROGRESS) {
+            return html_writer::link(new moodle_url('/mod/quiz/report/answersheets/attemptsheet.php',
+                    ['attempt' => $row->attempt]), get_string('attempt_sheet_label', 'quiz_answersheets'),
+                    ['class' => 'reviewlink']);
+        } else if ($row->state == quiz_attempt::FINISHED) {
+            return html_writer::link(new moodle_url('/mod/quiz/report/answersheets/attemptsheet.php',
+                    ['attempt' => $row->attempt]), get_string('review_sheet_label', 'quiz_answersheets'),
+                    ['class' => 'reviewlink']);
+        } else {
+            return '-';
+        }
+    }
+
 }

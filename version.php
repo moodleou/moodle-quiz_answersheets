@@ -24,7 +24,7 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->version = 2019082701;
+$plugin->version = 2019092300;
 $plugin->requires = 2018112800;
 $plugin->cron = 0;
 $plugin->component = 'quiz_answersheets';
