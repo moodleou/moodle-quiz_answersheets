@@ -1,0 +1,5 @@
+@media print {
+    #page-mod-quiz-report-answersheets-attempt_sheet .print-sheet {
+        display: none;
+    }
+}

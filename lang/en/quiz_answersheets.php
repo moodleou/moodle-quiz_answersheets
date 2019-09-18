@@ -25,3 +25,10 @@
 $string['pluginname'] = 'Answer sheets';
 $string['answersheets'] = 'Answer sheets';
 $string['answersheetsfilename'] = 'answersheets';
+$string['answersheets:view'] = 'View answer sheet';
+$string['attempt_sheet_label'] = 'Attempt sheet';
+$string['attempt_sheet_title'] = '{$a}: Attempt sheet';
+$string['column_attempt_sheet'] = 'Attempt sheets';
+$string['review_sheet_label'] = 'Review sheet';
+$string['review_sheet_title'] = '{$a}: Review sheet';
+$string['print'] = 'Print';

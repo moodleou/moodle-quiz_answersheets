@@ -74,4 +74,42 @@ class quiz_answersheets_table extends quiz_attempts_report_table {
         return html_writer::link($profileurl, $name);
     }
 
+    /**
+     * If there is not a col_{column name} method then we call this method. If it returns null
+     * that means just output the property as in the table raw data. If this returns none null
+     * then this is the output for this cell of the table.
+     *
+     * @param string $column The name of this column.
+     * @param object $row The raw data for this row.
+     * @return string|null The value for this cell of the table or null means use raw data.
+     */
+    public function other_cols($column, $row) {
+        switch ($column) {
+            case 'attempt_sheet':
+                return $this->col_attemptsheet($row);
+            default:
+                return null;
+        }
+    }
+
+    /**
+     * Generate the display of the attempt sheet column.
+     *
+     * @param object $row The raw data for this row.
+     * @return string The value for this cell of the table.
+     */
+    private function col_attemptsheet($row) {
+        if ($row->state == quiz_attempt::IN_PROGRESS) {
+            return html_writer::link(new moodle_url('/mod/quiz/report/answersheets/attempt_sheet.php',
+                    ['attempt' => $row->attempt]), get_string('attempt_sheet_label', 'quiz_answersheets'),
+                    ['class' => 'reviewlink']);
+        } else if ($row->state == quiz_attempt::FINISHED) {
+            return html_writer::link(new moodle_url('/mod/quiz/report/answersheets/attempt_sheet.php',
+                    ['attempt' => $row->attempt]), get_string('review_sheet_label', 'quiz_answersheets'),
+                    ['class' => 'reviewlink']);
+        } else {
+            return '-';
+        }
+    }
+
 }

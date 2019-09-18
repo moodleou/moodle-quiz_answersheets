@@ -127,6 +127,7 @@ class quiz_answersheets_report extends quiz_attempts_report {
             $this->add_user_columns($table, $columns, $headers);
             $this->add_state_column($columns, $headers);
             $this->add_time_columns($columns, $headers);
+            $this->add_attempt_sheet_column($table, $columns, $headers);
 
             $table->define_columns($columns);
             $table->define_headers($headers);
@@ -142,6 +143,20 @@ class quiz_answersheets_report extends quiz_attempts_report {
         }
 
         return true;
+    }
+
+    /**
+     * Add attempt sheet column to the $columns and $headers arrays.
+     *
+     * @param table_sql $table the table being constructed.
+     * @param array $columns the list of columns. Added to.
+     * @param array $headers the columns headings. Added to.
+     */
+    protected function add_attempt_sheet_column(table_sql $table, array &$columns, array &$headers) {
+        if (!$table->is_downloading() && has_capability('quiz/answersheets:view', $this->context)) {
+            $columns[] = 'attempt_sheet';
+            $headers[] = get_string('column_attempt_sheet', 'quiz_answersheets');
+        }
     }
 
 }
