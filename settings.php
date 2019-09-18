@@ -15,17 +15,17 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Strings for component 'quiz_answersheets', language 'en'
+ * This file defines the quiz answer sheets report administration settings.
  *
  * @package   quiz_answersheets
  * @copyright 2019 The Open University
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-$string['pluginname'] = 'Answer sheets';
-$string['answersheets'] = 'Answer sheets';
-$string['answersheets'] = 'Answer sheets';
-$string['answersheetsfilename'] = 'Answer_sheets_report';
-$string['answersheetsreport'] = 'Answer sheets report';
-$string['admin_instruction_message'] = 'Instruction message';
-$string['admin_instruction_message_des'] = 'If set, this text will be shown at the top of the report. You can use this, for example, to link to any institutional policies about printing summative quizzes.';
+defined('MOODLE_INTERNAL') || die;
+
+if ($ADMIN->fulltree) {
+    $settings->add(new admin_setting_confightmleditor('quiz_answersheets/instruction_message',
+            get_string('admin_instruction_message', 'quiz_answersheets'),
+            get_string('admin_instruction_message_des', 'quiz_answersheets'), null));
+}

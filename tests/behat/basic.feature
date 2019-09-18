@@ -56,3 +56,17 @@ Feature: Basic use of the Answer sheets report
     And I set the field "Attempts from" to "enrolled users who have, or have not, attempted the quiz"
     And I press "Show report"
     And I should see "Student Two"
+
+  @javascript
+  Scenario: Instruction message will be displayed
+    Given I log in as "teacher"
+    And I am on "Course 1" course homepage
+    And I follow "Quiz 1"
+    When I navigate to "Results > Answer sheets" in current page administration
+    Then ".instruction" "css_element" should not exist
+    And the following config values are set as admin:
+      | config              | value                    | plugin            |
+      | instruction_message | Test instruction message | quiz_answersheets |
+    And I reload the page
+    And ".instruction" "css_element" should exist
+    And I should see "Test instruction message"
