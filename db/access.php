@@ -34,5 +34,14 @@ $capabilities = [
                         'manager' => CAP_ALLOW
                 ],
                 'clonepermissionsfrom' => 'mod/quiz:viewreports'
+        ],
+        'quiz/answersheets:viewrightanswers' => [
+                'captype' => 'read',
+                'contextlevel' => CONTEXT_MODULE,
+                'archetypes' => [
+                        'teacher' => CAP_ALLOW,
+                        'editingteacher' => CAP_ALLOW,
+                        'manager' => CAP_ALLOW
+                ]
         ]
 ];

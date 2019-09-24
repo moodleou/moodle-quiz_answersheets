@@ -94,4 +94,20 @@ class quiz_answersheets_table extends quiz_attempts_report_table {
         }
     }
 
+    /**
+     * Generate the display of the answer sheet column.
+     *
+     * @param object $row The raw data for this row.
+     * @return string The value for this cell of the table.
+     */
+    public function col_answer_sheet($row) {
+        if ($row->state == quiz_attempt::IN_PROGRESS) {
+            return html_writer::link(new moodle_url('/mod/quiz/report/answersheets/attemptsheet.php',
+                    ['attempt' => $row->attempt, 'rightanswer' => 1]), get_string('answer_sheet_label', 'quiz_answersheets'),
+                    ['class' => 'reviewlink']);
+        }
+
+        return '-';
+    }
+
 }
