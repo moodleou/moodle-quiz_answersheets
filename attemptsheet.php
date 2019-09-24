@@ -29,6 +29,7 @@ require_once($CFG->dirroot . '/mod/quiz/locallib.php');
 
 $attemptid = required_param('attempt', PARAM_INT);
 $cmid = optional_param('cmid', null, PARAM_INT);
+$rightanswer = optional_param('rightanswer', 0, PARAM_BOOL);
 
 $attemptobj = quiz_create_attempt_handling_errors($attemptid, $cmid);
 
@@ -36,11 +37,23 @@ $attemptobj = quiz_create_attempt_handling_errors($attemptid, $cmid);
 require_login($attemptobj->get_course(), false, $attemptobj->get_cm());
 require_capability('quiz/answersheets:view', context_module::instance($attemptobj->get_cmid()));
 
+if ($rightanswer) {
+    require_capability('quiz/answersheets:viewrightanswers', context_module::instance($attemptobj->get_cmid()));
+}
+
 $isattemptfinished = $attemptobj->get_attempt()->state == quiz_attempt::FINISHED;
 $pagetitle = $isattemptfinished ? get_string('review_sheet_title', 'quiz_answersheets', $attemptobj->get_quiz_name()) :
         get_string('attempt_sheet_title', 'quiz_answersheets', $attemptobj->get_quiz_name());
 
-$url = new moodle_url('/mod/quiz/report/answersheets/attemptsheet.php', ['attempt' => $attemptid]);
+$url = new moodle_url('/mod/quiz/report/answersheets/attemptsheet.php', ['attempt' => $attemptid, 'rightanswer' => $rightanswer]);
+
+if ($rightanswer) {
+    $pagetitle = get_string('answer_sheet_title', 'quiz_answersheets', $attemptobj->get_quiz_name());
+} else if ($isattemptfinished) {
+    $pagetitle = get_string('review_sheet_title', 'quiz_answersheets', $attemptobj->get_quiz_name());
+} else {
+    $pagetitle = get_string('attempt_sheet_title', 'quiz_answersheets', $attemptobj->get_quiz_name());
+}
 
 $PAGE->set_url($url);
 $PAGE->set_pagelayout('popup');

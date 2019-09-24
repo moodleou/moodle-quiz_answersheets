@@ -50,16 +50,27 @@ class renderer extends plugin_renderer_base {
         $output = '';
 
         $slots = $attemptobj->get_slots();
+        $attempt = $attemptobj->get_attempt();
         $displayoptions = $attemptobj->get_display_options(true);
         $displayoptions->flags = question_display_options::HIDDEN;
         $displayoptions->manualcommentlink = null;
         $displayoptions->context = context_module::instance($attemptobj->get_cmid());
+        $rightanswer = $this->page->url->get_param('rightanswer');
 
         foreach ($slots as $slot) {
             $originalslot = $attemptobj->get_original_slot($slot);
             $questionnumber = $attemptobj->get_question_number($originalslot);
 
-            $output .= $attemptobj->get_question_attempt($slot)->render($displayoptions, $questionnumber);
+            $qa = $attemptobj->get_question_attempt($slot);
+
+            if ($rightanswer && $attempt->state == quiz_attempt::IN_PROGRESS) {
+                $correctresponse = $qa->get_correct_response();
+                if (!is_null($correctresponse)) {
+                    $qa->process_action($correctresponse);
+                }
+            }
+
+            $output .= $qa->render($displayoptions, $questionnumber);
         }
 
         return $output;
