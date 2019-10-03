@@ -34,6 +34,10 @@ require_once($CFG->dirroot . '/mod/quiz/report/attemptsreport_options.php');
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class quiz_answersheets_options extends mod_quiz_attempts_report_options {
+    public function __construct($mode, $quiz, $cm, $course) {
+        parent::__construct($mode, $quiz, $cm, $course);
+        $this->attempts = quiz_attempts_report::ENROLLED_ALL;
+    }
 
     public function resolve_dependencies() {
         parent::resolve_dependencies();

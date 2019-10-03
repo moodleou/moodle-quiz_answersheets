@@ -129,6 +129,7 @@ class quiz_answersheets_report extends quiz_attempts_report {
             $this->add_time_columns($columns, $headers);
             $this->add_attempt_sheet_column($table, $columns, $headers);
             $this->add_answer_sheet_column($table, $columns, $headers);
+            $this->add_submit_responses_column($table, $columns, $headers);
 
             $table->define_columns($columns);
             $table->define_headers($headers);
@@ -187,6 +188,20 @@ class quiz_answersheets_report extends quiz_attempts_report {
         if (!$table->is_downloading() && has_capability('quiz/answersheets:viewrightanswers', $this->context)) {
             $columns[] = 'answer_sheet';
             $headers[] = get_string('column_answer_sheet', 'quiz_answersheets');
+        }
+    }
+
+    /**
+     * Add submit student responses column to the $columns and $headers arrays.
+     *
+     * @param table_sql $table the table being constructed.
+     * @param array $columns the list of columns. Added to.
+     * @param array $headers the columns headings. Added to.
+     */
+    protected function add_submit_responses_column(table_sql $table, array &$columns, array &$headers) {
+        if (!$table->is_downloading() && has_capability('quiz/answersheets:submitresponses', $this->context)) {
+            $columns[] = 'submit_student_responses';
+            $headers[] = get_string('column_submit_student_responses', 'quiz_answersheets');
         }
     }
 

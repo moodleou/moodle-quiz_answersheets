@@ -36,7 +36,9 @@ Feature: Attempt sheet, Review sheet and Answer sheet feature of the Answer shee
     Given I log in as "teacher"
     And I am on "Course 1" course homepage
     And I follow "Quiz 1"
-    When I navigate to "Results > Answer sheets" in current page administration
+    And I navigate to "Results > Answer sheets" in current page administration
+    And I set the field "Attempts from" to "enrolled users who have attempted the quiz"
+    When I press "Show report"
     Then I should see "Attempts: 0"
     And I should see "Nothing to display"
     And I set the field "Attempts from" to "enrolled users who have, or have not, attempted the quiz"

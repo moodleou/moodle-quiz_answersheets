@@ -26,8 +26,10 @@ namespace quiz_answersheets\output;
 
 use context_module;
 use html_writer;
+use moodle_url;
 use plugin_renderer_base;
 use question_display_options;
+use quiz_answersheets\utils;
 use quiz_attempt;
 
 defined('MOODLE_INTERNAL') || die();
@@ -44,14 +46,15 @@ class renderer extends plugin_renderer_base {
      * Render the questions content of a particular quiz attempt.
      *
      * @param quiz_attempt $attemptobj Attempt object
+     * @param bool $isreviewing True for review page, else attempt page
      * @return string HTML string
      */
-    public function render_question_attempt_content(quiz_attempt $attemptobj): string {
+    public function render_question_attempt_content(quiz_attempt $attemptobj, bool $isreviewing = true): string {
         $output = '';
 
         $slots = $attemptobj->get_slots();
         $attempt = $attemptobj->get_attempt();
-        $displayoptions = $attemptobj->get_display_options(true);
+        $displayoptions = $attemptobj->get_display_options($isreviewing);
         $displayoptions->flags = question_display_options::HIDDEN;
         $displayoptions->manualcommentlink = null;
         $displayoptions->context = context_module::instance($attemptobj->get_cmid());
@@ -72,6 +75,61 @@ class renderer extends plugin_renderer_base {
 
             $output .= $qa->render($displayoptions, $questionnumber);
         }
+
+        return $output;
+    }
+
+    /**
+     * Render the questions attempt form of a particular quiz attempt.
+     * Part of code was copied from mod/quiz/renderer.php:attempt_form().
+     *
+     * @param quiz_attempt $attemptobj
+     * @param string $redirect
+     * @return string HTML string
+     */
+    public function render_question_attempt_form(quiz_attempt $attemptobj, string $redirect = ''): string {
+        $output = '';
+
+        $attemptuser = \core_user::get_user($attemptobj->get_userid());
+        $cm = context_module::instance((int) $attemptobj->get_cmid());
+
+        // Start the form.
+        $output .= html_writer::start_tag('form', ['action' => new moodle_url('/mod/quiz/report/answersheets/processresponses.php',
+                ['cmid' => $attemptobj->get_cmid()]), 'method' => 'post', 'enctype' => 'multipart/form-data',
+                'accept-charset' => 'utf-8', 'id' => 'responseform']);
+        $output .= html_writer::start_tag('div');
+
+        $output .= $this->render_question_attempt_content($attemptobj, false);
+
+        // Some hidden fields to trach what is going on.
+        $output .= html_writer::empty_tag('input',
+                ['type' => 'hidden', 'name' => 'attempt', 'value' => $attemptobj->get_attemptid()]);
+        $output .= html_writer::empty_tag('input', ['type' => 'hidden', 'name' => 'sesskey', 'value' => sesskey()]);
+        $output .= html_writer::empty_tag('input', ['type' => 'hidden', 'name' => 'finishattempt', 'value' => 1]);
+        $output .= html_writer::empty_tag('input', ['type' => 'hidden', 'name' => 'redirect', 'value' => $redirect]);
+
+        // Add a hidden field with questionids. Do this at the end of the form, so
+        // if you navigate before the form has finished loading, it does not wipe all
+        // the student's answers.
+        $output .= html_writer::empty_tag('input',
+                ['type' => 'hidden', 'name' => 'slots', 'value' => implode(',', $attemptobj->get_active_slots())]);
+
+        $output .= html_writer::tag('button', get_string('submit_student_responses_on_behalf', 'quiz_answersheets',
+                utils::get_user_details($attemptuser, $cm)),
+                ['type' => 'button', 'class' => 'submit-responses btn btn-primary']);
+
+        // Finish the form.
+        $output .= html_writer::end_tag('div');
+        $output .= html_writer::end_tag('form');
+
+        $langstring = [
+                'title' => get_string('confirmation', 'admin'),
+                'body' => get_string('submit_student_responses_dialog_content', 'quiz_answersheets')
+        ];
+
+        $this->page->requires->js_call_amd('quiz_answersheets/submit_student_responses', 'init', ['lang' => $langstring]);
+
+        $output .= $this->output->single_button($redirect, get_string('cancel'), 'get');
 
         return $output;
     }
