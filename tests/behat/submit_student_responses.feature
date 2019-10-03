@@ -1,15 +1,14 @@
 @mod @mod_quiz @quiz @quiz_answersheets
-Feature: Basic use of the Answer sheets report
-  In order to generate a paper version for Quiz
+Feature: Submit student responses feature of the Answer sheets report
+  In order to submit student responses for an in-progress attempt
   As a teacher
-  I need to access Answer sheets report
+  I need to see Submit responses... link
 
-  Background: Using the Answer sheets report
+  Background:
     Given the following "users" exist:
       | username | firstname | lastname |
       | teacher  | The       | Teacher  |
       | student1 | Student   | One      |
-      | student2 | Student   | Two      |
     And the following "courses" exist:
       | fullname | shortname |
       | Course 1 | C1        |
@@ -17,13 +16,12 @@ Feature: Basic use of the Answer sheets report
       | user     | course | role           |
       | teacher  | C1     | editingteacher |
       | student1 | C1     | student        |
-      | student2 | C1     | student        |
     And the following "question categories" exist:
       | contextlevel | reference | name           |
       | Course       | C1        | Test questions |
     And the following "activities" exist:
-      | activity   | name   | intro              | course | idnumber |
-      | quiz       | Quiz 1 | Quiz 1 description | C1     | quiz1    |
+      | activity | name   | intro              | course | idnumber |
+      | quiz     | Quiz 1 | Quiz 1 description | C1     | quiz1    |
     And the following "questions" exist:
       | questioncategory | qtype     | name | questiontext   |
       | Test questions   | truefalse | TF1  | First question |
@@ -32,45 +30,35 @@ Feature: Basic use of the Answer sheets report
       | TF1      | 1    |
 
   @javascript
-  Scenario: Answer sheets report works when there are no attempts
+  Scenario: Submit responses link do not exist for Student do not have any attempt yet
     Given I log in as "teacher"
-    And I am on "Course 1" course homepage
-    And I follow "Quiz 1"
-    And I navigate to "Results > Answer sheets" in current page administration
-    And I set the field "Attempts from" to "enrolled users who have attempted the quiz"
-    Then I press "Show report"
-    Then I should see "Attempts: 0"
-    And I should see "Nothing to display"
-    And I log out
-
-  @javascript
-  Scenario: Answer sheets report works when there are attempts
-    Given user "student1" has attempted "Quiz 1" with responses:
-      | slot | response |
-      | 1    | True     |
-    And I log in as "teacher"
     And I am on "Course 1" course homepage
     And I follow "Quiz 1"
     And I navigate to "Results > Answer sheets" in current page administration
     And I set the field "Attempts from" to "enrolled users who have attempted the quiz"
     When I press "Show report"
-    Then I should see "Attempts: 1"
-    And I should see "Student One"
-    And I should not see "Student Two"
+    Then I should see "Attempts: 0"
+    And I should see "Nothing to display"
     And I set the field "Attempts from" to "enrolled users who have, or have not, attempted the quiz"
     And I press "Show report"
-    And I should see "Student Two"
+    And I should see "Student One"
+    And "Student One" row "Submit student responses" column of "answersheets" table should contain "-"
 
   @javascript
-  Scenario: Instruction message will be displayed
-    Given I log in as "teacher"
+  Scenario: Submit responses link available for in-progress attempt
+    Given user "student1" has started an attempt at quiz "Quiz 1"
+    And I log in as "teacher"
     And I am on "Course 1" course homepage
     And I follow "Quiz 1"
     When I navigate to "Results > Answer sheets" in current page administration
-    Then ".instruction" "css_element" should not exist
-    And the following config values are set as admin:
-      | config              | value                    | plugin            |
-      | instruction_message | Test instruction message | quiz_answersheets |
-    And I reload the page
-    And ".instruction" "css_element" should exist
-    And I should see "Test instruction message"
+    Then I should see "Attempts: 1"
+    And I should see "Student One"
+    And "Student One" row "Submit student responses" column of "answersheets" table should contain "Submit responses..."
+    When I click on "Submit responses..." "link" in the "Student One" "table_row"
+    Then I should see "First question"
+    And "Submit responses on behalf of Student One (student1@example.com) and finish attempt" "button" should exist
+    And I set the field "False" to "1"
+    When I click on "Submit responses on behalf of Student One (student1@example.com) and finish attempt" "button"
+    Then I should see "Are you sure you want to submit?" in the ".modal-body" "css_element"
+    When I click on "Save changes" "button"
+    Then "Student One" row "State" column of "answersheets" table should contain "Finished"

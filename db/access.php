@@ -25,6 +25,7 @@
 defined('MOODLE_INTERNAL') || die();
 
 $capabilities = [
+        // Ability for a user to see the report and view attempt sheet.
         'quiz/answersheets:view' => [
                 'captype' => 'read',
                 'contextlevel' => CONTEXT_MODULE,
@@ -35,8 +36,19 @@ $capabilities = [
                 ],
                 'clonepermissionsfrom' => 'mod/quiz:viewreports'
         ],
+        // Ability for a user to view right answer sheet.
         'quiz/answersheets:viewrightanswers' => [
                 'captype' => 'read',
+                'contextlevel' => CONTEXT_MODULE,
+                'archetypes' => [
+                        'teacher' => CAP_ALLOW,
+                        'editingteacher' => CAP_ALLOW,
+                        'manager' => CAP_ALLOW
+                ]
+        ],
+        // Ability for a user to submit the student responses.
+        'quiz/answersheets:submitresponses' => [
+                'captype' => 'write',
                 'contextlevel' => CONTEXT_MODULE,
                 'archetypes' => [
                         'teacher' => CAP_ALLOW,

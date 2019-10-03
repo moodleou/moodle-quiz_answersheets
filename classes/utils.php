@@ -23,7 +23,9 @@
  */
 
 namespace quiz_answersheets;
+
 use action_link;
+use context_module;
 use html_writer;
 use moodle_url;
 use question_display_options;
@@ -51,7 +53,8 @@ class utils {
      * @param boolean $minimal True to only show the student fullname
      * @return array List of summary information
      */
-    public static function prepare_summary_attempt_information(quiz_attempt $attemptobj, moodle_url $baseurl, $minimal = true): array {
+    public static function prepare_summary_attempt_information(quiz_attempt $attemptobj, moodle_url $baseurl,
+            $minimal = true): array {
         global $DB, $USER;
 
         $sumdata = [];
@@ -147,6 +150,35 @@ class utils {
         }
 
         return $sumdata;
+    }
+
+    /**
+     * Get user detail with identity fields
+     *
+     * @param stdClass $attemptuser User info
+     * @param context_module $cm Context module
+     * @return string User detail string
+     */
+    public static function get_user_details(stdClass $attemptuser, context_module $cm): string {
+        $userinfo = '';
+
+        $userinfo .= fullname($attemptuser);
+
+        $extra = get_extra_user_fields($cm);
+        $data = [];
+        foreach ($extra as $field) {
+            $value = $attemptuser->{$field};
+            if (!$value) {
+                continue;
+            }
+            $data[] = $value;
+        }
+
+        if (count($data) > 0) {
+            $userinfo .= get_string('user_identity_fields', 'quiz_answersheets', implode(', ', $data));
+        }
+
+        return $userinfo;
     }
 
 }

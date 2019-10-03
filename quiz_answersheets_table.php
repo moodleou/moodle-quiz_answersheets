@@ -35,10 +35,14 @@ require_once($CFG->dirroot . '/mod/quiz/report/attemptsreport_table.php');
  */
 class quiz_answersheets_table extends quiz_attempts_report_table {
 
+    /** @var quiz_answersheets_options Option */
+    protected $options;
+
     public function __construct($quiz, $context, $qmsubselect, quiz_answersheets_options $options,
             \core\dml\sql_join $groupstudentsjoins, \core\dml\sql_join $studentsjoins, $questions, $reporturl) {
         parent::__construct('mod-quiz-report-answersheets-report', $quiz, $context,
                 $qmsubselect, $options, $groupstudentsjoins, $studentsjoins, $questions, $reporturl);
+        $this->options = $options;
     }
 
     public function build_table() {
@@ -108,6 +112,22 @@ class quiz_answersheets_table extends quiz_attempts_report_table {
         }
 
         return '-';
+    }
+
+    /**
+     * Generate the display of the submit student responses column.
+     *
+     * @param object $row The raw data for this row.
+     * @return string The value for this cell of the table.
+     */
+    public function col_submit_student_responses($row) {
+        if ($row->state == quiz_attempt::IN_PROGRESS) {
+            return html_writer::link(new moodle_url('/mod/quiz/report/answersheets/submitresponses.php',
+                    ['attempt' => $row->attempt, 'redirect' => $this->options->get_url()->param('lastchanged', $row->attempt)]),
+                    get_string('submit_student_responses_label', 'quiz_answersheets'), ['class' => 'reviewlink']);
+        } else {
+            return '-';
+        }
     }
 
 }
