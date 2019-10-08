@@ -22,6 +22,12 @@
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+namespace quiz_answersheets;
+
+use html_writer;
+use moodle_url;
+use quiz_attempt;
+
 defined('MOODLE_INTERNAL') || die();
 
 require_once($CFG->dirroot . '/mod/quiz/report/attemptsreport_table.php');
@@ -33,12 +39,12 @@ require_once($CFG->dirroot . '/mod/quiz/report/attemptsreport_table.php');
  * @copyright 2019 The Open University
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class quiz_answersheets_table extends quiz_attempts_report_table {
+class report_table extends \quiz_attempts_report_table {
 
-    /** @var quiz_answersheets_options Option */
+    /** @var reportdisplay_options Option */
     protected $options;
 
-    public function __construct($quiz, $context, $qmsubselect, quiz_answersheets_options $options,
+    public function __construct($quiz, $context, $qmsubselect, report_display_options $options,
             \core\dml\sql_join $groupstudentsjoins, \core\dml\sql_join $studentsjoins, $questions, $reporturl) {
         parent::__construct('mod-quiz-report-answersheets-report', $quiz, $context,
                 $qmsubselect, $options, $groupstudentsjoins, $studentsjoins, $questions, $reporturl);
