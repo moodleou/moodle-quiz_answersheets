@@ -22,12 +22,12 @@
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+use quiz_answersheets\report_display_options;
+use quiz_answersheets\report_table;
+
 defined('MOODLE_INTERNAL') || die();
 
 require_once($CFG->dirroot . '/mod/quiz/report/attemptsreport.php');
-require_once($CFG->dirroot . '/mod/quiz/report/answersheets/quiz_answersheets_options.php');
-require_once($CFG->dirroot . '/mod/quiz/report/answersheets/quiz_answersheets_settings_form.php');
-require_once($CFG->dirroot . '/mod/quiz/report/answersheets/quiz_answersheets_table.php');
 
 /**
  * This file defines the quiz answer sheets report class.
@@ -41,10 +41,10 @@ class quiz_answersheets_report extends quiz_attempts_report {
     public function display($quiz, $cm, $course) {
         global $DB, $CFG;
 
-        list($currentgroup, $studentsjoins, $groupstudentsjoins, $allowedjoins) = $this->init(
-                'answersheets', 'quiz_answersheets_settings_form', $quiz, $cm, $course);
+        list($currentgroup, $studentsjoins, $groupstudentsjoins, $allowedjoins) =
+                $this->init('answersheets', '\quiz_answersheets\report_settings_form', $quiz, $cm, $course);
 
-        $options = new quiz_answersheets_options('answersheets', $quiz, $cm, $course);
+        $options = new report_display_options('answersheets', $quiz, $cm, $course);
 
         if ($fromform = $this->form->get_data()) {
             $options->process_settings_from_form($fromform);
@@ -59,7 +59,7 @@ class quiz_answersheets_report extends quiz_attempts_report {
 
         // Prepare for downloading, if applicable.
         $courseshortname = format_string($course->shortname, true, ['context' => context_course::instance($course->id)]);
-        $table = new quiz_answersheets_table($quiz, $this->context, $this->qmsubselect,
+        $table = new report_table($quiz, $this->context, $this->qmsubselect,
                 $options, $groupstudentsjoins, $studentsjoins, $questions, $options->get_url());
         $filename = quiz_report_download_filename(get_string('answersheetsfilename', 'quiz_answersheets'),
                 $courseshortname, $quiz->name);
