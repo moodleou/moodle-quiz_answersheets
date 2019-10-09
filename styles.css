@@ -1,3 +1,9 @@
+#page-mod-quiz-report-answersheets-attemptsheet .que .content .question-instruction {
+    font-weight: bold;
+    font-style: italic;
+    padding-bottom: 10px;
+}
+
 #page-mod-quiz-report-answersheets-submitresponses .submit-responses {
     float: right;
 }

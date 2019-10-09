@@ -131,8 +131,10 @@ class report_table extends \quiz_attempts_report_table {
      */
     public function col_submit_student_responses($row) {
         if ($row->state == quiz_attempt::IN_PROGRESS) {
+            $redirect = $this->options->get_url();
+            $redirect->param('lastchanged', $row->attempt);
             return html_writer::link(new moodle_url('/mod/quiz/report/answersheets/submitresponses.php',
-                    ['attempt' => $row->attempt, 'redirect' => $this->options->get_url()->param('lastchanged', $row->attempt)]),
+                    ['attempt' => $row->attempt, 'redirect' => $redirect]),
                     get_string('submit_student_responses_label', 'quiz_answersheets'), ['class' => 'reviewlink']);
         } else {
             return '-';

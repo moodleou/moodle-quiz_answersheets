@@ -70,6 +70,7 @@ Feature: Attempt sheet, Review sheet and Answer sheet feature of the Answer shee
     And I should see "Student One" in the "table.quizreviewsummary" "css_element"
     And I should not see "Started on" in the "table.quizreviewsummary" "css_element"
     And I should not see "State" in the "table.quizreviewsummary" "css_element"
+    And I should see "Select the correct answer" in the ".question-instruction" "css_element"
     And I press the "back" button in the browser
     When I click on "View right answers" "link" in the "Student One" "table_row"
     Then I should see "First question"
