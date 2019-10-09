@@ -25,7 +25,7 @@
 namespace quiz_answersheets;
 
 use action_link;
-use context_module;
+use context;
 use html_writer;
 use moodle_url;
 use question_display_options;
@@ -156,15 +156,15 @@ class utils {
      * Get user detail with identity fields
      *
      * @param stdClass $attemptuser User info
-     * @param context_module $cm Context module
+     * @param context $context Context module
      * @return string User detail string
      */
-    public static function get_user_details(stdClass $attemptuser, context_module $cm): string {
+    public static function get_user_details(stdClass $attemptuser, context $context): string {
         $userinfo = '';
 
         $userinfo .= fullname($attemptuser);
 
-        $extra = get_extra_user_fields($cm);
+        $extra = get_extra_user_fields($context);
         $data = [];
         foreach ($extra as $field) {
             $value = $attemptuser->{$field};

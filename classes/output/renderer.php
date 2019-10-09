@@ -91,7 +91,7 @@ class renderer extends plugin_renderer_base {
         $output = '';
 
         $attemptuser = \core_user::get_user($attemptobj->get_userid());
-        $cm = context_module::instance((int) $attemptobj->get_cmid());
+        $context = context_module::instance((int) $attemptobj->get_cmid());
 
         // Start the form.
         $output .= html_writer::start_tag('form', ['action' => new moodle_url('/mod/quiz/report/answersheets/processresponses.php',
@@ -115,7 +115,7 @@ class renderer extends plugin_renderer_base {
                 ['type' => 'hidden', 'name' => 'slots', 'value' => implode(',', $attemptobj->get_active_slots())]);
 
         $output .= html_writer::tag('button', get_string('submit_student_responses_on_behalf', 'quiz_answersheets',
-                utils::get_user_details($attemptuser, $cm)),
+                utils::get_user_details($attemptuser, $context)),
                 ['type' => 'button', 'class' => 'submit-responses btn btn-primary']);
 
         // Finish the form.
