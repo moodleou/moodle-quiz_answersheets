@@ -204,4 +204,19 @@ class utils {
         }
         return false;
     }
+    /**
+     * Get instruction text for given question type
+     *
+     * @param string $questiontype Question type
+     * @return string instruction text
+     */
+    public static function get_question_instruction(string $questiontype): string {
+        $instructionexists = get_string_manager()->string_exists($questiontype . '_instruction', 'quiz_answersheets');
+        if (!$instructionexists) {
+            return '';
+        } else {
+            return get_string($questiontype . '_instruction', 'quiz_answersheets');
+        }
+    }
+
 }

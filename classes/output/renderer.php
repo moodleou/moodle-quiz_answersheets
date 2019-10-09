@@ -28,6 +28,9 @@ use context_module;
 use html_writer;
 use moodle_url;
 use plugin_renderer_base;
+use qbehaviour_renderer;
+use qtype_renderer;
+use question_attempt;
 use question_display_options;
 use quiz_answersheets\utils;
 use quiz_attempt;
@@ -59,12 +62,17 @@ class renderer extends plugin_renderer_base {
         $displayoptions->manualcommentlink = null;
         $displayoptions->context = context_module::instance($attemptobj->get_cmid());
         $rightanswer = $this->page->url->get_param('rightanswer');
+        $qoutput = $this->page->get_renderer('quiz_answersheets', 'qtype_override');
 
         foreach ($slots as $slot) {
             $originalslot = $attemptobj->get_original_slot($slot);
             $questionnumber = $attemptobj->get_question_number($originalslot);
 
             $qa = $attemptobj->get_question_attempt($slot);
+            $qtoutput = $qa->get_question()->get_renderer($this->page);
+            $behaviouroutput = $this->page->get_renderer(get_class($qa->get_behaviour()));
+            $displayoptions = clone($displayoptions);
+            $qa->get_behaviour()->adjust_display_options($displayoptions);
 
             if ($rightanswer && $attempt->state == quiz_attempt::IN_PROGRESS) {
                 $correctresponse = $qa->get_correct_response();
@@ -73,7 +81,7 @@ class renderer extends plugin_renderer_base {
                 }
             }
 
-            $output .= $qa->render($displayoptions, $questionnumber);
+            $output .= $qoutput->question($qa, $behaviouroutput, $qtoutput, $displayoptions, $questionnumber);
         }
 
         return $output;
@@ -144,4 +152,38 @@ class renderer extends plugin_renderer_base {
                 ['type' => 'button', 'class' => 'print-sheet btn btn-secondary', 'onclick' => 'window.print();return false;']);
     }
 
+}
+
+/**
+ * The override core_question_renderer for the quiz_answersheets module.
+ *
+ * @copyright  2019 The Open University
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+class qtype_override_renderer extends \core_question_renderer {
+
+    protected function formulation(question_attempt $qa, qbehaviour_renderer $behaviouroutput, qtype_renderer $qtoutput,
+            question_display_options $options) {
+        global $attemptobj;
+        // We need to use global trick here because in mod/quiz/report/answersheets/submitresponses.php:23 already loaded the attemptobj
+        // so we no need to do the extra Database query.
+        $output = '';
+
+        $rightanswer = $this->page->url->get_param('rightanswer');
+
+        if ($rightanswer && $attemptobj->get_state() == quiz_attempt::IN_PROGRESS ||
+                $this->page->pagetype == 'mod-quiz-report-answersheets-submitresponses') {
+            // Do not show question instruction for right answer sheet and submit responses page.
+            return parent::formulation($qa, $behaviouroutput, $qtoutput, $options);
+        }
+
+        // Append question instruction if exist.
+        $qinstruction = utils::get_question_instruction($qa->get_question()->get_type_name());
+        if (!empty($qtoutput)) {
+            $output .= html_writer::div($qinstruction, 'question-instruction');
+            $output .= parent::formulation($qa, $behaviouroutput, $qtoutput, $options);
+        }
+
+        return $output;
+    }
 }
