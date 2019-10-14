@@ -29,6 +29,7 @@ $string['answersheetsfilename'] = 'Answer_sheets_report';
 $string['answersheetsreport'] = 'Answer sheets report';
 $string['admin_instruction_message'] = 'Instruction message';
 $string['admin_instruction_message_des'] = 'If set, this text will be shown at the top of the report. You can use this, for example, to link to any institutional policies about printing summative quizzes.';
+$string['answersheets:componentname'] = 'Answer sheets';
 $string['answersheets:view'] = 'View attempt sheet';
 $string['answersheets:viewrightanswers'] = 'View right answer sheet';
 $string['answersheets:submitresponses'] = 'Submit student responses';
