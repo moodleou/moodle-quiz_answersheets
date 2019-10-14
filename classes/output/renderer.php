@@ -61,6 +61,7 @@ class renderer extends plugin_renderer_base {
         $displayoptions->flags = question_display_options::HIDDEN;
         $displayoptions->manualcommentlink = null;
         $displayoptions->context = context_module::instance($attemptobj->get_cmid());
+        $displayoptions->history = question_display_options::HIDDEN;
         $rightanswer = $this->page->url->get_param('rightanswer');
         $qoutput = $this->page->get_renderer('quiz_answersheets', 'qtype_override');
 
