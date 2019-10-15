@@ -1,7 +1,9 @@
 #page-mod-quiz-report-answersheets-submitresponses .submit-responses {
     float: right;
 }
-
+#page-mod-quiz-report tr.lastchanged td {
+    background-color: #afa;
+}
 @media print {
     #page-mod-quiz-report-answersheets-attemptsheet .print-sheet {
         display: none;
