@@ -44,6 +44,9 @@ class report_table extends \quiz_attempts_report_table {
     /** @var reportdisplay_options Option */
     protected $options;
 
+    /** @var array User details */
+    private $userdetails = [];
+
     public function __construct($quiz, $context, $qmsubselect, report_display_options $options,
             \core\dml\sql_join $groupstudentsjoins, \core\dml\sql_join $studentsjoins, $questions, $reporturl) {
         parent::__construct('mod-quiz-report-answersheets-report', $quiz, $context,
@@ -134,6 +137,101 @@ class report_table extends \quiz_attempts_report_table {
         } else {
             return '-';
         }
+    }
+
+    /**
+     * Generate the display of the create attempt column.
+     *
+     * @param object $row The raw data for this row.
+     * @return string The value for this cell of the table.
+     */
+    public function col_create_attempt($row): string {
+        if ($row->used_all_attempts) {
+            return '';
+        }
+        if (!$row->last_attempt_for_this_user) {
+            return '';
+        }
+        if ($row->state == quiz_attempt::IN_PROGRESS) {
+            return '';
+        }
+        if (!isset($this->userdetails[$row->userid])) {
+            $userdetails = utils::get_user_details($row, $this->context);
+            $this->userdetails[$row->userid] = get_string('create_attempt_modal_description', 'quiz_answersheets', $userdetails);
+        }
+        $buttontext = get_string('create_attempt', 'quiz_answersheets');
+        $attributes = [
+                'class' => 'btn btn-secondary mr-1 create-attempt-btn',
+                'name' => 'create_attempt',
+                'data-message' => $this->userdetails[$row->userid],
+                'data-user-id' => $row->userid,
+                'data-quiz-id' => $this->quiz->id,
+                'data-url' => $this->options->get_url()->out(false)
+        ];
+        return html_writer::tag('button', $buttontext, $attributes);
+    }
+
+    /**
+     * Add highlight class to last changed row
+     *
+     * @param \stdClass $attempt
+     * @return string
+     */
+    public function get_row_class($attempt): string {
+        $options = $this->options;
+        $class = parent::get_row_class($attempt);
+        if (!is_null($options->lastchanged)) {
+            if ($options->lastchanged > 0 && $options->lastchanged == $attempt->attempt) {
+                $class .= ' lastchanged';
+            }
+        }
+        return $class;
+    }
+
+    /**
+     * A chance for subclasses to modify the SQL after the count query has been generated,
+     * and before the full query is constructed.
+     *
+     * @param string $fields SELECT list.
+     * @param string $from JOINs part of the SQL.
+     * @param string $where WHERE clauses.
+     * @param array $params Query params.
+     * @return array with 4 elements ($fields, $from, $where, $params) as from base_sql.
+     */
+    protected function update_sql_after_count($fields, $from, $where, $params) {
+        [$fields, $from, $where, $params] = parent::update_sql_after_count($fields, $from, $where, $params);
+        $fields .= ", CASE
+                        -- If, for this user, attempts allowed (including overrids) is unlimited, then they have not used all attempts.
+                        WHEN COALESCE(
+                                (SELECT attempts FROM {quiz_overrides} WHERE quiz = quiza.quiz AND userid = u.id),
+                                (SELECT MIN(overrides1.attempts)
+                                   FROM {quiz_overrides} overrides1
+                                   JOIN {groups_members} overrides1_gm ON overrides1_gm.groupid = overrides1.groupid
+                                  WHERE overrides1.quiz = quiza.quiz
+                                        AND overrides1_gm.userid = u.id),
+                                :quizmaxattempts1) = 0 THEN 0
+                        -- Or, if there is a finite limit, compare with the number of attempts they have.
+                        WHEN (SELECT COUNT(1) FROM {quiz_attempts} WHERE quiz = quiza.quiz AND userid = quiza.userid) < COALESCE(
+                                (SELECT attempts FROM {quiz_overrides} WHERE quiz = quiza.quiz AND userid = u.id),
+                                (SELECT MAX(overrides2.attempts)
+                                   FROM {quiz_overrides} overrides2
+                                   JOIN {groups_members} overrides2_gm ON overrides2_gm.groupid = overrides2.groupid
+                                  WHERE overrides2.quiz = quiza.quiz
+                                        AND overrides2_gm.userid = u.id),
+                                :quizmaxattempts2) THEN 0
+                        ELSE 1
+                    END AS used_all_attempts
+                    , CASE
+                        -- User does not have an attempt yet, so only one row.
+                        WHEN quiza.id IS NULL THEN 1
+                        -- User woth one or more attempts.
+                        WHEN quiza.attempt = (SELECT MAX(attempt) FROM {quiz_attempts} WHERE quiz = quiza.quiz AND userid = quiza.userid) THEN 1
+                        ELSE 0
+                    END AS last_attempt_for_this_user
+                    ";
+        $params['quizmaxattempts1'] = $this->quiz->attempts;
+        $params['quizmaxattempts2'] = $this->quiz->attempts;
+        return [$fields, $from, $where, $params];
     }
 
 }

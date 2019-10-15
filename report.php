@@ -130,6 +130,7 @@ class quiz_answersheets_report extends quiz_attempts_report {
             $this->add_attempt_sheet_column($table, $columns, $headers);
             $this->add_answer_sheet_column($table, $columns, $headers);
             $this->add_submit_responses_column($table, $columns, $headers);
+            $this->add_create_attempt_column($table, $columns, $headers);
 
             $table->define_columns($columns);
             $table->define_headers($headers);
@@ -202,6 +203,27 @@ class quiz_answersheets_report extends quiz_attempts_report {
         if (!$table->is_downloading() && has_capability('quiz/answersheets:submitresponses', $this->context)) {
             $columns[] = 'submit_student_responses';
             $headers[] = get_string('column_submit_student_responses', 'quiz_answersheets');
+        }
+    }
+
+    /**
+     * Add create attempt column to the $column and $headers arrays
+     *
+     * @param table_sql $table the table being constructed.
+     * @param array $columns the list of columns. Added to.
+     * @param array $headers the columns headings. Added to.
+     */
+    public function add_create_attempt_column(table_sql $table, &$columns, &$headers) {
+        if (!$table->is_downloading() && has_capability('quiz/answersheets:createattempt', $this->context)) {
+            global $PAGE;
+            $PAGE->requires->js_call_amd('quiz_answersheets/create_attempt_dialog', 'init');
+            $PAGE->requires->strings_for_js([
+                    'create_attempt_modal_title',
+                    'create_attempt_modal_button',
+                    'create_attempt_modal_description'
+            ], 'quiz_answersheets');
+            $columns[] = 'create_attempt';
+            $headers[] = get_string('create_attempt', 'quiz_answersheets');
         }
     }
 

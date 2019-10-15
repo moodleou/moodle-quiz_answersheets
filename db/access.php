@@ -55,5 +55,14 @@ $capabilities = [
                         'editingteacher' => CAP_ALLOW,
                         'manager' => CAP_ALLOW
                 ]
+        ],
+        // Ability for a user to create attempt.
+        'quiz/answersheets:createattempt' => [
+                'captype' => 'write',
+                'contextlevel' => CONTEXT_MODULE,
+                'archetypes' => [
+                        'editingteacher' => CAP_ALLOW,
+                        'manager' => CAP_ALLOW
+                ]
         ]
 ];

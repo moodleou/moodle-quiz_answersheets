@@ -15,20 +15,23 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Quiz answersheets report version information.
+ * Quiz answer sheet services.
  *
  * @package   quiz_answersheets
  * @copyright 2019 The Open University
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-defined('MOODLE_INTERNAL') || die();
+defined('MOODLE_INTERNAL') || die;
 
-$plugin->version = 2019101000;
-$plugin->requires = 2018112800;
-$plugin->cron = 0;
-$plugin->component = 'quiz_answersheets';
-$plugin->maturity  = MATURITY_STABLE;
-$plugin->release   = 'v1.0 for Moodle 3.4+';
-
-$plugin->outestssufficient = true;
+$functions = [
+        'quiz_answersheets_create_attempt' => [
+                'classname' => 'quiz_answersheets_external',
+                'methodname' => 'create_attempt',
+                'classpath' => '',
+                'description' => 'Create attempt for users',
+                'type' => 'write',
+                'ajax' => true,
+                'capabilities' => 'quiz/answersheets:createattempt'
+        ]
+];

@@ -181,4 +181,27 @@ class utils {
         return $userinfo;
     }
 
+    /**
+     * Check if can create attempt
+     *
+     * @param \quiz $quizobj Quiz object
+     * @param array $attempts Array of attempts
+     * @return bool
+     */
+    public static function can_create_attempt($quizobj, $attempts): bool {
+        $numprevattempts = count($attempts);
+        if ($numprevattempts == 0) {
+            return true;
+        }
+        $lastattempt = end($attempts);
+        $state = $lastattempt->state;
+        if ($state && $state == quiz_attempt::FINISHED) {
+            // Check max attempts
+            $rule = new \quizaccess_numattempts($quizobj, time());
+            if (!$rule->prevent_new_attempt($numprevattempts, $lastattempt)) {
+                return true;
+            }
+        }
+        return false;
+    }
 }

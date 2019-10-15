@@ -40,6 +40,9 @@ require_once($CFG->dirroot . '/mod/quiz/report/attemptsreport_options.php');
  */
 class report_display_options extends \mod_quiz_attempts_report_options {
 
+    /**@var int Last changed row id */
+    public $lastchanged;
+
     public function __construct($mode, $quiz, $cm, $course) {
         parent::__construct($mode, $quiz, $cm, $course);
         $this->attempts = quiz_attempts_report::ENROLLED_ALL;
@@ -51,6 +54,11 @@ class report_display_options extends \mod_quiz_attempts_report_options {
         // if the user has permissions and if the report mode is showing attempts.
         $this->checkboxcolumn = has_capability('mod/quiz:deleteattempts', context_module::instance($this->cm->id))
                 && ($this->attempts != quiz_attempts_report::ENROLLED_WITHOUT);
+    }
+
+    public function setup_from_params() {
+        parent::setup_from_params();
+        $this->lastchanged = optional_param('lastchanged', 0, PARAM_INT);
     }
 
 }
