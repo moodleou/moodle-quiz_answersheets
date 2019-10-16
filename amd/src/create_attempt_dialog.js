@@ -43,7 +43,7 @@ define(['jquery', 'core/modal_factory', 'core/modal_events', 'core/ajax', 'core/
                         body: message
                     }).done(function(modal) {
                         modal.setSaveButtonText(modalButton);
-                        modal.getRoot().on(ModalEvents.yes, params, t.createAttempt);
+                        modal.getRoot().on(ModalEvents.save, params, t.createAttempt);
                         modal.show();
                         // Handle hidden event.
                         modal.getRoot().on(ModalEvents.hidden, modal, t.closeModal);
