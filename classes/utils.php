@@ -189,6 +189,10 @@ class utils {
      * @return bool
      */
     public static function can_create_attempt($quizobj, $attempts): bool {
+        // Check if quiz is unlimited.
+        if (!$quizobj->get_quiz()->attempts) {
+            return true;
+        }
         $numprevattempts = count($attempts);
         if ($numprevattempts == 0) {
             return true;
