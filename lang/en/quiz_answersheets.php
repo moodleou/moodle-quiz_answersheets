@@ -43,6 +43,7 @@ $string['column_submit_student_responses'] = 'Submit student responses';
 $string['review_sheet_label'] = 'Review sheet';
 $string['review_sheet_title'] = '{$a}: Review sheet';
 $string['print'] = 'Print';
+$string['privacy:metadata'] = 'The Quiz Answer sheets plugin does not store any personal data itself. It provides an additional interface for viewing and managing the data owned by the quiz activity.';
 $string['submit_student_responses_label'] = 'Submit responses...';
 $string['submit_student_responses_on_behalf'] = 'Submit responses on behalf of {$a} and finish attempt';
 $string['submit_student_responses_dialog_content'] = 'Are you sure you want to submit?';
