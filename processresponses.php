@@ -23,6 +23,8 @@
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+use quiz_answersheets\utils;
+
 require_once(__DIR__ . '/../../../../config.php');
 require_once($CFG->dirroot . '/mod/quiz/locallib.php');
 
@@ -54,4 +56,9 @@ if ($redirect == '') {
     $redirect = new moodle_url('/mod/quiz/report.php',
             ['id' => $attemptobj->get_cmid(), 'mode' => 'answersheets', 'lastchanged' => $attemptid]);
 }
+
+// Fire event.
+$context = context_module::instance((int) $attemptobj->get_cmid());
+utils::create_events('responses_submitted', $attemptobj->get_attemptid(), $attemptobj->get_userid(), $attemptobj->get_courseid(),
+        $context, $attemptobj->get_quizid());
 redirect($redirect);

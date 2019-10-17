@@ -55,6 +55,15 @@ if ($rightanswer) {
     $pagetitle = get_string('attempt_sheet_title', 'quiz_answersheets', $attemptobj->get_quiz_name());
 }
 
+$isrightanswer = $rightanswer && $attemptobj->get_state() == quiz_attempt::IN_PROGRESS;
+
+// Fire event.
+$context = context_module::instance((int) $attemptobj->get_cmid());
+$event = $rightanswer && $attemptobj->get_state() == quiz_attempt::IN_PROGRESS ? utils::RIGHT_ANSWER_SHEET_VIEWED :
+        utils::ATTEMPT_SHEET_VIEWED;
+utils::create_events($event, $attemptobj->get_attemptid(), $attemptobj->get_userid(), $attemptobj->get_courseid(), $context,
+        $attemptobj->get_quizid());
+
 $PAGE->set_url($url);
 $PAGE->set_pagelayout('popup');
 $PAGE->set_title($pagetitle);
@@ -70,7 +79,7 @@ echo $quizrenderer->review_summary_table($sumdata, 0);
 // Question content.
 echo $renderer->render_question_attempt_content($attemptobj);
 // Print button.
-echo $renderer->render_print_button();
+echo $renderer->render_print_button($attemptobj, $isrightanswer);
 
 // Header for printing.
 echo $renderer->render_attempt_sheet_print_header($attemptobj);

@@ -26,6 +26,7 @@ namespace quiz_answersheets;
 
 use action_link;
 use context;
+use context_module;
 use html_writer;
 use moodle_url;
 use question_display_options;
@@ -43,6 +44,13 @@ defined('MOODLE_INTERNAL') || die();
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class utils {
+
+    const ATTEMPT_SHEET_CREATED = 'attempt_created';
+    const ATTEMPT_SHEET_PRINTED = 'attempt_printed';
+    const ATTEMPT_SHEET_VIEWED = 'attempt_viewed';
+    const RIGHT_ANSWER_SHEET_PRINTED = 'right_answer_printed';
+    const RIGHT_ANSWER_SHEET_VIEWED = 'right_answer_viewed';
+    const RESPONSES_SUBMITTED = 'responses_submitted';
 
     /**
      * Calculate summary information of a particular quiz attempt.
@@ -221,6 +229,49 @@ class utils {
         } else {
             return get_string($questiontype . '_instruction', 'quiz_answersheets');
         }
+    }
+
+    /**
+     * Prepare event data.
+     *
+     * @param int $attemptid Attempt id
+     * @param int $userid User id
+     * @param int $courseid Course id
+     * @param context_module $context Module context
+     * @param int $quizid Quiz id
+     * @return array Event data
+     */
+    private static function prepare_event_data(int $attemptid, int $userid, int $courseid, context_module $context,
+            int $quizid): array {
+        $params = [
+                'relateduserid' => $userid,
+                'courseid' => $courseid,
+                'context' => $context,
+                'other' => [
+                        'quizid' => $quizid,
+                        'attemptid' => $attemptid
+                ]
+        ];
+
+        return $params;
+    }
+
+    /**
+     * Fire events.
+     *
+     * @param string $eventtype Event type name
+     * @param int $attemptid Attempt id
+     * @param int $userid User id
+     * @param int $courseid Course id
+     * @param context_module $context Module context
+     * @param int $quizid Quiz id
+     */
+    public static function create_events(string $eventtype, int $attemptid, int $userid, int $courseid, context_module $context,
+            int $quizid): void {
+        $params = self::prepare_event_data($attemptid, $userid, $courseid, $context, $quizid);
+        $classname = '\quiz_answersheets\event\\' . $eventtype;
+        $event = $classname::create($params);
+        $event->trigger();
     }
 
 }
