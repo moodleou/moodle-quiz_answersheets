@@ -72,4 +72,7 @@ echo $renderer->render_question_attempt_content($attemptobj);
 // Print button.
 echo $renderer->render_print_button();
 
+// Header for printing.
+echo $renderer->render_attempt_sheet_print_header($attemptobj);
+
 echo $OUTPUT->footer();
