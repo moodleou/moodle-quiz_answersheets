@@ -33,5 +33,13 @@ $functions = [
                 'type' => 'write',
                 'ajax' => true,
                 'capabilities' => 'quiz/answersheets:createattempt'
+        ],
+        'quiz_answersheets_create_event' => [
+                'classname' => 'quiz_answersheets_external',
+                'methodname' => 'create_event',
+                'classpath' => '',
+                'description' => 'Record log events from answer sheet',
+                'type' => 'write',
+                'ajax' => true
         ]
 ];

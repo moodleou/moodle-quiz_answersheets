@@ -145,9 +145,22 @@ class renderer extends plugin_renderer_base {
     /**
      * Render print button.
      *
+     * @param quiz_attempt $attemptobj
+     * @param bool $isrightanswer
      * @return string Html string
      */
-    public function render_print_button(): string {
+    public function render_print_button(quiz_attempt $attemptobj, bool $isrightanswer): string {
+        $data = [
+                'attemptid' => $attemptobj->get_attemptid(),
+                'userid' => $attemptobj->get_userid(),
+                'courseid' => $attemptobj->get_courseid(),
+                'cmid' => $attemptobj->get_cmid(),
+                'quizid' => $attemptobj->get_quizid(),
+                'pagetype' => $isrightanswer ? utils::RIGHT_ANSWER_SHEET_PRINTED : utils::ATTEMPT_SHEET_PRINTED
+        ];
+
+        $this->page->requires->js_call_amd('quiz_answersheets/print', 'init', [$data]);
+
         return html_writer::tag('button', get_string('print', 'quiz_answersheets'),
                 ['type' => 'button', 'class' => 'print-sheet btn btn-secondary', 'onclick' => 'window.print();return false;']);
     }

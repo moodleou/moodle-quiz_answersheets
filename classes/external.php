@@ -95,6 +95,9 @@ class quiz_answersheets_external extends external_api {
                 $params['userid']);
         $response = ['success' => true, 'message' => $message, 'id' => $attempt->id];
 
+        utils::create_events(utils::ATTEMPT_SHEET_CREATED, $attempt->id, $params['userid'], $course->id, $context,
+                $params['quizid']);
+
         return $response;
     }
 
@@ -152,6 +155,61 @@ class quiz_answersheets_external extends external_api {
         $transaction->allow_commit();
 
         return $attempt;
+    }
+
+    /**
+     * Describes the parameters for create_event.
+     *
+     * @return external_function_parameters
+     */
+    public static function create_event_parameters() {
+        return new external_function_parameters([
+                'attemptid' => new external_value(PARAM_INT, 'Attempt Id'),
+                'userid' => new external_value(PARAM_INT, 'User Id'),
+                'courseid' => new external_value(PARAM_INT, 'Course Id'),
+                'cmid' => new external_value(PARAM_INT, 'Context module Id'),
+                'quizid' => new external_value(PARAM_INT, 'Quiz Id'),
+                'pagetype' => new external_value(PARAM_ALPHAEXT, 'Page type')
+        ]);
+    }
+
+    /**
+     * Create event API
+     *
+     * @param int $attemptid Attempt id
+     * @param int $userid User id
+     * @param int $courseid Course id
+     * @param int $cmid Context module id
+     * @param int $quizid Quiz id
+     * @param string $pagetype Page type
+     * @return bool Result
+     */
+    public static function create_event($attemptid, $userid, $courseid, $cmid, $quizid, $pagetype) {
+        $allowpagetypes = [utils::ATTEMPT_SHEET_PRINTED, utils::RIGHT_ANSWER_SHEET_PRINTED];
+        $params = self::validate_parameters(self::create_event_parameters(), [
+                'attemptid' => $attemptid,
+                'userid' => $userid,
+                'courseid' => $courseid,
+                'cmid' => $cmid,
+                'quizid' => $quizid,
+                'pagetype' => $pagetype
+        ]);
+        if (!in_array($params['pagetype'], $allowpagetypes)) {
+            throw new invalid_parameter_exception('Invalid pagetype event');
+        }
+        $context = context_module::instance($params['cmid']);
+        utils::create_events($params['pagetype'], $params['attemptid'], $params['userid'], $params['courseid'], $context,
+                $params['quizid']);
+        return true;
+    }
+
+    /**
+     * Describes the create_event return value.
+     *
+     * @return external_value
+     */
+    public static function create_event_returns() {
+        return new external_value(PARAM_BOOL, 'Success');
     }
 
 }
