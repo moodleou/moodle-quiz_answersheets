@@ -1,3 +1,18 @@
+#page-mod-quiz-report-answersheets-attemptsheet .attempt-sheet-header {
+    display: block;
+    position: absolute;
+    top: -50px;
+    border-bottom: 1px solid grey;
+    left: 15px;
+    right: 15px;
+    height: 40px;
+    line-height: 40px;
+}
+
+#page-mod-quiz-report-answersheets-attemptsheet .que {
+    page-break-inside: avoid;
+}
+
 #page-mod-quiz-report-answersheets-attemptsheet .que .content .question-instruction {
     font-weight: bold;
     font-style: italic;
@@ -11,7 +26,25 @@
     background-color: #afa;
 }
 @media print {
+    @page :first {
+        /* Do not show header for first page. */
+        margin-top: -40px;
+    }
+
     #page-mod-quiz-report-answersheets-attemptsheet .print-sheet {
         display: none;
+    }
+
+    #page-mod-quiz-report-answersheets-attemptsheet #region-main {
+        border: none;
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+
+    #page-mod-quiz-report-answersheets-attemptsheet .attempt-sheet-header {
+        position: fixed;
+        top: 0;
+        left: 35px;
+        right: 35px;
     }
 }

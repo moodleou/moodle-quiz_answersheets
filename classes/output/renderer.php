@@ -153,6 +153,31 @@ class renderer extends plugin_renderer_base {
                 ['type' => 'button', 'class' => 'print-sheet btn btn-secondary', 'onclick' => 'window.print();return false;']);
     }
 
+    /**
+     * Render the attempt sheet header only for print
+     *
+     * @param quiz_attempt $attemptobj
+     * @return string HTML string
+     */
+    public function render_attempt_sheet_print_header(quiz_attempt $attemptobj): string {
+        $generatedtime = time();
+        $attemptuser = \core_user::get_user($attemptobj->get_userid());
+        $context = context_module::instance((int) $attemptobj->get_cmid());
+
+        $headerinfo = new \stdClass();
+        $headerinfo->courseshortname = $attemptobj->get_course()->shortname;
+        $headerinfo->quizname = $attemptobj->get_quiz_name();
+        $headerinfo->studentname = utils::get_user_details($attemptuser, $context);
+        // We use custom time format because get_string('strftime...', 'langconfig'); do not have format we need.
+        $headerinfo->generatedtime = userdate($generatedtime, get_string('strftime_header', 'quiz_answersheets'));
+
+        $output = '';
+        $output .= html_writer::div(get_string('print_header', 'quiz_answersheets', $headerinfo), 'attempt-sheet-header');
+        $output .= html_writer::end_div();
+
+        return $output;
+    }
+
 }
 
 /**
