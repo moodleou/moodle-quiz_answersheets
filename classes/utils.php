@@ -31,6 +31,7 @@ use html_writer;
 use moodle_url;
 use question_display_options;
 use quiz_attempt;
+use ReflectionClass;
 use stdClass;
 use user_picture;
 
@@ -216,18 +217,27 @@ class utils {
         }
         return false;
     }
+
     /**
      * Get instruction text for given question type
      *
      * @param string $questiontype Question type
+     * @param string $questionnameprefix Question name
      * @return string instruction text
      */
-    public static function get_question_instruction(string $questiontype): string {
+    public static function get_question_instruction(string $questiontype, string $questionnameprefix = ''): string {
         $instructionexists = get_string_manager()->string_exists($questiontype . '_instruction', 'quiz_answersheets');
         if (!$instructionexists) {
             return '';
         } else {
-            return get_string($questiontype . '_instruction', 'quiz_answersheets');
+            if (empty($questionnameprefix)) {
+                return get_string($questiontype . '_instruction', 'quiz_answersheets');
+            } else {
+                $questioninstruction = new stdClass();
+                $questioninstruction->questionname = $questionnameprefix;
+                $questioninstruction->instruction = get_string($questiontype . '_instruction', 'quiz_answersheets');
+                return get_string('instruction_prefix', 'quiz_answersheets', $questioninstruction);
+            }
         }
     }
 
@@ -272,6 +282,23 @@ class utils {
         $classname = '\quiz_answersheets\event\\' . $eventtype;
         $event = $classname::create($params);
         $event->trigger();
+    }
+
+    /**
+     * Get the protected property of given class.
+     *
+     * @param $originalclass Class that contain the protected property
+     * @param string $propertyname Protected property that need to get value
+     * @return mixed Protected value
+     */
+    public static function get_reflection_property($originalclass, string $propertyname) {
+        $reflectionclass = new ReflectionClass($originalclass);
+        $reflectionproperty = $reflectionclass->getProperty($propertyname);
+        $reflectionproperty->setAccessible(true);
+        $returnvalue = $reflectionproperty->getValue($originalclass);
+        $reflectionproperty->setAccessible(false);
+
+        return $returnvalue;
     }
 
 }
