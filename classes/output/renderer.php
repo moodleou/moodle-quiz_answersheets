@@ -31,6 +31,7 @@ use plugin_renderer_base;
 use qbehaviour_renderer;
 use qtype_renderer;
 use question_attempt;
+use question_bank;
 use question_display_options;
 use quiz_answersheets\utils;
 use quiz_attempt;
@@ -217,10 +218,45 @@ class qtype_override_renderer extends \core_question_renderer {
         }
 
         // Append question instruction if exist.
-        $qinstruction = utils::get_question_instruction($qa->get_question()->get_type_name());
-        if (!empty($qtoutput)) {
-            $output .= html_writer::div($qinstruction, 'question-instruction');
-            $output .= parent::formulation($qa, $behaviouroutput, $qtoutput, $options);
+        $output .= $this->render_question_instruction($qa);
+        $output .= parent::formulation($qa, $behaviouroutput, $qtoutput, $options);
+
+        return $output;
+    }
+
+    /**
+     * Render question instruction
+     *
+     * @param question_attempt $qa Question attempt
+     * @return string HTML string
+     */
+    private function render_question_instruction(question_attempt $qa) {
+        $output = '';
+        $question = $qa->get_question();
+
+        if ($question->get_type_name() == 'combined') {
+            // Specific code for Combined question type.
+            // Get all sub questions. We need to user reflection method because it is a protected property.
+            $subqs = utils::get_reflection_property($question->combiner, 'subqs');
+            $output .= html_writer::start_div('question-instruction');
+            $output .= html_writer::start_tag('ul', ['class' => 'list']);
+            foreach ($subqs as $subq) {
+                // Get sub question type name.
+                $qtypename = utils::get_reflection_property($subq->type, 'qtypename');
+                $qtypelocalname = question_bank::get_qtype_name($qtypename);
+                $qinstruction = utils::get_question_instruction($qtypename, $qtypelocalname);
+                if (!empty($qinstruction)) {
+                    $output .= html_writer::tag('li', $qinstruction);
+                }
+            }
+            $output .= html_writer::end_tag('ul');
+            $output .= html_writer::end_div();
+        } else {
+            // Normal question type.
+            $qinstruction = utils::get_question_instruction($question->get_type_name());
+            if (!empty($qinstruction)) {
+                $output .= html_writer::div($qinstruction, 'question-instruction');
+            }
         }
 
         return $output;
