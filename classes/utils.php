@@ -166,16 +166,21 @@ class utils {
      *
      * @param stdClass $attemptuser User info
      * @param context $context Context module
+     * @param array $fields Array of fields that need to get the detail
      * @return string User detail string
      */
-    public static function get_user_details(stdClass $attemptuser, context $context): string {
+    public static function get_user_details(stdClass $attemptuser, context $context, array $fields = []): string {
         $userinfo = '';
+        $allfields = empty($fields);
 
         $userinfo .= fullname($attemptuser);
 
         $extra = get_extra_user_fields($context);
         $data = [];
         foreach ($extra as $field) {
+            if (!$allfields && !in_array($field, $fields)) {
+                continue;
+            }
             $value = $attemptuser->{$field};
             if (!$value) {
                 continue;
