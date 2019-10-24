@@ -59,86 +59,86 @@ class quiz_answersheets_report_testcase extends advanced_testcase {
         return [
                 [
                         'coderunner',
-                        'Write your answer in the space provided'
+                        'Write your answer in the space provided.'
                 ],
                 [
                         'ddwtos',
                         'Write the letter of the corresponding answer (A, B, C, D, ...) in the space provided. 
-After the item is the maximum number of times it can be used. e.g. (1) means that the item can be used once, (2) means twice etc. An asterisk (*) means that the items’ use is unlimited'
+After the item is the maximum number of times it can be used. e.g. (1) means that the item can be used once, (2) means twice etc. An asterisk (*) means that the items’ use is unlimited.'
                 ],
                 [
                         'ddmarker',
                         'Mark the points on the image and write the letter of corresponding answer (A, B, C, D, …) beside them. 
-After the item is the maximum number of times it can be used. e.g. (1) means that the item can be used once, (2) means twice etc. An asterisk (*) means that the items’ use is unlimited'
+After the item is the maximum number of times it can be used. e.g. (1) means that the item can be used once, (2) means twice etc. An asterisk (*) means that the items’ use is unlimited.'
                 ],
                 [
                         'ddimageortext',
                         'Mark the points on the image and write the letter of corresponding answer (A, B, C, D, …) beside them. 
-After the item is the maximum number of times it can be used. e.g. (1) means that the item can be used once, (2) means twice etc. An asterisk (*) means that the items’ use is unlimited'
+After the item is the maximum number of times it can be used. e.g. (1) means that the item can be used once, (2) means twice etc. An asterisk (*) means that the items’ use is unlimited.'
                 ],
                 [
                         'essay',
-                        'Write your answer in the space provided'
+                        'Write your answer in the space provided.'
                 ],
                 [
                         'match',
-                        'Write the letter of the corresponding answer (A, B, C, D, ...) in the space provided'
+                        'Write the letter of the corresponding answer (A, B, C, D, ...) in the space provided.'
                 ],
                 [
                         'multichoice',
-                        'Select the correct answer'
+                        'Select the correct answer.'
                 ],
                 [
                         'numerical',
-                        'Write your answer (in numerical value) in the space provided'
+                        'Write your answer (in numerical value) in the space provided.'
                 ],
                 [
                         'ordering',
-                        'Write the correct order in the space provided'
+                        'Write the correct order in the space provided.'
                 ],
                 [
                         'oumultiresponse',
-                        'Select the correct answer(s)'
+                        'Select the correct answer(s).'
                 ],
                 [
                         'pmatch',
-                        'Write your answer in the space provided. Please keep it to a sentence or two'
+                        'Write your answer in the space provided. Please keep it to a sentence or two.'
                 ],
                 [
                         'pmatchjme',
-                        'Write your answer in the space provided'
+                        'Write your answer in the space provided.'
                 ],
                 [
                         'gapselect',
-                        'Write the letter of the corresponding answer (A, B, C, D, ...) in the space provided'
+                        'Write the letter of the corresponding answer (A, B, C, D, ...) in the space provided.'
                 ],
                 [
                         'shortanswer',
-                        'Write your answer in the space provided. Please keep it to a sentence or two'
+                        'Write your answer in the space provided. Please keep it to a sentence or two.'
                 ],
                 [
                         'stack',
-                        'Write your answer in the space provided'
+                        'Write your answer in the space provided.'
                 ],
                 [
                         'truefalse',
-                        'Select the correct answer'
+                        'Select the correct answer.'
                 ],
                 [
                         'varnumeric',
-                        'Write your answer in the space provided'
+                        'Write your answer in the space provided.'
                 ],
                 [
                         'varnumericset',
-                        'Write your answer in the space provided'
+                        'Write your answer in the space provided.'
                 ],
                 [
                         'varnumunit',
-                        'Write your answer in the space provided'
+                        'Write your answer in the space provided.'
                 ],
                 [
                         'wordselect',
-                        'Select the answer(s) by circling the key word(s)'
+                        'Select the answer(s) by circling the key word(s).'
                 ]
         ];
     }

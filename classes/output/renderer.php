@@ -125,7 +125,7 @@ class renderer extends plugin_renderer_base {
                 ['type' => 'hidden', 'name' => 'slots', 'value' => implode(',', $attemptobj->get_active_slots())]);
 
         $output .= html_writer::tag('button', get_string('submit_student_responses_on_behalf', 'quiz_answersheets',
-                utils::get_user_details($attemptuser, $context)),
+                utils::get_user_details($attemptuser, $context, ['username', 'idnumber'])),
                 ['type' => 'button', 'class' => 'submit-responses btn btn-primary']);
 
         // Finish the form.
@@ -240,9 +240,15 @@ class qtype_override_renderer extends \core_question_renderer {
             $subqs = utils::get_reflection_property($question->combiner, 'subqs');
             $output .= html_writer::start_div('question-instruction');
             $output .= html_writer::start_tag('ul', ['class' => 'list']);
+            $subqslist = [];
             foreach ($subqs as $subq) {
                 // Get sub question type name.
                 $qtypename = utils::get_reflection_property($subq->type, 'qtypename');
+                if (!in_array($qtypename, $subqslist)) {
+                    $subqslist[] = $qtypename;
+                } else {
+                    continue;
+                }
                 $qtypelocalname = question_bank::get_qtype_name($qtypename);
                 $qinstruction = utils::get_question_instruction($qtypename, $qtypelocalname);
                 if (!empty($qinstruction)) {
