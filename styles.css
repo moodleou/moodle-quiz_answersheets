@@ -22,9 +22,16 @@
 #page-mod-quiz-report-answersheets-submitresponses .submit-responses {
     float: right;
 }
+
+#page-mod-quiz-report-answersheets-attemptsheet .im-controls input[type=submit],
+#page-mod-quiz-report-answersheets-submitresponses .im-controls input[type=submit] {
+    display: none;
+}
+
 #page-mod-quiz-report tr.lastchanged td {
     background-color: #afa;
 }
+
 @media print {
     @page :first {
         /* Do not show header for first page. */
