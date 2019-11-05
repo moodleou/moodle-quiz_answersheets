@@ -118,7 +118,7 @@ class quiz_answersheets_report extends quiz_attempts_report {
                 $columns[] = 'checkbox';
                 if ($CFG->branch >= 38) {
                     // Checkbox header only available since Moodle 3.8.
-                    $headers[] = $table->checkbox_col_header();
+                    $headers[] = $table->checkbox_col_header('checkbox');
                 } else {
                     $headers[] = null;
                 }
