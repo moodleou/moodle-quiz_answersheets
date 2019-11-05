@@ -168,28 +168,26 @@ class renderer extends plugin_renderer_base {
     }
 
     /**
-     * Render the attempt sheet header only for print
+     * Render attempt sheet page
      *
-     * @param quiz_attempt $attemptobj
+     * @param array $sumdata Contains row data for table
+     * @param quiz_attempt $attemptobj Attempt object
      * @return string HTML string
      */
-    public function render_attempt_sheet_print_header(quiz_attempt $attemptobj): string {
-        $generatedtime = time();
-        $attemptuser = \core_user::get_user($attemptobj->get_userid());
-        $context = context_module::instance((int) $attemptobj->get_cmid());
-
-        $headerinfo = new \stdClass();
-        $headerinfo->courseshortname = $attemptobj->get_course()->shortname;
-        $headerinfo->quizname = $attemptobj->get_quiz_name();
-        $headerinfo->studentname = utils::get_user_details($attemptuser, $context);
-        // We use custom time format because get_string('strftime...', 'langconfig'); do not have format we need.
-        $headerinfo->generatedtime = userdate($generatedtime, get_string('strftime_header', 'quiz_answersheets'));
-
-        $output = '';
-        $output .= html_writer::div(get_string('print_header', 'quiz_answersheets', $headerinfo), 'attempt-sheet-header');
-        $output .= html_writer::end_div();
-
-        return $output;
+    public function render_attempt_sheet(array $sumdata, quiz_attempt $attemptobj): string {
+        $quizrenderer = $this->page->get_renderer('mod_quiz');
+        $templatecontext = [
+                'questionattemptheader' => utils::get_attempt_sheet_print_header($attemptobj),
+                'questionattemptsumtable' => $quizrenderer->review_summary_table($sumdata, 0),
+                'questionattemptcontent' => $this->render_question_attempt_content($attemptobj)
+        ];
+        $isgecko = \core_useragent::is_gecko();
+        // We need to use specific layout for Gecko because it does not fully support display flex and table.
+        if ($isgecko) {
+            return $this->render_from_template('quiz_answersheets/attempt_sheet_gecko', $templatecontext);
+        } else {
+            return $this->render_from_template('quiz_answersheets/attempt_sheet', $templatecontext);
+        }
     }
 
 }
