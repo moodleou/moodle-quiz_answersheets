@@ -65,7 +65,7 @@ utils::create_events($event, $attemptobj->get_attemptid(), $attemptobj->get_user
         $attemptobj->get_quizid());
 
 $PAGE->set_url($url);
-$PAGE->set_pagelayout('popup');
+$PAGE->set_pagelayout('print');
 $PAGE->set_title($pagetitle);
 
 echo $OUTPUT->header();
@@ -73,15 +73,12 @@ echo $OUTPUT->header();
 $quizrenderer = $PAGE->get_renderer('mod_quiz');
 $renderer = $PAGE->get_renderer('quiz_answersheets');
 
-// Add summary table.
+// Summary table.
 $sumdata = utils::prepare_summary_attempt_information($attemptobj, $url, !$isattemptfinished);
-echo $quizrenderer->review_summary_table($sumdata, 0);
-// Question content.
-echo $renderer->render_question_attempt_content($attemptobj);
+
+// Page content.
+echo $renderer->render_attempt_sheet($sumdata, $attemptobj);
 // Print button.
 echo $renderer->render_print_button($attemptobj, $isrightanswer);
-
-// Header for printing.
-echo $renderer->render_attempt_sheet_print_header($attemptobj);
 
 echo $OUTPUT->footer();
