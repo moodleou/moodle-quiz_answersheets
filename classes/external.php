@@ -92,14 +92,8 @@ class quiz_answersheets_external extends external_api {
         $attemptnumber = count($attempts);
         $lastattempt = array_pop($attempts);
         /** @todo MDL-66633 When we move to Moodle 3.8, use quiz_prepare_and_start_new_attempt in mod/quiz/locallib.php. */
-        // Nasty hack for CodeRunner.
-        // Unfortunately CodeRunner stores global $USER into question data. We need to work-around this.
-        $realuser = $USER;
-        $USER = $DB->get_record('user', ['id' => $params['userid']]);
         $attempt = static::quiz_prepare_and_start_new_attempt($quizobj, $attemptnumber + 1, $lastattempt, false, [], [],
                 $params['userid']);
-        // End of nasty hack for CodeRunner.
-        $USER = $realuser;
         $response = ['success' => true, 'message' => $message, 'id' => $attempt->id];
 
         utils::create_events(utils::ATTEMPT_SHEET_CREATED, $attempt->id, $params['userid'], $course->id, $context,
@@ -144,12 +138,19 @@ class quiz_answersheets_external extends external_api {
         $timenow = time(); // Update time now, in case the server is running really slowly.
         $attempt = quiz_create_attempt($quizobj, $attemptnumber, $lastattempt, $timenow, $ispreviewuser, $userid);
 
+        // Nasty hack for CodeRunner.
+        // Unfortunately CodeRunner stores global $USER into question data. We need to work-around this.
+        // This hack will be removed once https://github.com/trampgeek/moodle-qtype_coderunner/issues/86 closed.
+        $realuser = $USER;
+        $USER = $DB->get_record('user', ['id' => $userid]);
         if (!($quizobj->get_quiz()->attemptonlast && $lastattempt)) {
             $attempt = quiz_start_new_attempt($quizobj, $quba, $attempt, $attemptnumber, $timenow,
                     $forcedrandomquestions, $forcedvariants);
         } else {
             $attempt = quiz_start_attempt_built_on_last($quba, $attempt, $lastattempt);
         }
+        $USER = $realuser;
+        // End of nasty hack for CodeRunner.
 
         $transaction = $DB->start_delegated_transaction();
 
