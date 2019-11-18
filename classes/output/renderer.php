@@ -31,7 +31,6 @@ use plugin_renderer_base;
 use qbehaviour_renderer;
 use qtype_renderer;
 use question_attempt;
-use question_bank;
 use question_display_options;
 use quiz_answersheets\utils;
 use quiz_attempt;
@@ -242,23 +241,31 @@ class qtype_override_renderer extends \core_question_renderer {
             // Get all sub questions. We need to user reflection method because it is a protected property.
             $subqs = utils::get_reflection_property($question->combiner, 'subqs');
             $output .= html_writer::start_div('question-instruction');
-            $output .= html_writer::start_tag('ul', ['class' => 'list']);
-            $subqslist = [];
-            foreach ($subqs as $subq) {
-                // Get sub question type name.
-                $qtypename = utils::get_reflection_property($subq->type, 'qtypename');
-                if (!in_array($qtypename, $subqslist)) {
-                    $subqslist[] = $qtypename;
-                } else {
-                    continue;
+            if (count($subqs) > 1) {
+                $output .= html_writer::start_tag('ul', ['class' => 'list']);
+                $subqslist = [];
+                foreach ($subqs as $subq) {
+                    // Get sub question type name.
+                    $qtypename = utils::get_reflection_property($subq->type, 'qtypename');
+                    if (!in_array($qtypename, $subqslist)) {
+                        $subqslist[] = $qtypename;
+                    } else {
+                        continue;
+                    }
+                    $qinstruction = utils::get_question_instruction($qtypename);
+                    if (!empty($qinstruction)) {
+                        $output .= html_writer::tag('li', $qinstruction);
+                    }
                 }
-                $qtypelocalname = question_bank::get_qtype_name($qtypename);
-                $qinstruction = utils::get_question_instruction($qtypename, $qtypelocalname);
+                $output .= html_writer::end_tag('ul');
+            } else {
+                $subq = $subqs[0];
+                $qtypename = utils::get_reflection_property($subq->type, 'qtypename');
+                $qinstruction = utils::get_question_instruction($qtypename);
                 if (!empty($qinstruction)) {
-                    $output .= html_writer::tag('li', $qinstruction);
+                    $output .= $qinstruction;
                 }
             }
-            $output .= html_writer::end_tag('ul');
             $output .= html_writer::end_div();
         } else {
             // Normal question type.
