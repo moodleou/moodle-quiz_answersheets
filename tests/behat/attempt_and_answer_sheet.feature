@@ -63,7 +63,7 @@ Feature: Attempt sheet, Review sheet and Answer sheet feature of the Answer shee
     Then I should see "Attempts: 1"
     And I should see "Student One"
     And "Student One" row "Attempt sheets" column of "answersheets" table should contain "Attempt sheet"
-    And "Student One" row "Answer sheets" column of "answersheets" table should contain "View right answers"
+    And "Student One" row "Answer sheets" column of "answersheets" table should contain "Right answer sheet"
     When I click on "Attempt sheet" "link" in the "Student One" "table_row"
     Then I should see "First question"
     And "table.quizreviewsummary" "css_element" should exist
@@ -72,7 +72,7 @@ Feature: Attempt sheet, Review sheet and Answer sheet feature of the Answer shee
     And I should not see "State" in the "table.quizreviewsummary" "css_element"
     And I should see "Select the correct answer" in the ".question-instruction" "css_element"
     And I press the "back" button in the browser
-    When I click on "View right answers" "link" in the "Student One" "table_row"
+    When I click on "Right answer sheet" "link" in the "Student One" "table_row"
     Then I should see "First question"
     And the field "True" matches value "1"
     And user "student1" has finished an attempt at quiz "Quiz 1"

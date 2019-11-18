@@ -24,7 +24,6 @@
 
 $string['pluginname'] = 'Answer sheets';
 $string['answersheets'] = 'Answer sheets';
-$string['answersheets'] = 'Answer sheets';
 $string['answersheetsfilename'] = 'Answer_sheets_report';
 $string['answersheetsreport'] = 'Answer sheets report';
 $string['admin_instruction_message'] = 'Instruction message';
@@ -34,7 +33,7 @@ $string['answersheets:createattempt'] = 'Create an attempt for another user';
 $string['answersheets:submitresponses'] = 'Submit student responses';
 $string['answersheets:view'] = 'View attempt sheet';
 $string['answersheets:viewrightanswers'] = 'View right answer sheet';
-$string['answer_sheet_label'] = 'View right answers';
+$string['answer_sheet_label'] = 'Right answer sheet';
 $string['attempt_sheet_label'] = 'Attempt sheet';
 $string['answer_sheet_title'] = '{$a}: Answer sheet';
 $string['attempt_sheet_title'] = '{$a}: Attempt sheet';

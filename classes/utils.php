@@ -319,4 +319,22 @@ class utils {
         return get_string('print_header', 'quiz_answersheets', $headerinfo);
     }
 
+    /**
+     * Set current page navigation
+     *
+     * @param string $pagetitle Page title
+     */
+    public static function set_page_navigation(string $pagetitle): void {
+        global $CFG, $PAGE;
+        require_once($CFG->dirroot . '/mod/quiz/report/reportlib.php');
+        $reportlist = quiz_report_list($PAGE->cm->context);
+
+        $PAGE->navbar->add(get_string('results', 'quiz'),
+                new moodle_url('/mod/quiz/report.php', ['id' => $PAGE->cm->id, 'mode' => reset($reportlist)]));
+        $PAGE->navbar->add(get_string('answersheets', 'quiz_answersheets'),
+                new moodle_url('/mod/quiz/report.php', ['id' => $PAGE->cm->id, 'mode' => 'answersheets']));
+
+        $PAGE->navbar->add($pagetitle);
+    }
+
 }
