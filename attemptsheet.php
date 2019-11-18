@@ -65,7 +65,7 @@ utils::create_events($event, $attemptobj->get_attemptid(), $attemptobj->get_user
         $attemptobj->get_quizid());
 
 $PAGE->set_url($url);
-$PAGE->set_pagelayout('print');
+$PAGE->set_pagelayout('popup');
 $PAGE->set_title($pagetitle);
 
 echo $OUTPUT->header();
