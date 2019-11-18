@@ -50,6 +50,11 @@
     display: none;
 }
 
+#page-mod-quiz-report-answersheets-attemptsheet #page-navbar .breadcrumb-nav {
+    padding-left: 20px;
+    padding-bottom: 20px;
+}
+
 #page-mod-quiz-report tr.lastchanged td {
     background-color: #afa;
 }
@@ -108,5 +113,9 @@
         top: 0;
         left: 35px;
         right: 35px;
+    }
+
+    #page-mod-quiz-report-answersheets-attemptsheet #page-navbar {
+        display: none;
     }
 }

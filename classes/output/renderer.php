@@ -192,6 +192,21 @@ class renderer extends plugin_renderer_base {
         }
     }
 
+    /**
+     * Render page navigation
+     *
+     * @return string HTML string
+     */
+    public function render_attempt_navigation(): string {
+        $output = '';
+
+        $output .= html_writer::start_div('clearfix', ['id' => 'page-navbar']);
+        $output .= html_writer::tag('div', $this->output->navbar(), ['class' => 'breadcrumb-nav']);
+        $output .= html_writer::end_div();
+
+        return $output;
+    }
+
 }
 
 /**
