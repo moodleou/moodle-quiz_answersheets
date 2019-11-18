@@ -138,7 +138,10 @@ class renderer extends plugin_renderer_base {
 
         $this->page->requires->js_call_amd('quiz_answersheets/submit_student_responses', 'init', ['lang' => $langstring]);
 
-        $output .= $this->output->single_button($redirect, get_string('cancel'), 'get');
+        $cancelurl = new moodle_url($redirect);
+        // No need to highlight for Cancel action.
+        $cancelurl->remove_params('lastchanged');
+        $output .= $this->output->single_button($cancelurl, get_string('cancel'), 'get');
 
         return $output;
     }
