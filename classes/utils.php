@@ -227,22 +227,14 @@ class utils {
      * Get instruction text for given question type
      *
      * @param string $questiontype Question type
-     * @param string $questionnameprefix Question name
      * @return string instruction text
      */
-    public static function get_question_instruction(string $questiontype, string $questionnameprefix = ''): string {
+    public static function get_question_instruction(string $questiontype): string {
         $instructionexists = get_string_manager()->string_exists($questiontype . '_instruction', 'quiz_answersheets');
         if (!$instructionexists) {
             return '';
         } else {
-            if (empty($questionnameprefix)) {
-                return get_string($questiontype . '_instruction', 'quiz_answersheets');
-            } else {
-                $questioninstruction = new stdClass();
-                $questioninstruction->questionname = $questionnameprefix;
-                $questioninstruction->instruction = get_string($questiontype . '_instruction', 'quiz_answersheets');
-                return get_string('instruction_prefix', 'quiz_answersheets', $questioninstruction);
-            }
+            return get_string($questiontype . '_instruction', 'quiz_answersheets');
         }
     }
 

@@ -65,7 +65,6 @@ $string['create_attempt_modal_button'] = 'Create';
 $string['webservicecannotcreateattempts'] = 'Cannot create attempt';
 
 // Question instruction.
-$string['instruction_prefix'] = '{$a->questionname}: {$a->instruction}';
 $string['coderunner_instruction'] = 'Write your answer in the space provided.';
 $string['ddwtos_instruction'] = 'Write the letter of the corresponding answer (A, B, C, D, ...) in the space provided. 
 After the item is the maximum number of times it can be used. e.g. (1) means that the item can be used once, (2) means twice etc. An asterisk (*) means that the items’ use is unlimited.';
