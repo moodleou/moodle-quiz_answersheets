@@ -62,3 +62,24 @@ Feature: Submit student responses feature of the Answer sheets report
     Then I should see "Are you sure you want to submit?" in the ".modal-body" "css_element"
     When I click on "Save changes" "button"
     Then "Student One" row "State" column of "answersheets" table should contain "Finished"
+
+  @javascript
+  Scenario: Submit responses link available for overdue
+    Given user "student1" has started an attempt at quiz "Quiz 1"
+    And I log in as "teacher"
+    And I am on "Course 1" course homepage
+    And I follow "Quiz 1"
+    And I navigate to "Edit settings" in current page administration
+    And I set the following fields to these values:
+      | id_timeclose_enabled | 1           |
+      | id_timeclose_year    | 2018        |
+      | id_overduehandling   | graceperiod |
+    And I press "Save and display"
+    And I trigger cron
+    And I am on "Course 1" course homepage
+    And I follow "Quiz 1"
+    When I navigate to "Results > Answer sheets" in current page administration
+    Then I should see "Attempts: 1"
+    And I should see "Student One"
+    And "Student One" row "State" column of "answersheets" table should contain "Overdue"
+    And "Student One" row "Submit student responses" column of "answersheets" table should contain "Submit responses..."

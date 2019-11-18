@@ -130,7 +130,7 @@ class report_table extends \quiz_attempts_report_table {
      * @return string The value for this cell of the table.
      */
     public function col_submit_student_responses($row) {
-        if ($row->state == quiz_attempt::IN_PROGRESS) {
+        if ($row->state == quiz_attempt::IN_PROGRESS || $row->state == quiz_attempt::OVERDUE) {
             $redirect = $this->options->get_url();
             $redirect->param('lastchanged', $row->attempt);
             return html_writer::link(new moodle_url('/mod/quiz/report/answersheets/submitresponses.php',
@@ -154,7 +154,7 @@ class report_table extends \quiz_attempts_report_table {
         if (!$row->last_attempt_for_this_user) {
             return '';
         }
-        if ($row->state == quiz_attempt::IN_PROGRESS) {
+        if ($row->state == quiz_attempt::IN_PROGRESS || $row->state == quiz_attempt::OVERDUE) {
             return '';
         }
         if (!isset($this->userdetails[$row->userid])) {
