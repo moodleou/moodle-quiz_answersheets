@@ -27,6 +27,16 @@
     padding-bottom: 10px;
 }
 
+/* Nasty hack to prevent the scrollbar appears in the Print view. */
+#page-mod-quiz-report-answersheets-attemptsheet .que {
+    page-break-inside: auto;
+}
+
+#page-mod-quiz-report-answersheets-attemptsheet .que ~ .que {
+    page-break-inside: avoid;
+}
+/* End nasty hack. */
+
 #page-mod-quiz-report-answersheets-attemptsheet .print-sheet {
     margin-top: 15px;
 }
