@@ -222,6 +222,11 @@ class qtype_override_renderer extends \core_question_renderer {
         return $output;
     }
 
+    protected function status(question_attempt $qa, qbehaviour_renderer $behaviouroutput, question_display_options $options) {
+        // Do not show the question status.
+        return '';
+    }
+
     /**
      * Render question instruction
      *
