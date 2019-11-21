@@ -83,3 +83,11 @@ Feature: Submit student responses feature of the Answer sheets report
     And I should see "Student One"
     And "Student One" row "State" column of "answersheets" table should contain "Overdue"
     And "Student One" row "Submit student responses" column of "answersheets" table should contain "Submit responses..."
+    When I click on "Submit responses..." "link" in the "Student One" "table_row"
+    Then I should see "First question"
+    And "Submit responses on behalf of Student One and finish attempt" "button" should exist
+    And I set the field "False" to "1"
+    When I click on "Submit responses on behalf of Student One and finish attempt" "button"
+    Then I should see "Are you sure you want to submit?" in the ".modal-body" "css_element"
+    When I click on "Save changes" "button"
+    Then "Student One" row "State" column of "answersheets" table should contain "Finished"
