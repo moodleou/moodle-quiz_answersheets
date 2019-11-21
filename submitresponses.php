@@ -40,7 +40,7 @@ require_capability('quiz/answersheets:submitresponses', context_module::instance
 $isattemptfinished = $attemptobj->get_attempt()->state == quiz_attempt::FINISHED;
 
 // If the attempt is already closed, send them to the review sheet page.
-if ($attemptobj->is_finished() || $attemptobj->get_state() == quiz_attempt::OVERDUE) {
+if ($attemptobj->is_finished()) {
     redirect(new moodle_url('/mod/quiz/report/answersheets/attemptsheet.php', ['attempt' => $attemptid]));
 }
 
