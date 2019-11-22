@@ -302,9 +302,10 @@ class utils {
      * Get the attempt sheet header string for printing
      *
      * @param quiz_attempt $attemptobj
+     * @param string $sheettype Sheet type
      * @return string Header string
      */
-    public static function get_attempt_sheet_print_header(quiz_attempt $attemptobj): string {
+    public static function get_attempt_sheet_print_header(quiz_attempt $attemptobj, string $sheettype): string {
         $generatedtime = time();
         $attemptuser = \core_user::get_user($attemptobj->get_userid());
         $context = context_module::instance((int) $attemptobj->get_cmid());
@@ -315,6 +316,7 @@ class utils {
         $headerinfo->studentname = utils::get_user_details($attemptuser, $context);
         // We use custom time format because get_string('strftime...', 'langconfig'); do not have format we need.
         $headerinfo->generatedtime = userdate($generatedtime, get_string('strftime_header', 'quiz_answersheets'));
+        $headerinfo->sheettype = $sheettype;
 
         return get_string('print_header', 'quiz_answersheets', $headerinfo);
     }

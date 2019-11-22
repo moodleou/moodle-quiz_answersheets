@@ -50,12 +50,15 @@ $url = new moodle_url('/mod/quiz/report/answersheets/attemptsheet.php', ['attemp
 if ($rightanswer) {
     $pagetitle = get_string('answer_sheet_title', 'quiz_answersheets', $attemptobj->get_quiz_name());
     $pagenav = get_string('answer_sheet_label', 'quiz_answersheets');
+    $sheettype = get_string('page_type_answer', 'quiz_answersheets');
 } else if ($isattemptfinished) {
     $pagetitle = get_string('review_sheet_title', 'quiz_answersheets', $attemptobj->get_quiz_name());
     $pagenav = get_string('review_sheet_label', 'quiz_answersheets');
+    $sheettype = get_string('page_type_review', 'quiz_answersheets');
 } else {
     $pagetitle = get_string('attempt_sheet_title', 'quiz_answersheets', $attemptobj->get_quiz_name());
     $pagenav = get_string('attempt_sheet_label', 'quiz_answersheets');
+    $sheettype = get_string('page_type_attempt', 'quiz_answersheets');
 }
 
 $isrightanswer = $rightanswer && $attemptobj->get_state() == quiz_attempt::IN_PROGRESS;
@@ -85,7 +88,7 @@ $sumdata = utils::prepare_summary_attempt_information($attemptobj, $url, !$isatt
 echo $renderer->render_attempt_navigation();
 
 // Page content.
-echo $renderer->render_attempt_sheet($sumdata, $attemptobj);
+echo $renderer->render_attempt_sheet($sumdata, $attemptobj, $sheettype);
 // Print button.
 echo $renderer->render_print_button($attemptobj, $isrightanswer);
 

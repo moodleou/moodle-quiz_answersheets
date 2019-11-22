@@ -174,12 +174,13 @@ class renderer extends plugin_renderer_base {
      *
      * @param array $sumdata Contains row data for table
      * @param quiz_attempt $attemptobj Attempt object
+     * @param string $sheettype Sheet type
      * @return string HTML string
      */
-    public function render_attempt_sheet(array $sumdata, quiz_attempt $attemptobj): string {
+    public function render_attempt_sheet(array $sumdata, quiz_attempt $attemptobj, string $sheettype): string {
         $quizrenderer = $this->page->get_renderer('mod_quiz');
         $templatecontext = [
-                'questionattemptheader' => utils::get_attempt_sheet_print_header($attemptobj),
+                'questionattemptheader' => utils::get_attempt_sheet_print_header($attemptobj, $sheettype),
                 'questionattemptsumtable' => $quizrenderer->review_summary_table($sumdata, 0),
                 'questionattemptcontent' => $this->render_question_attempt_content($attemptobj)
         ];
