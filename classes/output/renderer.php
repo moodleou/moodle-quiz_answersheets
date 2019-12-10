@@ -72,14 +72,16 @@ class renderer extends plugin_renderer_base {
             $qa = $attemptobj->get_question_attempt($slot);
             $qtoutput = $qa->get_question()->get_renderer($this->page);
             $behaviouroutput = $this->page->get_renderer(get_class($qa->get_behaviour()));
-            $displayoptions = clone($displayoptions);
-            $qa->get_behaviour()->adjust_display_options($displayoptions);
 
             if ($rightanswer && $attempt->state == quiz_attempt::IN_PROGRESS) {
                 $correctresponse = $qa->get_correct_response();
                 if (!is_null($correctresponse)) {
                     $qa->process_action($correctresponse);
                 }
+            } else {
+                // Only adjust the display option for Attempt sheet and Submit responses.
+                $displayoptions = clone($displayoptions);
+                $qa->get_behaviour()->adjust_display_options($displayoptions);
             }
 
             $output .= $qoutput->question($qa, $behaviouroutput, $qtoutput, $displayoptions, $questionnumber);
