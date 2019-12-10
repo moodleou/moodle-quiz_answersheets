@@ -75,7 +75,7 @@ Feature: Submit student responses feature of the Answer sheets report
       | id_timeclose_year    | 2018        |
       | id_overduehandling   | graceperiod |
     And I press "Save and display"
-    And I trigger cron
+    And I run the scheduled task "mod_quiz\task\update_overdue_attempts"
     And I am on "Course 1" course homepage
     And I follow "Quiz 1"
     When I navigate to "Results > Answer sheets" in current page administration
@@ -90,4 +90,4 @@ Feature: Submit student responses feature of the Answer sheets report
     When I click on "Submit responses on behalf of Student One and finish attempt" "button"
     Then I should see "Are you sure you want to submit?" in the ".modal-body" "css_element"
     When I click on "Save changes" "button"
-    Then "Student One" row "State" column of "answersheets" table should contain "Finished"
+    Then "Student One" row "State" column of "answersheets" table should contain "Never submitted"
