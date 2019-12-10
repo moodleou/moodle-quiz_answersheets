@@ -25,11 +25,15 @@
 }
 
 /* Nasty hack to prevent the scrollbar appears in the Print view. */
-#page-mod-quiz-report-answersheets-attemptsheet .que {
+#page-mod-quiz-report-answersheets-attemptsheet .que .info,
+#page-mod-quiz-report-answersheets-attemptsheet .que .formulation,
+#page-mod-quiz-report-answersheets-attemptsheet .que .feedback {
     page-break-inside: auto;
 }
 
-#page-mod-quiz-report-answersheets-attemptsheet .que ~ .que {
+#page-mod-quiz-report-answersheets-attemptsheet .que .info ~ .que .info,
+#page-mod-quiz-report-answersheets-attemptsheet .que .formulation ~ .que .formulation,
+#page-mod-quiz-report-answersheets-attemptsheet .que .feedback ~ .que .feedback {
     page-break-inside: avoid;
 }
 /* End nasty hack. */
@@ -39,6 +43,18 @@
 #page-mod-quiz-report-answersheets-submitresponses .submit-responses {
     margin-top: 15px;
 }
+
+/* For OU Multiple choice. */
+#page-mod-quiz-report-answersheets-attemptsheet .que.multichoice label {
+    display: inline;
+}
+/* End for OU Multiple choice. */
+
+/* For Select missing word. */
+#page-mod-quiz-report-answersheets-attemptsheet .que.gapselect span.control {
+    white-space: nowrap;
+}
+/* End for Select missing word. */
 
 #page-mod-quiz-report-answersheets-submitresponses .submit-responses {
     float: right;
