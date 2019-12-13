@@ -37,7 +37,9 @@
 }
 /* End nasty hack. */
 
-#page-mod-quiz-report-answersheets-attemptsheet .print-sheet {
+#page-mod-quiz-report-answersheets-attemptsheet .print-sheet,
+#page-mod-quiz-report-answersheets-submitresponses .cancel-submit-responses,
+#page-mod-quiz-report-answersheets-submitresponses .submit-responses {
     margin-top: 15px;
 }
 
