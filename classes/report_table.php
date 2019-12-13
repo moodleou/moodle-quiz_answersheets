@@ -47,6 +47,9 @@ class report_table extends \quiz_attempts_report_table {
     /** @var array User details */
     private $userdetails = [];
 
+    /** @var string Dash value for table cell */
+    const DASH_VALUE = '-';
+
     public function __construct($quiz, $context, $qmsubselect, report_display_options $options,
             \core\dml\sql_join $groupstudentsjoins, \core\dml\sql_join $studentsjoins, $questions, $reporturl) {
         parent::__construct('mod-quiz-report-answersheets-report', $quiz, $context,
@@ -103,7 +106,7 @@ class report_table extends \quiz_attempts_report_table {
                     ['attempt' => $row->attempt]), get_string('review_sheet_label', 'quiz_answersheets'),
                     ['class' => 'reviewlink']);
         } else {
-            return '-';
+            return self::DASH_VALUE;
         }
     }
 
@@ -120,7 +123,7 @@ class report_table extends \quiz_attempts_report_table {
                     ['class' => 'reviewlink']);
         }
 
-        return '-';
+        return self::DASH_VALUE;
     }
 
     /**
@@ -137,7 +140,7 @@ class report_table extends \quiz_attempts_report_table {
                     ['attempt' => $row->attempt, 'redirect' => $redirect]),
                     get_string('submit_student_responses_label', 'quiz_answersheets'), ['class' => 'reviewlink']);
         } else {
-            return '-';
+            return self::DASH_VALUE;
         }
     }
 
@@ -149,13 +152,13 @@ class report_table extends \quiz_attempts_report_table {
      */
     public function col_create_attempt($row): string {
         if ($row->used_all_attempts) {
-            return '';
+            return self::DASH_VALUE;
         }
         if (!$row->last_attempt_for_this_user) {
-            return '';
+            return self::DASH_VALUE;
         }
         if ($row->state == quiz_attempt::IN_PROGRESS || $row->state == quiz_attempt::OVERDUE) {
-            return '';
+            return self::DASH_VALUE;
         }
         if (!isset($this->userdetails[$row->userid])) {
             $userdetails = utils::get_user_details($row, $this->context);
