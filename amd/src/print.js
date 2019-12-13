@@ -31,31 +31,94 @@ define(['jquery', 'core/ajax', 'core/notification'], function($, Ajax, Notificat
         mconfig: null,
 
         /**
+         * CSS Selector.
+         */
+        SELECTOR: {
+            PAGE_HEADER: '.attempt-sheet-header-gecko',
+            PAGE_CONTAINER: '#page'
+        },
+
+        /**
+         * Page header height.
+         */
+        pageHeaderHeight: 0,
+
+        /**
+         * Page container.
+         */
+        pageContainer: null,
+
+        /**
+         * Page Header element
+         */
+        pageHeader: null,
+
+
+        /**
          * Initialise function
          * @param {object} options Options for ajax request
          */
         init: function(options) {
             t.mconfig = options;
-            window.addEventListener('beforeprint', function(e) {
-                e.preventDefault();
-                var promises = Ajax.call([{
-                    methodname: 'quiz_answersheets_create_event',
-                    args: {
-                        attemptid: t.mconfig.attemptid,
-                        userid: t.mconfig.userid,
-                        courseid: t.mconfig.courseid,
-                        cmid: t.mconfig.cmid,
-                        quizid: t.mconfig.quizid,
-                        pagetype: t.mconfig.pagetype
-                    }
-                }]);
-                // Handle promise.
-                promises[0].then(function() {
-                    return true;
-                }).fail(function(err) {
-                    Notification.exception(err);
-                });
+            t.pageHeader = $(t.SELECTOR.PAGE_HEADER);
+            t.pageContainer = $(t.SELECTOR.PAGE_CONTAINER);
+            t.pageHeaderHeight = t.pageHeader.height();
+
+            // Set the correct position for page header.
+            t.pageHeader.css('top', -Math.abs(t.pageHeaderHeight));
+            // Set the space fof page header.
+            t.pageContainer.css('margin-top', t.pageHeaderHeight);
+
+            window.addEventListener('beforeprint', t.handlePrintStart);
+            window.addEventListener('afterprint', t.handlePrintStop);
+        },
+
+        /**
+         * Handle print start event.
+         *
+         * @param {Event} e
+         */
+        handlePrintStart: function(e) {
+            e.preventDefault();
+            t.pageContainer.css('margin-top', 0);
+            if (Y.UA.gecko) {
+                t.pageContainer.css('padding-top', t.pageHeaderHeight + 30);
+                t.pageHeader.css('top', 0);
+            }
+
+            var promises = Ajax.call([{
+                methodname: 'quiz_answersheets_create_event',
+                args: {
+                    attemptid: t.mconfig.attemptid,
+                    userid: t.mconfig.userid,
+                    courseid: t.mconfig.courseid,
+                    cmid: t.mconfig.cmid,
+                    quizid: t.mconfig.quizid,
+                    pagetype: t.mconfig.pagetype
+                }
+            }]);
+            // Handle promise.
+            promises[0].then(function() {
+                return true;
+            }).fail(function(err) {
+                Notification.exception(err);
             });
+        },
+
+        /**
+         * Handle print stop event.
+         *
+         * @param {Event} e
+         * @returns {boolean}
+         */
+        handlePrintStop: function(e) {
+            e.preventDefault();
+            t.pageContainer.css('margin-top', t.pageHeaderHeight);
+            if (Y.UA.gecko) {
+                t.pageContainer.css('padding-top', 0);
+                t.pageHeader.css('top', -Math.abs(t.pageHeaderHeight));
+            }
+            return true;
         }
 
     };

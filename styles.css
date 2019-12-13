@@ -5,12 +5,9 @@
 #page-mod-quiz-report-answersheets-attemptsheet .attempt-sheet-header-gecko {
     display: block;
     position: absolute;
-    top: -50px;
     border-bottom: 1px solid grey;
     left: 15px;
     right: 15px;
-    height: 40px;
-    line-height: 40px;
 }
 
 #page-mod-quiz-report-answersheets-attemptsheet:not(.gecko) table.attempt-sheet-container {
@@ -72,14 +69,8 @@
 
     #page-mod-quiz-report-answersheets-attemptsheet.gecko #page.container-fluid {
         box-decoration-break: clone;
-        margin-top: 0;
-        padding-top: 50px;
     }
     /* End nasty hack for Firefox. */
-
-    #page-mod-quiz-report-answersheets-attemptsheet #page {
-        margin-top: 0;
-    }
 
     #page-mod-quiz-report-answersheets-attemptsheet .print-sheet {
         display: none;
@@ -93,8 +84,6 @@
 
     #page-mod-quiz-report-answersheets-attemptsheet:not(.gecko) .attempt-sheet-header {
         display: block;
-        height: 40px;
-        line-height: 40px;
         margin-bottom: 20px;
         position: relative;
         z-index: 5;
@@ -112,7 +101,6 @@
 
     #page-mod-quiz-report-answersheets-attemptsheet.gecko .attempt-sheet-header-gecko {
         position: fixed;
-        top: 0;
         left: 35px;
         right: 35px;
     }
