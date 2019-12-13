@@ -141,7 +141,7 @@ class renderer extends plugin_renderer_base {
         $cancelurl = new moodle_url($redirect);
         // No need to highlight for Cancel action.
         $cancelurl->remove_params('lastchanged');
-        $output .= $this->output->single_button($cancelurl, get_string('cancel'), 'get');
+        $output .= $this->output->single_button($cancelurl, get_string('cancel'), 'get', ['class' => 'cancel-submit-responses']);
 
         return $output;
     }
