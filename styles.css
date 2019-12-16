@@ -62,12 +62,12 @@
     /* Nasty hack for Firefox. */
     /* Unfortunately Firefox have problem with display: flex from Bootstrap. We need to change to display: block.*/
     #page-mod-quiz-report-answersheets-attemptsheet.gecko #page-wrapper,
-    #page-mod-quiz-report-answersheets-attemptsheet.gecko #page.container-fluid,
+    #page-mod-quiz-report-answersheets-attemptsheet.gecko #page,
     #page-mod-quiz-report-answersheets-attemptsheet.gecko #page-content.row {
         display: block;
     }
 
-    #page-mod-quiz-report-answersheets-attemptsheet.gecko #page.container-fluid {
+    #page-mod-quiz-report-answersheets-attemptsheet.gecko #page {
         box-decoration-break: clone;
     }
     /* End nasty hack for Firefox. */
