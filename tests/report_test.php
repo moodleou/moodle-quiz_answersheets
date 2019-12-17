@@ -63,18 +63,21 @@ class quiz_answersheets_report_testcase extends advanced_testcase {
                 ],
                 [
                         'ddwtos',
-                        'Write the letter of the corresponding answer (A, B, C, D, ...) in the space provided. 
-After the item is the maximum number of times it can be used. e.g. (1) means that the item can be used once, (2) means twice etc. An asterisk (*) means that the items’ use is unlimited.'
+                        'Write the letter of the corresponding answer (A, B, C, D, ...) in the space provided.
+After the item is the maximum number of times it can be used. e.g. (1) means that the item can be used once, ' .
+                        '(2) means twice etc. An asterisk (*) means that the items’ use is unlimited.'
                 ],
                 [
                         'ddmarker',
-                        'Mark the points on the image and write the letter of corresponding answer (A, B, C, D, …) beside them. 
-After the item is the maximum number of times it can be used. e.g. (1) means that the item can be used once, (2) means twice etc. An asterisk (*) means that the items’ use is unlimited.'
+                        'Mark the points on the image and write the letter of corresponding answer (A, B, C, D, …) beside them.
+After the item is the maximum number of times it can be used. e.g. (1) means that the item can be used once, ' .
+                        '(2) means twice etc. An asterisk (*) means that the items’ use is unlimited.'
                 ],
                 [
                         'ddimageortext',
-                        'Mark the points on the image and write the letter of corresponding answer (A, B, C, D, …) beside them. 
-After the item is the maximum number of times it can be used. e.g. (1) means that the item can be used once, (2) means twice etc. An asterisk (*) means that the items’ use is unlimited.'
+                        'Mark the points on the image and write the letter of corresponding answer (A, B, C, D, …) beside them.
+After the item is the maximum number of times it can be used. e.g. (1) means that the item can be used once, ' .
+                        '(2) means twice etc. An asterisk (*) means that the items’ use is unlimited.'
                 ],
                 [
                         'essay',

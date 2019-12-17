@@ -109,7 +109,7 @@ class utils {
         $grade = quiz_rescale_grade($attempt->sumgrades, $quiz, false);
 
         if ($options->marks >= question_display_options::MARK_AND_MAX && quiz_has_grades($quiz)) {
-            if ($attempt->state != quiz_attempt::FINISHED) {
+            if ($attempt->state != quiz_attempt::FINISHED) { // @codingStandardsIgnoreLine
                 // Cannot display grade.
             } else if (is_null($grade)) {
                 $sumdata['grade'] = [
@@ -214,7 +214,7 @@ class utils {
         $lastattempt = end($attempts);
         $state = $lastattempt->state;
         if ($state && $state == quiz_attempt::FINISHED) {
-            // Check max attempts
+            // Check max attempts.
             $rule = new \quizaccess_numattempts($quizobj, time());
             if (!$rule->prevent_new_attempt($numprevattempts, $lastattempt)) {
                 return true;
@@ -313,7 +313,7 @@ class utils {
         $headerinfo = new \stdClass();
         $headerinfo->courseshortname = $attemptobj->get_course()->shortname;
         $headerinfo->quizname = $attemptobj->get_quiz_name();
-        $headerinfo->studentname = utils::get_user_details($attemptuser, $context);
+        $headerinfo->studentname = self::get_user_details($attemptuser, $context);
         // We use custom time format because get_string('strftime...', 'langconfig'); do not have format we need.
         $headerinfo->generatedtime = userdate($generatedtime, get_string('strftime_header', 'quiz_answersheets'));
         $headerinfo->sheettype = $sheettype;

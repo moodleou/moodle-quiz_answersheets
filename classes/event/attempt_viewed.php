@@ -24,6 +24,8 @@
 
 namespace quiz_answersheets\event;
 
+defined('MOODLE_INTERNAL') || die();
+
 /**
  * Attempt viewed event class.
  *

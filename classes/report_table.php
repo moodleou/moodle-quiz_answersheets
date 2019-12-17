@@ -206,7 +206,8 @@ class report_table extends \quiz_attempts_report_table {
     protected function update_sql_after_count($fields, $from, $where, $params) {
         [$fields, $from, $where, $params] = parent::update_sql_after_count($fields, $from, $where, $params);
         $fields .= ", CASE
-                        -- If, for this user, attempts allowed (including overrids) is unlimited, then they have not used all attempts.
+                        -- If, for this user, attempts allowed (including overrids) is unlimited,
+                        -- then they have not used all attempts.
                         WHEN COALESCE(
                                 (SELECT attempts FROM {quiz_overrides} WHERE quiz = quiza.quiz AND userid = u.id),
                                 (SELECT MIN(overrides1.attempts)
@@ -230,7 +231,11 @@ class report_table extends \quiz_attempts_report_table {
                         -- User does not have an attempt yet, so only one row.
                         WHEN quiza.id IS NULL THEN 1
                         -- User woth one or more attempts.
-                        WHEN quiza.attempt = (SELECT MAX(attempt) FROM {quiz_attempts} WHERE quiz = quiza.quiz AND userid = quiza.userid) THEN 1
+                        WHEN quiza.attempt = (
+                                SELECT MAX(attempt)
+                                  FROM {quiz_attempts}
+                                 WHERE quiz = quiza.quiz AND userid = quiza.userid
+                        ) THEN 1
                         ELSE 0
                     END AS last_attempt_for_this_user
                     ";

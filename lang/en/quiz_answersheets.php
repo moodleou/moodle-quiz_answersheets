@@ -68,11 +68,11 @@ $string['webservicecannotcreateattempts'] = 'Cannot create attempt';
 
 // Question instruction.
 $string['coderunner_instruction'] = 'Write your answer in the space provided.';
-$string['ddwtos_instruction'] = 'Write the letter of the corresponding answer (A, B, C, D, ...) in the space provided. 
+$string['ddwtos_instruction'] = 'Write the letter of the corresponding answer (A, B, C, D, ...) in the space provided.
 After the item is the maximum number of times it can be used. e.g. (1) means that the item can be used once, (2) means twice etc. An asterisk (*) means that the items’ use is unlimited.';
-$string['ddmarker_instruction'] = 'Mark the points on the image and write the letter of corresponding answer (A, B, C, D, …) beside them. 
+$string['ddmarker_instruction'] = 'Mark the points on the image and write the letter of corresponding answer (A, B, C, D, …) beside them.
 After the item is the maximum number of times it can be used. e.g. (1) means that the item can be used once, (2) means twice etc. An asterisk (*) means that the items’ use is unlimited.';
-$string['ddimageortext_instruction'] = 'Mark the points on the image and write the letter of corresponding answer (A, B, C, D, …) beside them. 
+$string['ddimageortext_instruction'] = 'Mark the points on the image and write the letter of corresponding answer (A, B, C, D, …) beside them.
 After the item is the maximum number of times it can be used. e.g. (1) means that the item can be used once, (2) means twice etc. An asterisk (*) means that the items’ use is unlimited.';
 $string['essay_instruction'] = 'Write your answer in the space provided.';
 $string['match_instruction'] = 'Write the letter of the corresponding answer (A, B, C, D, ...) in the space provided.';

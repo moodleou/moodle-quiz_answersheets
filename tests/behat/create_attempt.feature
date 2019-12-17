@@ -1,5 +1,5 @@
 @mod @mod_quiz @quiz @quiz_answersheets @quiz_answersheets_create_attempt
-Feature: Basic use of the Answer sheets report
+Feature: Creating attempts using the Answer sheets report
   In order to create new user's attempt for Quiz
   As a teacher
   I need to access Answer sheets report and see Create Attempt column

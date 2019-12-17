@@ -223,8 +223,8 @@ class qtype_override_renderer extends \core_question_renderer {
     protected function formulation(question_attempt $qa, qbehaviour_renderer $behaviouroutput, qtype_renderer $qtoutput,
             question_display_options $options) {
         global $attemptobj;
-        // We need to use global trick here because in mod/quiz/report/answersheets/submitresponses.php:23 already loaded the attemptobj
-        // so we no need to do the extra Database query.
+        // We need to use global trick here because in mod/quiz/report/answersheets/submitresponses.php:23
+        // already loaded the attemptobj so we no need to do the extra Database query.
         $output = '';
 
         $rightanswer = $this->page->url->get_param('rightanswer');

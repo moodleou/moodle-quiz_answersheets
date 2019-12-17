@@ -91,7 +91,7 @@ class quiz_answersheets_external extends external_api {
 
         $attemptnumber = count($attempts);
         $lastattempt = array_pop($attempts);
-        /** @todo MDL-66633 When we move to Moodle 3.8, use quiz_prepare_and_start_new_attempt in mod/quiz/locallib.php. */
+        // TODO: MDL-66633 When we move to Moodle 3.8, use quiz_prepare_and_start_new_attempt in mod/quiz/locallib.php.
         $attempt = static::quiz_prepare_and_start_new_attempt($quizobj, $attemptnumber + 1, $lastattempt, false, [], [],
                 $params['userid']);
         $response = ['success' => true, 'message' => $message, 'id' => $attempt->id];

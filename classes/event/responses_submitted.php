@@ -24,6 +24,8 @@
 
 namespace quiz_answersheets\event;
 
+defined('MOODLE_INTERNAL') || die();
+
 /**
  * Responses submitted event class.
  *
@@ -38,12 +40,13 @@ class responses_submitted extends base_event {
     }
 
     public function get_description() {
-        return 'The user with id ' . $this->userid . ' has submitted the responses for the attempt sheet with id ' . $this->other['attemptid'] .
-                ' on behalf of user with id ' . $this->relateduserid . ' for the quiz with course module id ' .
-                $this->contextinstanceid . '.';
+        return 'The user with id ' . $this->userid . ' has submitted the responses for the attempt sheet with id ' .
+                $this->other['attemptid'] . ' on behalf of user with id ' . $this->relateduserid .
+                ' for the quiz with course module id ' . $this->contextinstanceid . '.';
     }
 
     public function get_url() {
-        return new \moodle_url('/mod/quiz/report/answersheets/attemptsheet.php', ['attempt' => $this->other['attemptid']]);
+        return new \moodle_url('/mod/quiz/report/answersheets/attemptsheet.php',
+                ['attempt' => $this->other['attemptid']]);
     }
 }
