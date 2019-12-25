@@ -104,6 +104,9 @@
 
     #page-mod-quiz-report-answersheets-attemptsheet:not(.gecko) .attempt-sheet-header {
         display: block;
+        /* stylelint-disable */
+        background-color: white !important;
+        /* stylelint-enable */
         margin-bottom: 20px;
         position: relative;
         z-index: 5;
