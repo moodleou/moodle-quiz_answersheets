@@ -29,6 +29,6 @@ $plugin->requires = 2018112800;
 $plugin->cron = 0;
 $plugin->component = 'quiz_answersheets';
 $plugin->maturity  = MATURITY_STABLE;
-$plugin->release   = 'v1.0 for Moodle 3.4+';
+$plugin->release   = 'v1.1 for Moodle 3.4+';
 
 $plugin->outestssufficient = true;

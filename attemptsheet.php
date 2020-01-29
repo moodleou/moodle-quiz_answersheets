@@ -41,22 +41,23 @@ if ($rightanswer) {
     require_capability('quiz/answersheets:viewrightanswers', context_module::instance($attemptobj->get_cmid()));
 }
 
-$isattemptfinished = $attemptobj->get_attempt()->state == quiz_attempt::FINISHED;
-$pagetitle = $isattemptfinished ? get_string('review_sheet_title', 'quiz_answersheets', $attemptobj->get_quiz_name()) :
-        get_string('attempt_sheet_title', 'quiz_answersheets', $attemptobj->get_quiz_name());
-
 $url = new moodle_url('/mod/quiz/report/answersheets/attemptsheet.php', ['attempt' => $attemptid, 'rightanswer' => $rightanswer]);
 
+// Work out the page title.
+$isattemptfinished = $attemptobj->get_attempt()->state == quiz_attempt::FINISHED;
+$a = new stdClass();
+$a->courseshortname = $attemptobj->get_course()->shortname;
+$a->quizname = $attemptobj->get_quiz_name();
 if ($rightanswer) {
-    $pagetitle = get_string('answer_sheet_title', 'quiz_answersheets', $attemptobj->get_quiz_name());
+    $pagetitle = get_string('answer_sheet_title', 'quiz_answersheets', $a);
     $pagenav = get_string('answer_sheet_label', 'quiz_answersheets');
     $sheettype = get_string('page_type_answer', 'quiz_answersheets');
 } else if ($isattemptfinished) {
-    $pagetitle = get_string('review_sheet_title', 'quiz_answersheets', $attemptobj->get_quiz_name());
+    $pagetitle = get_string('review_sheet_title', 'quiz_answersheets', $a);
     $pagenav = get_string('review_sheet_label', 'quiz_answersheets');
     $sheettype = get_string('page_type_review', 'quiz_answersheets');
 } else {
-    $pagetitle = get_string('attempt_sheet_title', 'quiz_answersheets', $attemptobj->get_quiz_name());
+    $pagetitle = get_string('attempt_sheet_title', 'quiz_answersheets', $a);
     $pagenav = get_string('attempt_sheet_label', 'quiz_answersheets');
     $sheettype = get_string('page_type_attempt', 'quiz_answersheets');
 }
