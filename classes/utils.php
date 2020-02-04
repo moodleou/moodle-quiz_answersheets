@@ -52,6 +52,8 @@ class utils {
     const RIGHT_ANSWER_SHEET_PRINTED = 'right_answer_printed';
     const RIGHT_ANSWER_SHEET_VIEWED = 'right_answer_viewed';
     const RESPONSES_SUBMITTED = 'responses_submitted';
+    const EXAMPLE_TUTOR = 'example tutor';
+    const EXAMPLE_STUDENT = 'example student';
 
     /**
      * Calculate summary information of a particular quiz attempt.
@@ -73,13 +75,15 @@ class utils {
 
         if (!$attemptobj->get_quiz()->showuserpicture && $attemptobj->get_userid() != $USER->id) {
             $student = $DB->get_record('user', ['id' => $attemptobj->get_userid()]);
-            $userpicture = new user_picture($student);
-            $userpicture->courseid = $attemptobj->get_courseid();
-            $sumdata['user'] = [
-                    'title' => $userpicture,
-                    'content' => new action_link(new moodle_url('/user/view.php',
-                            ['id' => $student->id, 'course' => $attemptobj->get_courseid()]), fullname($student, true))
-            ];
+            if (!self::is_example_user($student)) {
+                $userpicture = new user_picture($student);
+                $userpicture->courseid = $attemptobj->get_courseid();
+                $sumdata['user'] = [
+                        'title' => $userpicture,
+                        'content' => new action_link(new moodle_url('/user/view.php',
+                                ['id' => $student->id, 'course' => $attemptobj->get_courseid()]), fullname($student, true))
+                ];
+            }
         }
 
         if ($minimal) {
@@ -318,6 +322,10 @@ class utils {
         $headerinfo->generatedtime = userdate($generatedtime, get_string('strftime_header', 'quiz_answersheets'));
         $headerinfo->sheettype = $sheettype;
 
+        if (self::is_example_user($attemptuser)) {
+            return get_string('print_header_minimised', 'quiz_answersheets', $headerinfo);
+        }
+
         return get_string('print_header', 'quiz_answersheets', $headerinfo);
     }
 
@@ -337,6 +345,17 @@ class utils {
                 new moodle_url('/mod/quiz/report.php', ['id' => $PAGE->cm->id, 'mode' => 'answersheets']));
 
         $PAGE->navbar->add($pagetitle);
+    }
+
+    /**
+     * Check if given user is an example user.
+     *
+     * @param stdClass $user User
+     * @return bool
+     */
+    public static function is_example_user(stdClass $user): bool {
+        return class_exists(('block_viewasexample\behaviour') &&
+                block_viewasexample\behaviour::is_viewas_student($user));
     }
 
 }

@@ -54,6 +54,7 @@ $string['page_type_answer'] = 'Answer sheet';
 $string['print'] = 'Print';
 $string['privacy:metadata'] = 'The Quiz Answer sheets plugin does not store any personal data itself. It provides an additional interface for viewing and managing the data owned by the quiz activity.';
 $string['print_header'] = '{$a->courseshortname} {$a->quizname} for {$a->studentname} generated {$a->generatedtime} - {$a->sheettype}';
+$string['print_header_minimised'] = '{$a->courseshortname} {$a->quizname} generated {$a->generatedtime} - {$a->sheettype}';
 $string['submit_student_responses_label'] = 'Submit responses...';
 $string['submit_student_responses_on_behalf'] = 'Submit responses on behalf of {$a} and finish attempt';
 $string['submit_student_responses_dialog_content'] = 'Are you sure you want to submit?';
