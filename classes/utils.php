@@ -76,6 +76,7 @@ class utils {
         if (!$attemptobj->get_quiz()->showuserpicture && $attemptobj->get_userid() != $USER->id) {
             $student = $DB->get_record('user', ['id' => $attemptobj->get_userid()]);
             if (!self::is_example_user($student)) {
+                print_object('Is Ex 1');
                 $userpicture = new user_picture($student);
                 $userpicture->courseid = $attemptobj->get_courseid();
                 $sumdata['user'] = [
@@ -354,8 +355,8 @@ class utils {
      * @return bool
      */
     public static function is_example_user(stdClass $user): bool {
-        return class_exists(('block_viewasexample\behaviour') &&
-                block_viewasexample\behaviour::is_viewas_student($user));
+        return class_exists('block_viewasexample\behaviour') &&
+                \block_viewasexample\behaviour::is_viewas_user($user);
     }
 
 }
