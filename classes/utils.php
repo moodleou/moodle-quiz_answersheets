@@ -28,7 +28,10 @@ use action_link;
 use context;
 use context_module;
 use html_writer;
+use moodle_page;
 use moodle_url;
+use qtype_renderer;
+use question_attempt;
 use question_display_options;
 use quiz_attempt;
 use ReflectionClass;
@@ -356,6 +359,28 @@ class utils {
     public static function is_example_user(stdClass $user): bool {
         return class_exists('block_viewasexample\behaviour') &&
                 \block_viewasexample\behaviour::is_viewas_user($user);
+    }
+
+    /**
+     * Get the question renderer.
+     *
+     * @param moodle_page $page the page we are outputting to.
+     * @param question_attempt $qa the question attempt object
+     * @return qtype_renderer the renderer to use for outputting this question.
+     */
+    public static function get_question_renderer(moodle_page $page, question_attempt $qa) {
+        global $CFG;
+
+        $qtypename = $qa->get_question()->get_type_name();
+        $requirefile = $CFG->dirroot . '/mod/quiz/report/answersheets/classes/output/' . $qtypename . '/renderer.php';
+        if (file_exists($requirefile)) {
+            // Override supported question found.
+            require_once($requirefile);
+            $classpath = sprintf('quiz_answersheets\output\\' . $qtypename . '\%s', 'qtype_' . $qtypename . '_override_renderer');
+            return new $classpath($page, null);
+        }
+
+        return $qa->get_question()->get_renderer($page);
     }
 
 }

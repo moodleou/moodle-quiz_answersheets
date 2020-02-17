@@ -63,14 +63,14 @@ class renderer extends plugin_renderer_base {
         $displayoptions->context = context_module::instance($attemptobj->get_cmid());
         $displayoptions->history = question_display_options::HIDDEN;
         $rightanswer = $this->page->url->get_param('rightanswer');
-        $qoutput = $this->page->get_renderer('quiz_answersheets', 'qtype_override');
+        $qoutput = $this->page->get_renderer('quiz_answersheets', 'core_question_override');
 
         foreach ($slots as $slot) {
             $originalslot = $attemptobj->get_original_slot($slot);
             $questionnumber = $attemptobj->get_question_number($originalslot);
 
             $qa = $attemptobj->get_question_attempt($slot);
-            $qtoutput = $qa->get_question()->get_renderer($this->page);
+            $qtoutput = utils::get_question_renderer($this->page, $qa);
             $behaviouroutput = $this->page->get_renderer(get_class($qa->get_behaviour()));
 
             if ($rightanswer && $attempt->state == quiz_attempt::IN_PROGRESS) {
@@ -218,7 +218,7 @@ class renderer extends plugin_renderer_base {
  * @copyright  2019 The Open University
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class qtype_override_renderer extends \core_question_renderer {
+class core_question_override_renderer extends \core_question_renderer {
 
     protected function formulation(question_attempt $qa, qbehaviour_renderer $behaviouroutput, qtype_renderer $qtoutput,
             question_display_options $options) {

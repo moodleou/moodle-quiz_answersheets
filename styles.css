@@ -60,6 +60,13 @@
 }
 /* End for Select missing word. */
 
+/* For Combined question that contain Pattern Match. */
+#page-mod-quiz-report-answersheets-attemptsheet .que.combined .combined-pmatch-input > a,
+#page-mod-quiz-report-answersheets-submitresponses .que.combined .combined-pmatch-input > a {
+    display: none;
+}
+/* End for Combined question that contain Pattern Match*/
+
 #page-mod-quiz-report-answersheets-submitresponses .submit-responses {
     float: right;
 }
