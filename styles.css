@@ -24,20 +24,6 @@
     padding-bottom: 10px;
 }
 
-/* Nasty hack to prevent the scrollbar appears in the Print view. */
-#page-mod-quiz-report-answersheets-attemptsheet .que .info,
-#page-mod-quiz-report-answersheets-attemptsheet .que .formulation,
-#page-mod-quiz-report-answersheets-attemptsheet .que .feedback {
-    page-break-inside: auto;
-}
-
-#page-mod-quiz-report-answersheets-attemptsheet .que .info ~ .que .info,
-#page-mod-quiz-report-answersheets-attemptsheet .que .formulation ~ .que .formulation,
-#page-mod-quiz-report-answersheets-attemptsheet .que .feedback ~ .que .feedback {
-    page-break-inside: avoid;
-}
-/* End nasty hack. */
-
 #page-mod-quiz-report-answersheets-submitresponses .cancel-submit-responses {
     float: left;
 }
@@ -86,6 +72,12 @@
 }
 
 @media print {
+    /* Set the page to A4 size to prevent border lost. */
+    body:not(.gecko) {
+        height: 297mm;
+        width: 210mm;
+    }
+
     /* Nasty hack for Firefox. */
     /* Unfortunately Firefox have problem with display: flex from Bootstrap. We need to change to display: block.*/
     #page-mod-quiz-report-answersheets-attemptsheet.gecko #page-wrapper,
@@ -138,4 +130,20 @@
     #page-mod-quiz-report-answersheets-attemptsheet #page-navbar {
         display: none;
     }
+
+    /* Nasty hack to prevent the scrollbar appears in the Print view. */
+    #page-mod-quiz-report-answersheets-attemptsheet .que,
+    #page-mod-quiz-report-answersheets-attemptsheet .que .formulation,
+    #page-mod-quiz-report-answersheets-attemptsheet .que .formulation .qtext,
+    #page-mod-quiz-report-answersheets-attemptsheet .que .formulation .ablock,
+    #page-mod-quiz-report-answersheets-attemptsheet .que .formulation .qtext p,
+    #page-mod-quiz-report-answersheets-attemptsheet .que .info,
+    #page-mod-quiz-report-answersheets-attemptsheet .que .feedback {
+        margin-top: 0;
+        margin-bottom: 0;
+        padding-top: 0;
+        padding-bottom: 0;
+    }
+    /* End nasty hack. */
+
 }
