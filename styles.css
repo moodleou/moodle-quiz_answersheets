@@ -106,7 +106,6 @@
         /* stylelint-disable */
         background-color: white !important;
         /* stylelint-enable */
-        margin-bottom: 20px;
         position: relative;
         z-index: 5;
     }
@@ -145,5 +144,39 @@
         padding-bottom: 0;
     }
     /* End nasty hack. */
+
+    /* Extra space to replace the removed margin and padding. */
+    #page-mod-quiz-report-answersheets-attemptsheet .que:after,
+    #page-mod-quiz-report-answersheets-attemptsheet .que .info:before {
+        display: block;
+        content: '\A';
+        white-space: pre-wrap;
+    }
+
+    /* For Ordering. */
+    /* We need to remove all the margin, padding and border to prevent page-break issue. */
+    /* Add extra newline '\A' to replace the removed margin and padding. */
+    #page-mod-quiz-report-answersheets-attemptsheet .que.ordering .sortablelist.active {
+        border: none;
+    }
+
+    #page-mod-quiz-report-answersheets-attemptsheet .que.ordering ul.sortablelist li {
+        margin-top: 0;
+        margin-bottom: 0;
+        padding-top: 0;
+        padding-bottom: 0;
+        page-break-inside: avoid;
+    }
+
+    #page-mod-quiz-report-answersheets-attemptsheet .que.ordering ul.sortablelist.horizontal:before {
+        display: block;
+        content: '\A';
+        white-space: pre-wrap;
+    }
+
+    #page-mod-quiz-report-answersheets-attemptsheet .que.ordering ul.sortablelist .orderingmargin {
+        height: 5px;
+    }
+    /* End for Ordering. */
 
 }

@@ -35,7 +35,16 @@ define(['jquery', 'core/ajax', 'core/notification'], function($, Ajax, Notificat
          */
         SELECTOR: {
             PAGE_HEADER: '.attempt-sheet-header-gecko',
-            PAGE_CONTAINER: '#page'
+            PAGE_CONTAINER: '#page',
+            QTYPE_ORDERING_VERTICAL_SORTABLE_LIST: '.que.ordering ul.sortablelist.vertical li',
+            QTYPE_ORDERING_MARGIN: '.orderingmargin'
+        },
+
+        /**
+         * Template.
+         */
+        TEMPLATE: {
+            QTYPE_ORDERING_MARGIN: '<div class="orderingmargin"></div>'
         },
 
         /**
@@ -86,6 +95,8 @@ define(['jquery', 'core/ajax', 'core/notification'], function($, Ajax, Notificat
                 t.pageHeader.css('top', 0);
             }
 
+            t.handlePrintForOrdering(true);
+
             var promises = Ajax.call([{
                 methodname: 'quiz_answersheets_create_event',
                 args: {
@@ -118,7 +129,29 @@ define(['jquery', 'core/ajax', 'core/notification'], function($, Ajax, Notificat
                 t.pageContainer.css('padding-top', 0);
                 t.pageHeader.css('top', -Math.abs(t.pageHeaderHeight));
             }
+            t.handlePrintForOrdering(false);
             return true;
+        },
+
+        /**
+         * Handle print for Ordering question type.
+         *
+         * @param {boolean} isPrinting
+         */
+        handlePrintForOrdering: function(isPrinting) {
+            var sortablesVertical = $(t.SELECTOR.QTYPE_ORDERING_VERTICAL_SORTABLE_LIST);
+            if (sortablesVertical.length) {
+                sortablesVertical.each(function(i, nodeSortableVertical) {
+                    if (isPrinting === true) {
+                        // We already removed all the margin and padding in the CSS. So we need to add extra spacing here.
+                        $(nodeSortableVertical).before(t.TEMPLATE.QTYPE_ORDERING_MARGIN);
+                        $(nodeSortableVertical).after(t.TEMPLATE.QTYPE_ORDERING_MARGIN);
+                    } else {
+                        // Remove all the extra spacing.
+                        $(t.SELECTOR.QTYPE_ORDERING_MARGIN).remove();
+                    }
+                });
+            }
         }
 
     };
