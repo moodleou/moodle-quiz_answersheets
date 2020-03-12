@@ -133,10 +133,17 @@
     /* Nasty hack to prevent the scrollbar appears in the Print view. */
     #page-mod-quiz-report-answersheets-attemptsheet .que,
     #page-mod-quiz-report-answersheets-attemptsheet .que .formulation,
+    #page-mod-quiz-report-answersheets-attemptsheet .que .formulation .question-instruction,
     #page-mod-quiz-report-answersheets-attemptsheet .que .formulation .qtext,
     #page-mod-quiz-report-answersheets-attemptsheet .que .formulation .ablock,
     #page-mod-quiz-report-answersheets-attemptsheet .que .formulation .qtext p,
     #page-mod-quiz-report-answersheets-attemptsheet .que .info,
+    #page-mod-quiz-report-answersheets-attemptsheet .que .feedback,
+    #page-mod-quiz-report-answersheets-attemptsheet .que .feedback p,
+    #page-mod-quiz-report-answersheets-attemptsheet .que .specificfeedback,
+    #page-mod-quiz-report-answersheets-attemptsheet .que .generalfeedback,
+    #page-mod-quiz-report-answersheets-attemptsheet .que .rightanswer,
+    #page-mod-quiz-report-answersheets-attemptsheet .que .im-feedback,
     #page-mod-quiz-report-answersheets-attemptsheet .que .feedback {
         margin-top: 0;
         margin-bottom: 0;
