@@ -46,6 +46,7 @@ $string['event_attempt_printed'] = 'Quiz attempt sheet printed';
 $string['event_right_answer_viewed'] = 'Quiz right answer sheet viewed';
 $string['event_right_answer_printed'] = 'Quiz right answer sheet printed';
 $string['event_responses_submitted'] = 'Quiz responses submitted for user';
+$string['interactive_content_warning'] = 'Interactive content is not available in this format.';
 $string['review_sheet_label'] = 'Review sheet';
 $string['review_sheet_title'] = '{$a->courseshortname} - {$a->quizname} - Review sheet';
 $string['page_type_attempt'] = 'Attempt sheet';

@@ -53,6 +53,14 @@
 }
 /* End for Combined question that contain Pattern Match*/
 
+/* For Record audio. */
+#page-mod-quiz-report-answersheets-attemptsheet .que.recordrtc .interactive-content-warning {
+    display: none;
+    border: 1px #000 solid;
+    padding: 10px;
+}
+/* End for Record audio. */
+
 #page-mod-quiz-report-answersheets-submitresponses .submit-responses {
     float: right;
 }
@@ -154,10 +162,12 @@
 
     /* Extra space to replace the removed margin and padding. */
     #page-mod-quiz-report-answersheets-attemptsheet .que:after,
-    #page-mod-quiz-report-answersheets-attemptsheet .que .info:before {
+    #page-mod-quiz-report-answersheets-attemptsheet .que .info:before,
+    #page-mod-quiz-report-answersheets-attemptsheet .que .formulation:after {
         display: block;
         content: '\A';
         white-space: pre-wrap;
+        line-height: inherit;
     }
 
     /* For Ordering. */
@@ -185,5 +195,17 @@
         height: 5px;
     }
     /* End for Ordering. */
+
+    /* For Record audio. */
+    #page-mod-quiz-report-answersheets-attemptsheet .que.recordrtc .interactive-content-warning {
+        display: block;
+    }
+
+    #page-mod-quiz-report-answersheets-attemptsheet .que.recordrtc .no-recording-warning,
+    #page-mod-quiz-report-answersheets-attemptsheet .que.recordrtc .omp-wrapper,
+    #page-mod-quiz-report-answersheets-attemptsheet .que.recordrtc .interactive-media-player {
+        display: none;
+    }
+    /* End for Record audio. */
 
 }
