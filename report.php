@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * This file defines the quiz answer sheets report class.
+ * This file defines the export quiz attempts class.
  *
  * @package   quiz_answersheets
  * @copyright 2019 The Open University
@@ -30,7 +30,7 @@ defined('MOODLE_INTERNAL') || die();
 require_once($CFG->dirroot . '/mod/quiz/report/attemptsreport.php');
 
 /**
- * This file defines the quiz answer sheets report class.
+ * This file defines the export quiz attempts report class.
  *
  * @package   quiz_answersheets
  * @copyright 2019 The Open University

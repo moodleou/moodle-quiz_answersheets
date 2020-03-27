@@ -40,7 +40,7 @@ Feature: Creating attempts using the Answer sheets report
     Given I log in as "teacher"
     And I am on "Course 1" course homepage
     And I follow "Quiz 1"
-    When I navigate to "Results > Answer sheets" in current page administration
+    When I navigate to "Results > Export attempts" in current page administration
     Then I set the field "Attempts from" to "enrolled users who have, or have not, attempted the quiz"
     And I click on "Show report" "button"
     Then "Create Attempt" "button" should exist in the "Student One" "table_row"
@@ -52,7 +52,7 @@ Feature: Creating attempts using the Answer sheets report
     When I log in as "teacher"
     And I am on "Course 1" course homepage
     And I follow "Quiz 1"
-    When I navigate to "Results > Answer sheets" in current page administration
+    When I navigate to "Results > Export attempts" in current page administration
     Then I set the field "Attempts from" to "enrolled users who have, or have not, attempted the quiz"
     And I click on "Show report" "button"
     Then "Create Attempt" "button" should exist in the "Student Two" "table_row"
@@ -63,7 +63,7 @@ Feature: Creating attempts using the Answer sheets report
     When I log in as "teacher"
     Then I am on "Course 1" course homepage
     And I follow "Quiz 1"
-    When I navigate to "Results > Answer sheets" in current page administration
+    When I navigate to "Results > Export attempts" in current page administration
     Then I set the field "Attempts from" to "enrolled users who have, or have not, attempted the quiz"
     And I click on "Show report" "button"
     Then "Create Attempt" "button" should not exist in the "Student Three" "table_row"
@@ -73,7 +73,7 @@ Feature: Creating attempts using the Answer sheets report
     Given I log in as "teacher"
     And I am on "Course 1" course homepage
     And I follow "Quiz 1"
-    When I navigate to "Results > Answer sheets" in current page administration
+    When I navigate to "Results > Export attempts" in current page administration
     Then I set the field "Attempts from" to "enrolled users who have, or have not, attempted the quiz"
     And I click on "Show report" "button"
     And I click on "Create Attempt" "button" in the "Student One" "table_row"
@@ -87,7 +87,7 @@ Feature: Creating attempts using the Answer sheets report
     Given I log in as "teacher"
     And I am on "Course 1" course homepage
     And I follow "Quiz 1"
-    When I navigate to "Results > Answer sheets" in current page administration
+    When I navigate to "Results > Export attempts" in current page administration
     Then I set the field "Attempts from" to "enrolled users who have, or have not, attempted the quiz"
     And I click on "Show report" "button"
     And I click on "Create Attempt" "button" in the "Student One" "table_row"

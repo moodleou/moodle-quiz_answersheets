@@ -34,7 +34,7 @@ Feature: Submit student responses feature of the Answer sheets report
     Given I log in as "teacher"
     And I am on "Course 1" course homepage
     And I follow "Quiz 1"
-    And I navigate to "Results > Answer sheets" in current page administration
+    And I navigate to "Results > Export attempts" in current page administration
     And I set the field "Attempts from" to "enrolled users who have attempted the quiz"
     When I press "Show report"
     Then I should see "Attempts: 0"
@@ -50,7 +50,7 @@ Feature: Submit student responses feature of the Answer sheets report
     And I log in as "teacher"
     And I am on "Course 1" course homepage
     And I follow "Quiz 1"
-    When I navigate to "Results > Answer sheets" in current page administration
+    When I navigate to "Results > Export attempts" in current page administration
     Then I should see "Attempts: 1"
     And I should see "Student One"
     And "Student One" row "Submit student responses" column of "answersheets" table should contain "Submit responses..."
@@ -78,7 +78,7 @@ Feature: Submit student responses feature of the Answer sheets report
     And I run the scheduled task "mod_quiz\task\update_overdue_attempts"
     And I am on "Course 1" course homepage
     And I follow "Quiz 1"
-    When I navigate to "Results > Answer sheets" in current page administration
+    When I navigate to "Results > Export attempts" in current page administration
     Then I should see "Attempts: 1"
     And I should see "Student One"
     And "Student One" row "State" column of "answersheets" table should contain "Overdue"

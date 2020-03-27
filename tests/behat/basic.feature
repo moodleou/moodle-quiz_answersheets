@@ -36,7 +36,7 @@ Feature: Basic use of the Answer sheets report
     Given I log in as "teacher"
     And I am on "Course 1" course homepage
     And I follow "Quiz 1"
-    And I navigate to "Results > Answer sheets" in current page administration
+    And I navigate to "Results > Export attempts" in current page administration
     And I set the field "Attempts from" to "enrolled users who have attempted the quiz"
     Then I press "Show report"
     Then I should see "Attempts: 0"
@@ -51,7 +51,7 @@ Feature: Basic use of the Answer sheets report
     And I log in as "teacher"
     And I am on "Course 1" course homepage
     And I follow "Quiz 1"
-    And I navigate to "Results > Answer sheets" in current page administration
+    And I navigate to "Results > Export attempts" in current page administration
     And I set the field "Attempts from" to "enrolled users who have attempted the quiz"
     When I press "Show report"
     Then I should see "Attempts: 1"
@@ -66,7 +66,7 @@ Feature: Basic use of the Answer sheets report
     Given I log in as "teacher"
     And I am on "Course 1" course homepage
     And I follow "Quiz 1"
-    When I navigate to "Results > Answer sheets" in current page administration
+    When I navigate to "Results > Export attempts" in current page administration
     Then ".instruction" "css_element" should not exist
     And the following config values are set as admin:
       | config              | value                    | plugin            |

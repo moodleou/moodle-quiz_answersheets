@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * This file defines the quiz answer sheets report administration settings.
+ * This file defines the export quiz attempts report administration settings.
  *
  * @package   quiz_answersheets
  * @copyright 2019 The Open University

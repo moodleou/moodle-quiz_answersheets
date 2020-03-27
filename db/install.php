@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Post-install script for the quiz answer sheets report.
+ * Post-install script for the export quiz attempts report.
  *
  * @package   quiz_answersheets
  * @copyright 2019 The Open University

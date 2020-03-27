@@ -1,4 +1,4 @@
-# Answer sheets quiz report
+# Export quiz attempts report
 
 This 'report' is actually a tool like the standard Response quiz report, 
 but which lets Staff to generate a paper version of quizzes and create attempts for Students.

@@ -22,13 +22,13 @@
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-$string['pluginname'] = 'Answer sheets';
-$string['answersheets'] = 'Answer sheets';
-$string['answersheetsfilename'] = 'Answer_sheets_report';
-$string['answersheetsreport'] = 'Answer sheets report';
+$string['pluginname'] = 'Export quiz attempts';
+$string['answersheets'] = 'Export attempts';
+$string['answersheetsfilename'] = 'Exportable_quiz_attempts';
+$string['answersheetsreport'] = 'Export quiz attempts';
 $string['admin_instruction_message'] = 'Instruction message';
 $string['admin_instruction_message_des'] = 'If set, this text will be shown at the top of the report. You can use this, for example, to link to any institutional policies about printing summative quizzes.';
-$string['answersheets:componentname'] = 'Answer sheets';
+$string['answersheets:componentname'] = 'Export quiz attempts';
 $string['answersheets:createattempt'] = 'Create an attempt for another user';
 $string['answersheets:submitresponses'] = 'Submit student responses';
 $string['answersheets:view'] = 'View attempt sheet';
@@ -40,19 +40,19 @@ $string['attempt_sheet_title'] = '{$a->courseshortname} - {$a->quizname} - Attem
 $string['column_answer_sheet'] = 'Answer sheets';
 $string['column_attempt_sheet'] = 'Attempt sheets';
 $string['column_submit_student_responses'] = 'Submit student responses';
-$string['event_attempt_created'] = 'Quiz Answer sheets attempt created';
-$string['event_attempt_viewed'] = 'Quiz Answer sheets attempt viewed';
-$string['event_attempt_printed'] = 'Quiz Answer sheets attempt printed';
-$string['event_right_answer_viewed'] = 'Quiz Answer sheets right answer viewed';
-$string['event_right_answer_printed'] = 'Quiz Answer sheets right answer printed';
-$string['event_responses_submitted'] = 'Quiz Answer sheets responses submitted';
+$string['event_attempt_created'] = 'Quiz attempt created for user';
+$string['event_attempt_viewed'] = 'Quiz attempt sheet viewed';
+$string['event_attempt_printed'] = 'Quiz attempt sheet printed';
+$string['event_right_answer_viewed'] = 'Quiz right answer sheet viewed';
+$string['event_right_answer_printed'] = 'Quiz right answer sheet printed';
+$string['event_responses_submitted'] = 'Quiz responses submitted for user';
 $string['review_sheet_label'] = 'Review sheet';
 $string['review_sheet_title'] = '{$a->courseshortname} - {$a->quizname} - Review sheet';
 $string['page_type_attempt'] = 'Attempt sheet';
 $string['page_type_review'] = 'Review sheet';
 $string['page_type_answer'] = 'Answer sheet';
 $string['print'] = 'Print';
-$string['privacy:metadata'] = 'The Quiz Answer sheets plugin does not store any personal data itself. It provides an additional interface for viewing and managing the data owned by the quiz activity.';
+$string['privacy:metadata'] = 'The Export quiz attempts plugin does not store any personal data itself. It provides an additional interface for viewing and managing the data owned by the quiz activity.';
 $string['print_header'] = '{$a->courseshortname} {$a->quizname} for {$a->studentname} generated {$a->generatedtime} - {$a->sheettype}';
 $string['print_header_minimised'] = '{$a->courseshortname} {$a->quizname} generated {$a->generatedtime} - {$a->sheettype}';
 $string['submit_student_responses_label'] = 'Submit responses...';

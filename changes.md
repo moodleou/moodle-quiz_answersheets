@@ -1,4 +1,4 @@
-# Change log for the answer sheets quiz report
+# Change log for the Export quiz attempts report
 
 
 ## Changes in 1.7

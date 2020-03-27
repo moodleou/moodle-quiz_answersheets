@@ -36,7 +36,7 @@ Feature: Attempt sheet, Review sheet and Answer sheet feature of the Answer shee
     Given I log in as "teacher"
     And I am on "Course 1" course homepage
     And I follow "Quiz 1"
-    And I navigate to "Results > Answer sheets" in current page administration
+    And I navigate to "Results > Export attempts" in current page administration
     And I set the field "Attempts from" to "enrolled users who have attempted the quiz"
     When I press "Show report"
     Then I should see "Attempts: 0"
@@ -59,7 +59,7 @@ Feature: Attempt sheet, Review sheet and Answer sheet feature of the Answer shee
     And I log in as "teacher"
     And I am on "Course 1" course homepage
     And I follow "Quiz 1"
-    When I navigate to "Results > Answer sheets" in current page administration
+    When I navigate to "Results > Export attempts" in current page administration
     Then I should see "Attempts: 1"
     And I should see "Student One"
     And "Student One" row "Attempt sheets" column of "answersheets" table should contain "Attempt sheet"
@@ -78,7 +78,7 @@ Feature: Attempt sheet, Review sheet and Answer sheet feature of the Answer shee
     And user "student1" has finished an attempt at quiz "Quiz 1"
     When I am on "Course 1" course homepage
     And I follow "Quiz 1"
-    And I navigate to "Results > Answer sheets" in current page administration
+    And I navigate to "Results > Export attempts" in current page administration
     Then "Student One" row "Attempt sheets" column of "answersheets" table should contain "Review sheet"
     And "Student One" row "Answer sheets" column of "answersheets" table should contain "-"
     When I click on "Review sheet" "link" in the "Student One" "table_row"
