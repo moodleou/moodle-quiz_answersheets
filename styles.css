@@ -194,6 +194,17 @@
     #page-mod-quiz-report-answersheets-attemptsheet .que.ordering ul.sortablelist .orderingmargin {
         height: 5px;
     }
+
+    #page-mod-quiz-report-answersheets-attemptsheet .que.ordering ul.sortablelist .orderingmargin.horizontal {
+        position: absolute;
+        bottom: -5px;
+        width: 100%;
+    }
+
+    #page-mod-quiz-report-answersheets-attemptsheet .que.ordering ul.sortablelist .orderingwrapper {
+        display: inline-block;
+        position: relative;
+    }
     /* End for Ordering. */
 
     /* For Record audio. */

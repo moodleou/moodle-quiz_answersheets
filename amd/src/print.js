@@ -37,6 +37,7 @@ define(['jquery', 'core/ajax', 'core/notification'], function($, Ajax, Notificat
             PAGE_HEADER: '.attempt-sheet-header-gecko',
             PAGE_CONTAINER: '#page',
             QTYPE_ORDERING_VERTICAL_SORTABLE_LIST: '.que.ordering ul.sortablelist.vertical li',
+            QTYPE_ORDERING_HORIZONTAL_SORTABLE_LIST: '.que.ordering ul.sortablelist.horizontal li',
             QTYPE_ORDERING_MARGIN: '.orderingmargin'
         },
 
@@ -44,7 +45,8 @@ define(['jquery', 'core/ajax', 'core/notification'], function($, Ajax, Notificat
          * Template.
          */
         TEMPLATE: {
-            QTYPE_ORDERING_MARGIN: '<div class="orderingmargin"></div>'
+            QTYPE_ORDERING_MARGIN: '<div class="orderingmargin"></div>',
+            QTYPE_ORDERING_WRAPPER: '<div class="orderingwrapper"></div>'
         },
 
         /**
@@ -140,17 +142,35 @@ define(['jquery', 'core/ajax', 'core/notification'], function($, Ajax, Notificat
          */
         handlePrintForOrdering: function(isPrinting) {
             var sortablesVertical = $(t.SELECTOR.QTYPE_ORDERING_VERTICAL_SORTABLE_LIST);
-            if (sortablesVertical.length) {
-                sortablesVertical.each(function(i, nodeSortableVertical) {
-                    if (isPrinting === true) {
-                        // We already removed all the margin and padding in the CSS. So we need to add extra spacing here.
-                        $(nodeSortableVertical).before(t.TEMPLATE.QTYPE_ORDERING_MARGIN);
-                        $(nodeSortableVertical).after(t.TEMPLATE.QTYPE_ORDERING_MARGIN);
-                    } else {
-                        // Remove all the extra spacing.
-                        $(t.SELECTOR.QTYPE_ORDERING_MARGIN).remove();
+            var sortablesHorizontal = $(t.SELECTOR.QTYPE_ORDERING_HORIZONTAL_SORTABLE_LIST);
+            if (sortablesVertical.length || sortablesHorizontal.length) {
+                if (isPrinting) {
+                    sortablesVertical.each(function(i, nodeSortableVertical) {
+                        // We already removed all the margin and padding in the CSS.
+                        // So we need to add extra spacing here.
+                        var marginEle = $(t.TEMPLATE.QTYPE_ORDERING_MARGIN);
+                        $(nodeSortableVertical).before(marginEle);
+                        $(nodeSortableVertical).after(marginEle);
+                    });
+
+                    sortablesHorizontal.each(function(i, nodeSortableHorizontal) {
+                        // Horizontal ordering is different with vertical.
+                        // So we need to wrap the sortable with a wrapper and add extra spacing later.
+                        var marginEle = $(t.TEMPLATE.QTYPE_ORDERING_MARGIN);
+                        marginEle.addClass('horizontal');
+                        $(nodeSortableHorizontal).after(marginEle);
+                        $(nodeSortableHorizontal).wrap(t.TEMPLATE.QTYPE_ORDERING_WRAPPER);
+                    });
+                } else {
+                    // Remove all the margin placeholder.
+                    $(t.SELECTOR.QTYPE_ORDERING_MARGIN).remove();
+                    if (sortablesHorizontal.length) {
+                        sortablesHorizontal.each(function(i, nodeSortableHorizontal) {
+                            // Remove the wrapper for horizontal sortable.
+                            $(nodeSortableHorizontal).unwrap();
+                        });
                     }
-                });
+                }
             }
         }
 
