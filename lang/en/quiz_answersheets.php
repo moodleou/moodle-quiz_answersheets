@@ -37,6 +37,25 @@ $string['answer_sheet_label'] = 'Right answer sheet';
 $string['attempt_sheet_label'] = 'Attempt sheet';
 $string['answer_sheet_title'] = '{$a->courseshortname} - {$a->quizname} - Answer sheet';
 $string['attempt_sheet_title'] = '{$a->courseshortname} - {$a->quizname} - Attempt sheet';
+$string['bulkdownloadlink'] = 'Download review sheets in bulk';
+$string['bulkinstructions'] = 'To be able to download review sheets in bulk, you need the
+`save-answersheets` tool on your computer. Once you have that:
+
+1. The attempts that will be downloaded when you follow these instructions are based on the settings of the report you just left.
+   What this process will do is effectively follow every **Review sheet** link there. So, if you are in any doubt, go back and
+   check the report is showing the attempts you want exported.
+2. Once you are satisfied, download the [bulk download steps file]({$a->scripturl}) that will tell `save-answersheets` what to do.
+   **Don\'t forget the warning above!**
+3. Save that file (which should be called `{$a->scriptname}-steps.txt`) in the same folder where you have `save-answersheets`
+   on your computer.
+4. Open a command prompt and go to that folder.
+5. Type the command `.\save-answersheets {$a->scriptname}-steps.txt` and wait for it to run. It outputs what it is doing as it goes.
+6. Once the script has finished, you should have a file `{$a->scriptname}.zip` inside the `output` folder.
+7. Remember to delete the `{$a->scriptname}-steps.txt` file.';
+$string['bulkinstructionstitle'] = 'Instructions for downloading review sheets in bulk';
+$string['bulkinstructionswarning'] = '<b>Warning</b>! the file you download in Step 2 of the instructions below contains enough
+information for the tool to access the quiz attempts to be saved using your current login session. You <b>must</b> delete
+that file as soon as you have finished with it. Retaining it is a security risk.';
 $string['column_answer_sheet'] = 'Answer sheets';
 $string['column_attempt_sheet'] = 'Attempt sheets';
 $string['column_submit_student_responses'] = 'Submit student responses';

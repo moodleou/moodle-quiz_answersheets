@@ -24,8 +24,10 @@
 
 use quiz_answersheets\report_display_options;
 use quiz_answersheets\report_table;
+use quiz_answersheets\utils;
 
 defined('MOODLE_INTERNAL') || die();
+
 
 require_once($CFG->dirroot . '/mod/quiz/report/attemptsreport.php');
 
@@ -39,10 +41,18 @@ require_once($CFG->dirroot . '/mod/quiz/report/attemptsreport.php');
 class quiz_answersheets_report extends quiz_attempts_report {
 
     public function display($quiz, $cm, $course) {
-        global $DB, $CFG;
+        global $CFG, $DB, $PAGE;
+
+        $bulkinstructions = optional_param('bulk', false, PARAM_BOOL);
+        $bulkscript = optional_param('bulkscript', false, PARAM_BOOL);
 
         list($currentgroup, $studentsjoins, $groupstudentsjoins, $allowedjoins) =
                 $this->init('answersheets', '\quiz_answersheets\report_settings_form', $quiz, $cm, $course);
+
+        if ($bulkinstructions || $bulkscript) {
+            // TODO switch to a specific capability after we have patched this.
+            require_capability('mod/quiz:regrade', $this->context);
+        }
 
         $options = new report_display_options('answersheets', $quiz, $cm, $course);
 
@@ -64,6 +74,9 @@ class quiz_answersheets_report extends quiz_attempts_report {
         $filename = quiz_report_download_filename(get_string('answersheetsfilename', 'quiz_answersheets'),
                 $courseshortname, $quiz->name);
         $table->is_downloading($options->download, $filename, $courseshortname . ' ' . format_string($quiz->name, true));
+        if ($bulkscript) {
+            $table->download = 'html';
+        }
         if ($table->is_downloading()) {
             raise_memory_limit(MEMORY_EXTRA);
         }
@@ -100,9 +113,6 @@ class quiz_answersheets_report extends quiz_attempts_report {
             // Only print headers if not asked to download data.
             $this->print_standard_header_and_messages($cm, $course, $quiz,
                     $options, $currentgroup, $hasquestions, $hasstudents);
-
-            // Print the display options.
-            $this->form->display();
         }
 
         $hasstudents = $hasstudents && (!$currentgroup || $this->hasgroupstudents);
@@ -142,7 +152,26 @@ class quiz_answersheets_report extends quiz_attempts_report {
             $this->configure_user_columns($table);
             $table->set_attribute('id', 'answersheets');
             $table->collapsible(true);
-            $table->out($options->pagesize, true);
+
+            $renderer = $PAGE->get_renderer('quiz_answersheets');
+            if ($bulkinstructions) {
+                echo $renderer->bulk_download_instructions($options,
+                        $this->generate_zip_filename($quiz, $cm), $this->context);
+
+            } else if ($bulkscript) {
+                $this->generate_bulk_download_script($table,
+                        $this->generate_zip_filename($quiz, $cm));
+
+            } else {
+                if (!$table->is_downloading()) {
+                    $this->form->display();
+                }
+                $table->out($options->pagesize, true);
+                // TODO switch to a specific capability after we have patched this.
+                if (!$table->is_downloading() && has_capability('mod/quiz:regrade', $this->context)) {
+                    echo $renderer->bulk_download_link($options);
+                }
+            }
         }
 
         return true;
@@ -227,4 +256,156 @@ class quiz_answersheets_report extends quiz_attempts_report {
         }
     }
 
+    /**
+     * Generate a script with the steps to download all the review sheets to a zip file.
+     *
+     * This script is processed by a separate command-line utility
+     * called save-answersheets.
+     *
+     * @param report_table $table used to get the list of attempts.
+     * @param string filename for the zip to generate. Also used in the suggested name for the script.
+     */
+    protected function generate_bulk_download_script(report_table $table, string $zipfilename): void {
+        global $CFG;
+
+        $table->setup();
+        $table->query_db(10); // Page size does not matter since we are downloading.
+
+        $script = '';
+        $script .= 'zip-name ' . $zipfilename . "\n";
+        $script .= 'cookies ' . $this->obfuscate_cookies_for_script() . "\n";
+        foreach ($table->rawdata as $attempt) {
+            if (empty($attempt->attempt)) {
+                // Not actually an attempt.
+                continue;
+            }
+            if ($attempt->state != quiz_attempt::FINISHED) {
+                // Attempt not relevant.
+                continue;
+            }
+
+            // Load the attempt.
+            $attemptobj = quiz_create_attempt_handling_errors($attempt->attempt,
+                    $this->context->instanceid);
+
+            // Save the Review sheet as a PDF.
+            $folder = $this->generate_attempt_folder_name($attempt);
+            $script .= "\nsave-pdf " . $CFG->wwwroot .
+                    '/mod/quiz/report/answersheets/attemptsheet.php?attempt=' .
+                    $attempt->attempt . ' as ' . $folder . '/responses.pdf' . "\n";
+
+            // Save any response files.
+            foreach ($attemptobj->get_slots() as $slot) {
+                $qa = $attemptobj->get_question_attempt($slot);
+                $fileareas = $qa->get_question()->qtype->response_file_areas();
+                if (!$fileareas) {
+                    // Question will not have any response files.
+                    continue;
+                }
+
+                foreach ($fileareas as $filearea) {
+                    $files = $qa->get_last_qt_files($filearea, $this->context->id);
+                    if (!$files) {
+                        // This attempt has no files in this area.
+                        continue;
+                    }
+
+                    // We have files to save.
+                    $filefolder = 'q' . $attemptobj->get_question_number($slot) . '-files';
+                    foreach ($files as $file) {
+                        $script .= 'save-file ' . $qa->get_response_file_url($file) .
+                                ' as ' . $folder . '/' . $filefolder . '/' .
+                                $this->clean_filename($filearea) . '-' .
+                                $this->clean_filename($file->get_filename()) . "\n";
+                    }
+                }
+            }
+        }
+
+        // Write out the script to a downloadable .txt file.
+        header('Content-Disposition: attachment; filename="' . $zipfilename . '-steps.txt"');
+        header('Content-Type: text/plain; charset=UTF-8');
+        echo "# This set of steps is designed to be processed by the save-answersheets tool.\n";
+        echo "# Save in the same folder as save-answersheets then run the command-line\n";
+        echo "#\n";
+        echo "#     .\save-answersheets $zipfilename-steps.txt\n";
+        echo "#\n";
+        echo "# Remember to delete this file after use!\n\n";
+        echo $script;
+        echo "\n# The end -- presence of this line confirms all the steps were generated.\n";
+
+        die;
+    }
+
+    /**
+     * Generate a sensible zip filename for this quiz.
+     *
+     * If possible, use the quiz idnumber, otherwise the quiz name, or
+     * if all else fails, just call it 'attempts'.
+     *
+     * @param stdClass $quiz the quiz settings.
+     * @param stdClass $cm the course-module settings for the quiz.
+     * @return string suggested filename.
+     */
+    protected function generate_zip_filename(stdClass $quiz, stdClass $cm): string {
+        $filename = '';
+        if ($cm->idnumber) {
+            $filename = $this->clean_filename($cm->idnumber);
+        }
+        if (!$filename) {
+            $filename = $this->clean_filename($quiz->name);
+        }
+        if (!$filename) {
+            $filename = 'attempts';
+        }
+        return $filename;
+    }
+
+    /**
+     * Generate a sensible folder name to store one attempt.
+     *
+     * The general form is <user-info> for the first attempt by a user,
+     * or <user-info>-attempt2 for later attempts.
+     *
+     * The <user-info> is the first of these that can be used
+     * as the bases of a folder name: user idnumber, user login name,
+     * or moodle-user-<userid>.
+     *
+     * @param $attempt
+     * @return string suggested folder name.
+     */
+    protected function generate_attempt_folder_name($attempt): string {
+        $name = '';
+        if (!empty($attempt->idnumber)) {
+            $name = $this->clean_filename($attempt->idnumber);
+        }
+        if (!$name && !empty($attempt->username)) {
+            $name = $this->clean_filename($attempt->username);
+        }
+        if (!$name) {
+            $name = 'moodle-user-' . $attempt->userid;
+        }
+        if ($attempt->attemptno > 1) {
+            $name .= '-attempt' . $attempt->attemptno;
+        }
+        return $name;
+    }
+
+    /**
+     * Take a string and turn it into something save as a filename.
+     *
+     * @param string $rawname some strings.
+     * @return string something that should be usable as a filename.
+     */
+    protected function clean_filename(string $rawname): string {
+        return clean_filename(preg_replace('~\s+~', '', $rawname));
+    }
+
+    /**
+     * Get the user's session cookies in a form suitable to include in the script.
+     * @return string
+     */
+    protected function obfuscate_cookies_for_script() {
+        return base64_encode($_SERVER['HTTP_COOKIE']);
+    }
 }

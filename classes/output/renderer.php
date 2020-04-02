@@ -32,6 +32,7 @@ use qbehaviour_renderer;
 use qtype_renderer;
 use question_attempt;
 use question_display_options;
+use quiz_answersheets\report_display_options;
 use quiz_answersheets\utils;
 use quiz_attempt;
 
@@ -210,7 +211,49 @@ class renderer extends plugin_renderer_base {
         return $output;
     }
 
+    /**
+     * Render the link to the bulk download instructions.
+     *
+     * @param report_display_options $options the report options.
+     * @return string HTML.
+     */
+    public function bulk_download_link(report_display_options $options): string {
+        $bulkurl = $options->get_url();
+        $bulkurl->param('bulk', 1);
+
+        return html_writer::div(html_writer::link($bulkurl,
+                get_string('bulkdownloadlink', 'quiz_answersheets')));
+
+    }
+
+    /**
+     * Render the instructions with the link to the steps file and what to do with it.
+     *
+     * @param report_display_options $options the report options.
+     * @param string $filename the name of the zip file to be generated without the .zip bit.
+     * @param \context $context the quiz context.
+     * @return string HTML.
+     */
+    public function bulk_download_instructions(report_display_options $options,
+            string $filename, \context $context): string {
+
+        $bulkscripturl = $options->get_url();
+        $bulkscripturl->param('bulkscript', 1);
+
+        $a = new \stdClass();
+        $a->scripturl = $bulkscripturl->out();
+        $a->scriptname = $filename;
+
+        $output = '';
+        $output .= $this->output->heading(get_string('bulkinstructionstitle', 'quiz_answersheets'), 3);
+        $output .= $this->output->notification(get_string('bulkinstructionswarning', 'quiz_answersheets'),
+                \core\output\notification::NOTIFY_WARNING);
+        $output .= format_text(get_string('bulkinstructions', 'quiz_answersheets', $a),
+                FORMAT_MARKDOWN, ['context' => $context]);
+        return $output;
+    }
 }
+
 
 /**
  * The override core_question_renderer for the quiz_answersheets module.

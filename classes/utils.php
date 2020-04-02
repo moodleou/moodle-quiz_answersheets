@@ -63,11 +63,10 @@ class utils {
      * The code was copied from mod/quiz/review.php.
      *
      * @param quiz_attempt $attemptobj Attempt object
-     * @param moodle_url $baseurl Base url
      * @param boolean $minimal True to only show the student fullname
      * @return array List of summary information
      */
-    public static function prepare_summary_attempt_information(quiz_attempt $attemptobj, moodle_url $baseurl,
+    public static function prepare_summary_attempt_information(quiz_attempt $attemptobj,
             $minimal = true): array {
         global $DB, $USER;
 
@@ -91,16 +90,6 @@ class utils {
 
         if ($minimal) {
             return $sumdata;
-        }
-
-        if ($attemptobj->has_capability('mod/quiz:viewreports')) {
-            $attemptlist = $attemptobj->links_to_other_attempts($baseurl);
-            if ($attemptlist) {
-                $sumdata['attemptlist'] = [
-                        'title' => get_string('attempts', 'quiz'),
-                        'content' => $attemptlist
-                ];
-            }
         }
 
         $sumdata['startedon'] = [

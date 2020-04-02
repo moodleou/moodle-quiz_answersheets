@@ -72,7 +72,7 @@ $quizrenderer = $PAGE->get_renderer('mod_quiz');
 $renderer = $PAGE->get_renderer('quiz_answersheets');
 
 // Add summary table.
-$sumdata = utils::prepare_summary_attempt_information($attemptobj, $url, !$isattemptfinished);
+$sumdata = utils::prepare_summary_attempt_information($attemptobj, !$isattemptfinished);
 echo $quizrenderer->review_summary_table($sumdata, 'all');
 
 echo $quizrenderer->quiz_notices($messages);

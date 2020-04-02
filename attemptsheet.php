@@ -83,7 +83,7 @@ $quizrenderer = $PAGE->get_renderer('mod_quiz');
 $renderer = $PAGE->get_renderer('quiz_answersheets');
 
 // Summary table.
-$sumdata = utils::prepare_summary_attempt_information($attemptobj, $url, !$isattemptfinished);
+$sumdata = utils::prepare_summary_attempt_information($attemptobj, !$isattemptfinished);
 
 // Navigation.
 echo $renderer->render_attempt_navigation();

@@ -43,6 +43,8 @@ class report_display_options extends \mod_quiz_attempts_report_options {
     /**@var int Last changed row id */
     public $lastchanged;
 
+    public $userfields;
+
     public function __construct($mode, $quiz, $cm, $course) {
         parent::__construct($mode, $quiz, $cm, $course);
         $this->attempts = quiz_attempts_report::ENROLLED_ALL;

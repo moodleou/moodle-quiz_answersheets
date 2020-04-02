@@ -205,7 +205,8 @@ class report_table extends \quiz_attempts_report_table {
      */
     protected function update_sql_after_count($fields, $from, $where, $params) {
         [$fields, $from, $where, $params] = parent::update_sql_after_count($fields, $from, $where, $params);
-        $fields .= ", CASE
+        $fields .= ", quiza.attempt AS attemptno
+                    , CASE
                         -- If, for this user, attempts allowed (including overrids) is unlimited,
                         -- then they have not used all attempts.
                         WHEN COALESCE(
