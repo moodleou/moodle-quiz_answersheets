@@ -22,6 +22,7 @@
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+use quiz_answersheets\report_display_options;
 use quiz_answersheets\utils;
 
 require_once(__DIR__ . '/../../../../config.php');
@@ -32,6 +33,9 @@ $cmid = optional_param('cmid', null, PARAM_INT);
 $rightanswer = optional_param('rightanswer', 0, PARAM_BOOL);
 
 $attemptobj = quiz_create_attempt_handling_errors($attemptid, $cmid);
+$reportoptions = new report_display_options('answersheets', $attemptobj->get_quiz(),
+        $attemptobj->get_cm(), $attemptobj->get_course());
+$reportoptions->setup_from_params();
 
 // Check login.
 require_login($attemptobj->get_course(), false, $attemptobj->get_cm());
@@ -41,7 +45,9 @@ if ($rightanswer) {
     require_capability('quiz/answersheets:viewrightanswers', context_module::instance($attemptobj->get_cmid()));
 }
 
-$url = new moodle_url('/mod/quiz/report/answersheets/attemptsheet.php', ['attempt' => $attemptid, 'rightanswer' => $rightanswer]);
+$url = new moodle_url('/mod/quiz/report/answersheets/attemptsheet.php',
+        ['attempt' => $attemptid, 'rightanswer' => $rightanswer,
+                'userinfo' => $reportoptions->combine_user_info_visibility()]);
 
 // Work out the page title.
 $isattemptfinished = $attemptobj->get_attempt()->state == quiz_attempt::FINISHED;
@@ -83,13 +89,13 @@ $quizrenderer = $PAGE->get_renderer('mod_quiz');
 $renderer = $PAGE->get_renderer('quiz_answersheets');
 
 // Summary table.
-$sumdata = utils::prepare_summary_attempt_information($attemptobj, !$isattemptfinished);
+$sumdata = utils::prepare_summary_attempt_information($attemptobj, !$isattemptfinished, $reportoptions);
 
 // Navigation.
 echo $renderer->render_attempt_navigation();
 
 // Page content.
-echo $renderer->render_attempt_sheet($sumdata, $attemptobj, $sheettype);
+echo $renderer->render_attempt_sheet($sumdata, $attemptobj, $sheettype, $reportoptions);
 // Print button.
 echo $renderer->render_print_button($attemptobj, $isrightanswer);
 

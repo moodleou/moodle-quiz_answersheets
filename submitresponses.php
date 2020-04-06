@@ -22,6 +22,7 @@
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+use quiz_answersheets\report_display_options;
 use quiz_answersheets\utils;
 
 require_once(__DIR__ . '/../../../../config.php');
@@ -72,7 +73,9 @@ $quizrenderer = $PAGE->get_renderer('mod_quiz');
 $renderer = $PAGE->get_renderer('quiz_answersheets');
 
 // Add summary table.
-$sumdata = utils::prepare_summary_attempt_information($attemptobj, !$isattemptfinished);
+$sumdata = utils::prepare_summary_attempt_information($attemptobj, !$isattemptfinished,
+        new report_display_options('answersheets', $attemptobj->get_quiz(),
+                $attemptobj->get_cm(), $attemptobj->get_course()));
 echo $quizrenderer->review_summary_table($sumdata, 'all');
 
 echo $quizrenderer->quiz_notices($messages);

@@ -41,11 +41,11 @@ require_once($CFG->dirroot . '/mod/quiz/report/attemptsreport_table.php');
  */
 class report_table extends \quiz_attempts_report_table {
 
-    /** @var reportdisplay_options Option */
+    /** @var report_display_options Option */
     protected $options;
 
     /** @var array User details */
-    private $userdetails = [];
+    protected $userdetails = [];
 
     /** @var string Dash value for table cell */
     const DASH_VALUE = '-';
@@ -62,7 +62,7 @@ class report_table extends \quiz_attempts_report_table {
             return;
         }
         $this->strtimeformat = str_replace(',', ' ', get_string('strftimedatetime'));
-        return parent::build_table();
+        parent::build_table();
     }
 
     /**
@@ -70,7 +70,6 @@ class report_table extends \quiz_attempts_report_table {
      *
      * @param object $row the table row being output.
      * @return string HTML content to go inside the td.
-     * @throws moodle_exception
      */
     public function col_fullname($row) {
         global $COURSE;
@@ -91,6 +90,20 @@ class report_table extends \quiz_attempts_report_table {
     }
 
     /**
+     * Display the exam code (OU-specific).
+     *
+     * @param \stdClass $row the table row being output.
+     * @return string HTML content to go inside the td.
+     */
+    public function col_examcode(\stdClass $row) {
+        global $CFG;
+        require_once($CFG->dirroot . '/mod/quiz/report/gradingstudents/examconfirmationcode.php');
+
+        return \quiz_gradingstudents_report_exam_confirmation_code::get_confirmation_code(
+                $this->options->cm->idnumber, $row->idnumber);
+    }
+
+    /**
      * Generate the display of the attempt sheet column.
      *
      * @param object $row The raw data for this row.
@@ -99,11 +112,13 @@ class report_table extends \quiz_attempts_report_table {
     public function col_attempt_sheet($row) {
         if ($row->state == quiz_attempt::IN_PROGRESS) {
             return html_writer::link(new moodle_url('/mod/quiz/report/answersheets/attemptsheet.php',
-                    ['attempt' => $row->attempt]), get_string('attempt_sheet_label', 'quiz_answersheets'),
+                    ['attempt' => $row->attempt, 'userinfo' => $this->options->combine_user_info_visibility()]),
+                    get_string('attempt_sheet_label', 'quiz_answersheets'),
                     ['class' => 'reviewlink']);
         } else if ($row->state == quiz_attempt::FINISHED) {
             return html_writer::link(new moodle_url('/mod/quiz/report/answersheets/attemptsheet.php',
-                    ['attempt' => $row->attempt]), get_string('review_sheet_label', 'quiz_answersheets'),
+                    ['attempt' => $row->attempt, 'userinfo' => $this->options->combine_user_info_visibility()]),
+                    get_string('review_sheet_label', 'quiz_answersheets'),
                     ['class' => 'reviewlink']);
         } else {
             return self::DASH_VALUE;
@@ -119,7 +134,9 @@ class report_table extends \quiz_attempts_report_table {
     public function col_answer_sheet($row) {
         if ($row->state == quiz_attempt::IN_PROGRESS) {
             return html_writer::link(new moodle_url('/mod/quiz/report/answersheets/attemptsheet.php',
-                    ['attempt' => $row->attempt, 'rightanswer' => 1]), get_string('answer_sheet_label', 'quiz_answersheets'),
+                    ['attempt' => $row->attempt, 'rightanswer' => 1,
+                            'userinfo' => $this->options->combine_user_info_visibility()]),
+                    get_string('answer_sheet_label', 'quiz_answersheets'),
                     ['class' => 'reviewlink']);
         }
 
@@ -161,7 +178,7 @@ class report_table extends \quiz_attempts_report_table {
             return self::DASH_VALUE;
         }
         if (!isset($this->userdetails[$row->userid])) {
-            $userdetails = utils::get_user_details($row, $this->context);
+            $userdetails = utils::get_user_details($row, $this->options->cm, $this->options);
             $this->userdetails[$row->userid] = get_string('create_attempt_modal_description', 'quiz_answersheets', $userdetails);
         }
         $buttontext = get_string('create_attempt', 'quiz_answersheets');

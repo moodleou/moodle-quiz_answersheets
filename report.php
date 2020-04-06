@@ -41,11 +41,13 @@ require_once($CFG->dirroot . '/mod/quiz/report/attemptsreport.php');
 class quiz_answersheets_report extends quiz_attempts_report {
 
     public function display($quiz, $cm, $course) {
-        global $CFG, $DB, $PAGE;
+        global $DB, $PAGE;
 
         $bulkinstructions = optional_param('bulk', false, PARAM_BOOL);
         $bulkscript = optional_param('bulkscript', false, PARAM_BOOL);
 
+        // Hack so we can get this in the form initialisation code.
+        $quiz->cmobject = $cm;
         list($currentgroup, $studentsjoins, $groupstudentsjoins, $allowedjoins) =
                 $this->init('answersheets', '\quiz_answersheets\report_settings_form', $quiz, $cm, $course);
 
@@ -126,7 +128,7 @@ class quiz_answersheets_report extends quiz_attempts_report {
 
             if (!$table->is_downloading() && $options->checkboxcolumn) {
                 $columns[] = 'checkbox';
-                if ($CFG->branch >= 38) {
+                if (method_exists($table, 'checkbox_col_header')) {
                     // Checkbox header only available since Moodle 3.8.
                     $headers[] = $table->checkbox_col_header('checkbox');
                 } else {
@@ -134,7 +136,7 @@ class quiz_answersheets_report extends quiz_attempts_report {
                 }
             }
 
-            $this->add_user_columns($table, $columns, $headers);
+            $this->add_user_columns_from_options($table, $columns, $headers, $options);
             $this->add_state_column($columns, $headers);
             $this->add_time_columns($columns, $headers);
             $this->add_attempt_sheet_column($table, $columns, $headers);
@@ -160,7 +162,8 @@ class quiz_answersheets_report extends quiz_attempts_report {
 
             } else if ($bulkscript) {
                 $this->generate_bulk_download_script($table,
-                        $this->generate_zip_filename($quiz, $cm));
+                        $this->generate_zip_filename($quiz, $cm),
+                        $options);
 
             } else {
                 if (!$table->is_downloading()) {
@@ -190,6 +193,50 @@ class quiz_answersheets_report extends quiz_attempts_report {
         $instruction = get_config('quiz_answersheets', 'instruction_message');
         if (trim(html_to_text($instruction)) !== '') {
             echo html_writer::div($instruction, 'instruction');
+        }
+    }
+
+    /**
+     * Add user columns, taking note of our option for which ones to show.
+     *
+     * @param report_table $table the table we are building.
+     * @param array $columns the columns array to update.
+     * @param array $headers the column headers array to update.
+     * @param report_display_options $options report display options.
+     */
+    protected function add_user_columns_from_options(report_table $table,
+            array &$columns, array &$headers, report_display_options $options): void {
+        global $CFG;
+
+        if (!$table->is_downloading() && $CFG->grade_report_showuserimage) {
+            $columns[] = 'picture';
+            $headers[] = '';
+        }
+
+        if ($options->userinfovisibility['fullname']) {
+            if (!$table->is_downloading()) {
+                $columns[] = 'fullname';
+                $headers[] = get_string('name');
+            } else {
+                $columns[] = 'lastname';
+                $headers[] = get_string('lastname');
+                $columns[] = 'firstname';
+                $headers[] = get_string('firstname');
+            }
+        }
+
+        foreach ($options->userinfovisibility as $field => $show) {
+            if ($field === 'fullname') {
+                continue;
+            }
+            if (!$show) {
+                continue;
+            }
+            $columns[] = $field;
+            $headers[] = report_display_options::user_info_visibility_settings_name($field);
+            if ($field === 'examcode') {
+                $table->no_sorting('examcode');
+            }
         }
     }
 
@@ -265,7 +312,8 @@ class quiz_answersheets_report extends quiz_attempts_report {
      * @param report_table $table used to get the list of attempts.
      * @param string filename for the zip to generate. Also used in the suggested name for the script.
      */
-    protected function generate_bulk_download_script(report_table $table, string $zipfilename): void {
+    protected function generate_bulk_download_script(report_table $table, string $zipfilename,
+            report_display_options $options): void {
         global $CFG;
 
         $table->setup();
@@ -291,8 +339,9 @@ class quiz_answersheets_report extends quiz_attempts_report {
             // Save the Review sheet as a PDF.
             $folder = $this->generate_attempt_folder_name($attempt);
             $script .= "\nsave-pdf " . $CFG->wwwroot .
-                    '/mod/quiz/report/answersheets/attemptsheet.php?attempt=' .
-                    $attempt->attempt . ' as ' . $folder . '/responses.pdf' . "\n";
+                    '/mod/quiz/report/answersheets/attemptsheet.php?attempt=' . $attempt->attempt .
+                    '&userinfo=' . $options->combine_user_info_visibility() .
+                    ' as ' . $folder . '/responses.pdf' . "\n";
 
             // Save any response files.
             foreach ($attemptobj->get_slots() as $slot) {

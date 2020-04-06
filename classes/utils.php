@@ -60,23 +60,25 @@ class utils {
 
     /**
      * Calculate summary information of a particular quiz attempt.
-     * The code was copied from mod/quiz/review.php.
+     * The code was copied from mod/quiz/review.php, with modifications.
      *
      * @param quiz_attempt $attemptobj Attempt object
-     * @param boolean $minimal True to only show the student fullname
+     * @param bool $minimal True to only show the student fullname
+     * @param report_display_options $reportoptions controls which user info is shown.
      * @return array List of summary information
      */
     public static function prepare_summary_attempt_information(quiz_attempt $attemptobj,
-            $minimal = true): array {
-        global $DB, $USER;
+            bool $minimal, report_display_options $reportoptions): array {
+
+        global $CFG, $DB;
 
         $sumdata = [];
         $attempt = $attemptobj->get_attempt();
         $quiz = $attemptobj->get_quiz();
         $options = $attemptobj->get_display_options(true);
+        $student = $DB->get_record('user', ['id' => $attemptobj->get_userid()]);
 
-        if (!$attemptobj->get_quiz()->showuserpicture && $attemptobj->get_userid() != $USER->id) {
-            $student = $DB->get_record('user', ['id' => $attemptobj->get_userid()]);
+        if ($reportoptions->userinfovisibility['fullname']) {
             if (!self::is_example_user($student)) {
                 $userpicture = new user_picture($student);
                 $userpicture->courseid = $attemptobj->get_courseid();
@@ -86,6 +88,30 @@ class utils {
                                 ['id' => $student->id, 'course' => $attemptobj->get_courseid()]), fullname($student, true))
                 ];
             }
+        }
+
+        foreach ($reportoptions->userinfovisibility as $field => $show) {
+            if ($field === 'fullname') {
+                continue;
+            }
+            if (!$show) {
+                continue;
+            }
+
+            if ($field === 'examcode') {
+                require_once($CFG->dirroot . '/mod/quiz/report/gradingstudents/examconfirmationcode.php');
+
+                $value = \quiz_gradingstudents_report_exam_confirmation_code::get_confirmation_code(
+                        $reportoptions->cm->idnumber, $student->idnumber);
+
+            } else {
+                $value = $student->$field;
+            }
+
+            $sumdata['user' . $field] = [
+                    'title' => report_display_options::user_info_visibility_settings_name($field),
+                    'content' => $value,
+            ];
         }
 
         if ($minimal) {
@@ -161,27 +187,45 @@ class utils {
      * Get user detail with identity fields
      *
      * @param stdClass $attemptuser User info
-     * @param context $context Context module
-     * @param array $fields Array of fields that need to get the detail
+     * @param stdClass $cm quiz course_module.
+     * @param report_display_options|array $fieldoptions which use fields to show, either an options object,
+     *      or just a array of field names.
      * @return string User detail string
      */
-    public static function get_user_details(stdClass $attemptuser, context $context, array $fields = []): string {
+    public static function get_user_details(stdClass $attemptuser, stdClass $cm, $fieldoptions): string {
+        global $CFG;
+
+        $fields = [];
+        if ($fieldoptions instanceof report_display_options) {
+            foreach ($fieldoptions->userinfovisibility as $field => $show) {
+                if ($show) {
+                    $fields[] = $field;
+                }
+            }
+        } else {
+            $fields = $fieldoptions;
+        }
+
         $userinfo = '';
-        $allfields = empty($fields);
+        if (in_array('fullname', $fields)) {
+            $userinfo .= fullname($attemptuser);
+        }
 
-        $userinfo .= fullname($attemptuser);
-
-        $extra = get_extra_user_fields($context);
         $data = [];
-        foreach ($extra as $field) {
-            if (!$allfields && !in_array($field, $fields)) {
+        foreach ($fields as $field) {
+            if ($field === 'fullname') {
                 continue;
             }
-            $value = $attemptuser->{$field};
-            if (!$value) {
-                continue;
+
+            if ($field === 'examcode') {
+                require_once($CFG->dirroot . '/mod/quiz/report/gradingstudents/examconfirmationcode.php');
+
+                $data[] = \quiz_gradingstudents_report_exam_confirmation_code::get_confirmation_code(
+                        $cm->idnumber, $attemptuser->idnumber);
+
+            } else if (!empty($attemptuser->$field)) {
+                $data[] = $attemptuser->$field;
             }
-            $data[] = $value;
         }
 
         if (count($data) > 0) {
@@ -301,7 +345,8 @@ class utils {
      * @param string $sheettype Sheet type
      * @return string Header string
      */
-    public static function get_attempt_sheet_print_header(quiz_attempt $attemptobj, string $sheettype): string {
+    public static function get_attempt_sheet_print_header(quiz_attempt $attemptobj, string $sheettype,
+            report_display_options $reportoptions): string {
         $generatedtime = time();
         $attemptuser = \core_user::get_user($attemptobj->get_userid());
         $context = context_module::instance((int) $attemptobj->get_cmid());
@@ -309,7 +354,7 @@ class utils {
         $headerinfo = new \stdClass();
         $headerinfo->courseshortname = $attemptobj->get_course()->shortname;
         $headerinfo->quizname = $attemptobj->get_quiz_name();
-        $headerinfo->studentname = self::get_user_details($attemptuser, $context);
+        $headerinfo->studentname = self::get_user_details($attemptuser, $reportoptions->cm, $reportoptions);
         // We use custom time format because get_string('strftime...', 'langconfig'); do not have format we need.
         $headerinfo->generatedtime = userdate($generatedtime, get_string('strftime_header', 'quiz_answersheets'));
         $headerinfo->sheettype = $sheettype;

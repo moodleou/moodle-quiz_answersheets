@@ -127,7 +127,7 @@ class renderer extends plugin_renderer_base {
                 ['type' => 'hidden', 'name' => 'slots', 'value' => implode(',', $attemptobj->get_active_slots())]);
 
         $output .= html_writer::tag('button', get_string('submit_student_responses_on_behalf', 'quiz_answersheets',
-                utils::get_user_details($attemptuser, $context, ['username', 'idnumber'])),
+                utils::get_user_details($attemptuser, $context, ['fullname', 'username', 'idnumber'])),
                 ['type' => 'button', 'class' => 'submit-responses btn btn-primary']);
 
         // Finish the form.
@@ -180,10 +180,11 @@ class renderer extends plugin_renderer_base {
      * @param string $sheettype Sheet type
      * @return string HTML string
      */
-    public function render_attempt_sheet(array $sumdata, quiz_attempt $attemptobj, string $sheettype): string {
+    public function render_attempt_sheet(array $sumdata, quiz_attempt $attemptobj,
+            string $sheettype, report_display_options $reportoptions): string {
         $quizrenderer = $this->page->get_renderer('mod_quiz');
         $templatecontext = [
-                'questionattemptheader' => utils::get_attempt_sheet_print_header($attemptobj, $sheettype),
+                'questionattemptheader' => utils::get_attempt_sheet_print_header($attemptobj, $sheettype, $reportoptions),
                 'questionattemptsumtable' => $quizrenderer->review_summary_table($sumdata, 0),
                 'questionattemptcontent' => $this->render_question_attempt_content($attemptobj)
         ];
