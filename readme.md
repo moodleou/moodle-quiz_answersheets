@@ -1,8 +1,11 @@
 # Export quiz attempts report
 
 This 'report' is actually a tool like the standard Response quiz report, 
-but which lets Staff to generate a paper version of quizzes and create attempts for Students.
- 
+but which lets Staff to generate a paper version of quizzes and create attempts
+for Students.
+
+In addition, there is slightly primitive support for downloading all the attempts
+at a quiz, using the helper script https://github.com/moodleou/save-answersheets. 
 
 ## Installation and set-up
 

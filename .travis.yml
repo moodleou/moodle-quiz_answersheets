@@ -1,7 +1,7 @@
 language: php
 
+os: linux
 dist: bionic
-sudo: required
 
 services:
   mysql
@@ -19,7 +19,7 @@ cache:
     - $HOME/.composer/cache
     - $HOME/.npm
 
-matrix:
+jobs:
   include:
     - php: 7.3
       env:
