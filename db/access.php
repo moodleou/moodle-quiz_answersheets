@@ -64,5 +64,18 @@ $capabilities = [
                         'editingteacher' => CAP_ALLOW,
                         'manager' => CAP_ALLOW
                 ]
-        ]
+        ],
+        // Ability for a user to bulkdownload.
+        'quiz/answersheets:bulkdownload' => [
+                'riskbitmask' => RISK_PERSONAL,
+                'captype' => 'read',
+                'contextlevel' => CONTEXT_MODULE,
+                'archetypes' => [
+                        'teacher' => CAP_ALLOW,
+                        'editingteacher' => CAP_ALLOW,
+                        'manager' => CAP_ALLOW
+                ],
+                'clonepermissionsfrom' => 'mod/quiz:regrade'
+        ],
+
 ];

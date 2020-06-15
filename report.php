@@ -52,8 +52,7 @@ class quiz_answersheets_report extends quiz_attempts_report {
                 $this->init('answersheets', '\quiz_answersheets\report_settings_form', $quiz, $cm, $course);
 
         if ($bulkinstructions || $bulkscript) {
-            // TODO switch to a specific capability after we have patched this.
-            require_capability('mod/quiz:regrade', $this->context);
+            require_capability('quiz/answersheets:bulkdownload', $this->context);
         }
 
         $options = new report_display_options('answersheets', $quiz, $cm, $course);
@@ -170,8 +169,8 @@ class quiz_answersheets_report extends quiz_attempts_report {
                     $this->form->display();
                 }
                 $table->out($options->pagesize, true);
-                // TODO switch to a specific capability after we have patched this.
-                if (!$table->is_downloading() && has_capability('mod/quiz:regrade', $this->context)) {
+
+                if (!$table->is_downloading() && has_capability('quiz/answersheets:bulkdownload', $this->context)) {
                     echo $renderer->bulk_download_link($options);
                 }
             }
