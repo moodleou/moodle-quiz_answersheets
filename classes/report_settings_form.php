@@ -49,5 +49,10 @@ class report_settings_form extends \mod_quiz_attempts_report_form {
         }
         $mform->addGroup($userinfogroup, 'userinfo',
                 get_string('showuserinfo', 'quiz_answersheets'), array(' '), false);
+
+        $mform->addElement('advcheckbox', 'questioninstruction',
+                get_string('showquestioninstruction', 'quiz_answersheets'));
+        $mform->setDefault('questioninstruction', 1);
+
     }
 }

@@ -81,6 +81,7 @@ $string['print_header'] = '{$a->courseshortname} {$a->quizname} for {$a->student
 $string['print_header_minimised'] = '{$a->courseshortname} {$a->quizname} generated {$a->generatedtime} - {$a->sheettype}';
 $string['review_sheet_label'] = 'Review sheet';
 $string['review_sheet_title'] = '{$a->courseshortname} - {$a->quizname} - Review sheet';
+$string['showquestioninstruction'] = 'Show default instruction text?';
 $string['showuserinfo'] = 'Identifying information to show about users';
 $string['submit_student_responses_label'] = 'Submit responses...';
 $string['submit_student_responses_on_behalf'] = 'Submit responses on behalf of {$a} and finish attempt';

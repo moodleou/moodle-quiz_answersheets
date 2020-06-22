@@ -51,6 +51,11 @@ class report_display_options extends \mod_quiz_attempts_report_options {
      */
     public $userinfovisibility;
 
+    /**
+     * @var bool whether question instruction has been displayed.
+     */
+    public $questioninstruction = true;
+
     public function __construct($mode, $quiz, $cm, $course) {
         parent::__construct($mode, $quiz, $cm, $course);
         $this->attempts = quiz_attempts_report::ENROLLED_ALL;
@@ -73,11 +78,13 @@ class report_display_options extends \mod_quiz_attempts_report_options {
         if ($fields !== null) {
             $this->parse_user_info_visibility($fields);
         }
+        $this->questioninstruction = optional_param('instruction', true, PARAM_BOOL);
     }
 
     protected function get_url_params() {
         $params = parent::get_url_params();
         $params['userinfo'] = $this->combine_user_info_visibility();
+        $params['instruction'] = $this->questioninstruction;
         return $params;
     }
 
@@ -86,6 +93,7 @@ class report_display_options extends \mod_quiz_attempts_report_options {
         foreach ($this->userinfovisibility as $name => $notused) {
             $this->userinfovisibility[$name] = (bool) $fromform->{'show' . $name};
         }
+        $this->questioninstruction = (bool) $fromform->questioninstruction;
     }
 
     public function get_initial_form_data() {
@@ -94,6 +102,7 @@ class report_display_options extends \mod_quiz_attempts_report_options {
         foreach ($this->userinfovisibility as $name => $show) {
             $toform->{'show' . $name} = $show;
         }
+        $toform->questioninstruction = $this->questioninstruction;
 
         return $toform;
     }

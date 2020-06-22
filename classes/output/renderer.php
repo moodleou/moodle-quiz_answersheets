@@ -279,8 +279,11 @@ class core_question_override_renderer extends \core_question_renderer {
             return parent::formulation($qa, $behaviouroutput, $qtoutput, $options);
         }
 
-        // Append question instruction if exist.
-        $output .= $this->render_question_instruction($qa);
+        // Show default instruction if ticked.
+        if ((bool) $this->page->url->get_param('instruction')) {
+            // Append question instruction if exist.
+            $output .= $this->render_question_instruction($qa);
+        }
         $output .= parent::formulation($qa, $behaviouroutput, $qtoutput, $options);
 
         return $output;

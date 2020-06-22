@@ -47,7 +47,8 @@ if ($rightanswer) {
 
 $url = new moodle_url('/mod/quiz/report/answersheets/attemptsheet.php',
         ['attempt' => $attemptid, 'rightanswer' => $rightanswer,
-                'userinfo' => $reportoptions->combine_user_info_visibility()]);
+                'userinfo' => $reportoptions->combine_user_info_visibility(),
+                'instruction' => $reportoptions->questioninstruction]);
 
 // Work out the page title.
 $isattemptfinished = $attemptobj->get_attempt()->state == quiz_attempt::FINISHED;

@@ -112,12 +112,20 @@ class report_table extends \quiz_attempts_report_table {
     public function col_attempt_sheet($row) {
         if ($row->state == quiz_attempt::IN_PROGRESS) {
             return html_writer::link(new moodle_url('/mod/quiz/report/answersheets/attemptsheet.php',
-                    ['attempt' => $row->attempt, 'userinfo' => $this->options->combine_user_info_visibility()]),
+                    [
+                        'attempt' => $row->attempt,
+                        'userinfo' => $this->options->combine_user_info_visibility(),
+                        'instruction' => $this->options->questioninstruction
+                    ]),
                     get_string('attempt_sheet_label', 'quiz_answersheets'),
                     ['class' => 'reviewlink']);
         } else if ($row->state == quiz_attempt::FINISHED) {
             return html_writer::link(new moodle_url('/mod/quiz/report/answersheets/attemptsheet.php',
-                    ['attempt' => $row->attempt, 'userinfo' => $this->options->combine_user_info_visibility()]),
+                    [
+                        'attempt' => $row->attempt,
+                        'userinfo' => $this->options->combine_user_info_visibility(),
+                        'instruction' => $this->options->questioninstruction
+                    ]),
                     get_string('review_sheet_label', 'quiz_answersheets'),
                     ['class' => 'reviewlink']);
         } else {
@@ -134,8 +142,12 @@ class report_table extends \quiz_attempts_report_table {
     public function col_answer_sheet($row) {
         if ($row->state == quiz_attempt::IN_PROGRESS) {
             return html_writer::link(new moodle_url('/mod/quiz/report/answersheets/attemptsheet.php',
-                    ['attempt' => $row->attempt, 'rightanswer' => 1,
-                            'userinfo' => $this->options->combine_user_info_visibility()]),
+                    [
+                        'attempt' => $row->attempt,
+                        'rightanswer' => 1,
+                        'userinfo' => $this->options->combine_user_info_visibility(),
+                        'instruction' => $this->options->questioninstruction
+                    ]),
                     get_string('answer_sheet_label', 'quiz_answersheets'),
                     ['class' => 'reviewlink']);
         }
