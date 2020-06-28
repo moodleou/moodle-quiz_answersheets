@@ -24,12 +24,12 @@
 
 namespace quiz_answersheets\output\stack;
 
+defined('MOODLE_INTERNAL') || die();
+
 use qtype_stack_question;
 use question_display_options;
 
 require_once($CFG->dirroot . '/question/type/stack/renderer.php');
-
-defined('MOODLE_INTERNAL') || die();
 
 /**
  * The override qtype_stack_renderer for the quiz_answersheets module.

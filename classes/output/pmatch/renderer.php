@@ -24,12 +24,12 @@
 
 namespace quiz_answersheets\output\pmatch;
 
+defined('MOODLE_INTERNAL') || die();
+
 use qtype_pmatch_question;
 use question_display_options;
 
 require_once($CFG->dirroot . '/question/type/pmatch/renderer.php');
-
-defined('MOODLE_INTERNAL') || die();
 
 /**
  * The override qtype_pmatch_renderer for the quiz_answersheets module.

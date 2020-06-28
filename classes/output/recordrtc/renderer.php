@@ -24,6 +24,8 @@
 
 namespace quiz_answersheets\output\recordrtc;
 
+defined('MOODLE_INTERNAL') || die();
+
 use DOMDocument;
 use DOMXPath;
 use html_writer;
@@ -31,8 +33,6 @@ use question_attempt;
 use question_display_options;
 
 require_once($CFG->dirroot . '/question/type/recordrtc/renderer.php');
-
-defined('MOODLE_INTERNAL') || die();
 
 /**
  * The override qtype_recordrtc_renderer for the quiz_answersheets module.
