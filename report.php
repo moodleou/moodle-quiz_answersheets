@@ -146,7 +146,12 @@ class quiz_answersheets_report extends quiz_attempts_report {
             $table->define_columns($columns);
             $table->define_headers($headers);
             $table->sortable(true, 'uniqueid');
+            // Do not allow sorting on virtual columns.
             $table->no_sorting('checkbox');
+            $table->no_sorting('attempt_sheet');
+            $table->no_sorting('answer_sheet');
+            $table->no_sorting('submit_student_responses');
+            $table->no_sorting('create_attempt');
 
             // Set up the table.
             $table->define_baseurl($options->get_url());
