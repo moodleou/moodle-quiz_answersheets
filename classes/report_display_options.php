@@ -89,11 +89,12 @@ class report_display_options extends \mod_quiz_attempts_report_options {
     }
 
     public function process_settings_from_form($fromform) {
-        parent::process_settings_from_form($fromform);
         foreach ($this->userinfovisibility as $name => $notused) {
             $this->userinfovisibility[$name] = (bool) $fromform->{'show' . $name};
         }
         $this->questioninstruction = (bool) $fromform->questioninstruction;
+
+        parent::process_settings_from_form($fromform);
     }
 
     public function get_initial_form_data() {

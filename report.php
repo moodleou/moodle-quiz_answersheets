@@ -217,29 +217,22 @@ class quiz_answersheets_report extends quiz_attempts_report {
             $headers[] = '';
         }
 
-        if ($options->userinfovisibility['fullname']) {
-            if (!$table->is_downloading()) {
-                $columns[] = 'fullname';
-                $headers[] = get_string('name');
-            } else {
-                $columns[] = 'lastname';
-                $headers[] = get_string('lastname');
-                $columns[] = 'firstname';
-                $headers[] = get_string('firstname');
-            }
-        }
-
         foreach ($options->userinfovisibility as $field => $show) {
             if ($field === 'fullname') {
-                continue;
-            }
-            if (!$show) {
-                continue;
-            }
-            $columns[] = $field;
-            $headers[] = report_display_options::user_info_visibility_settings_name($field);
-            if ($field === 'examcode') {
+                if (!$table->is_downloading()) {
+                    $columns[] = 'fullname';
+                    $headers[] = get_string('name');
+                } else {
+                    $columns[] = 'lastname';
+                    $headers[] = get_string('lastname');
+                    $columns[] = 'firstname';
+                    $headers[] = get_string('firstname');
+                }
+            } else if ($field === 'examcode') {
                 $table->no_sorting('examcode');
+            } else {
+                $columns[] = $field;
+                $headers[] = report_display_options::user_info_visibility_settings_name($field);
             }
         }
     }
