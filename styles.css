@@ -34,6 +34,25 @@
     margin-top: 15px;
 }
 
+#page-mod-quiz-report-answersheets-attemptsheet .que .outcome {
+    display: none;
+}
+
+#page-mod-quiz-report-answersheets-attemptsheet .question-feedback h3.question-feedback-title {
+    font-size: 1.28571em;
+    line-height: 1.5;
+    font-weight: 700;
+    color: #00215b;
+    margin: 10px 0 0 0;
+}
+
+#page-mod-quiz-report-answersheets-attemptsheet .question-feedback .question-feedback-content {
+    padding: 14px;
+    background: #fff8eb;
+    border: 1px solid #fff8eb;
+    border-radius: 0;
+}
+
 /* For OU Multiple choice. */
 #page-mod-quiz-report-answersheets-attemptsheet .que.multichoice label {
     display: inline;
@@ -152,7 +171,8 @@
     #page-mod-quiz-report-answersheets-attemptsheet .que .generalfeedback,
     #page-mod-quiz-report-answersheets-attemptsheet .que .rightanswer,
     #page-mod-quiz-report-answersheets-attemptsheet .que .im-feedback,
-    #page-mod-quiz-report-answersheets-attemptsheet .que .feedback {
+    #page-mod-quiz-report-answersheets-attemptsheet .que .question-feedback .question-feedback-content,
+    #page-mod-quiz-report-answersheets-attemptsheet .que .question-feedback .question-feedback-content p {
         margin-top: 0;
         margin-bottom: 0;
         padding-top: 0;

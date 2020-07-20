@@ -22,7 +22,6 @@
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-$string['pluginname'] = 'Export quiz attempts';
 $string['answersheets'] = 'Export attempts';
 $string['answersheetsfilename'] = 'Exportable_quiz_attempts';
 $string['answersheetsreport'] = 'Export quiz attempts';
@@ -60,6 +59,10 @@ that file as soon as you have finished with it. Retaining it is a security risk.
 $string['column_answer_sheet'] = 'Answer sheets';
 $string['column_attempt_sheet'] = 'Attempt sheets';
 $string['column_submit_student_responses'] = 'Submit student responses';
+$string['combine_feedback_correct'] = 'If correct:';
+$string['combine_feedback_general'] = 'General feedback and further information:';
+$string['combine_feedback_incorrect'] = 'If incorrect:';
+$string['combine_feedback_partially_correct'] = 'If partially correct:';
 $string['create_attempt'] = 'Create Attempt';
 $string['create_attempt_modal_button'] = 'Create';
 $string['create_attempt_modal_description'] = 'Are you sure you want to create a quiz attempt for {$a}?';
@@ -75,6 +78,7 @@ $string['interactive_content_warning'] = 'Interactive content is not available i
 $string['page_type_attempt'] = 'Attempt sheet';
 $string['page_type_review'] = 'Review sheet';
 $string['page_type_answer'] = 'Answer sheet';
+$string['pluginname'] = 'Export quiz attempts';
 $string['print'] = 'Print';
 $string['privacy:metadata'] = 'The Export quiz attempts plugin does not store any personal data itself. It provides an additional interface for viewing and managing the data owned by the quiz activity.';
 $string['print_header'] = '{$a->courseshortname} {$a->quizname} for {$a->studentname} generated {$a->generatedtime} - {$a->sheettype}';

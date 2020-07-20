@@ -57,6 +57,16 @@ class utils {
     const RESPONSES_SUBMITTED = 'responses_submitted';
     const EXAMPLE_TUTOR = 'example tutor';
     const EXAMPLE_STUDENT = 'example student';
+    /** @var string[] Supported question types for new combine feedback. */
+    const COMBINED_FEEDBACK_QTYPES = [
+            'oumultiresponse',
+            'match',
+            'multichoice',
+            'gapselect',
+            'truefalse',
+            'wordselect',
+            'combined'
+    ];
 
     /**
      * Calculate summary information of a particular quiz attempt.
@@ -415,6 +425,16 @@ class utils {
         }
 
         return $qa->get_question()->get_renderer($page);
+    }
+
+    /**
+     * Check if given question type is supported for the new combine feedback format.
+     *
+     * @param string $questiontype Question type
+     * @return bool
+     */
+    public static function should_show_combined_feedback(string $questiontype): bool {
+        return in_array($questiontype, self::COMBINED_FEEDBACK_QTYPES);
     }
 
 }

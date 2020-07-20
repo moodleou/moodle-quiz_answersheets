@@ -25,11 +25,13 @@ Feature: Attempt sheet, Review sheet and Answer sheet feature of the Answer shee
       | activity   | name   | intro              | course | idnumber |
       | quiz       | Quiz 1 | Quiz 1 description | C1     | quiz1    |
     And the following "questions" exist:
-      | questioncategory | qtype     | name | questiontext   |
-      | Test questions   | truefalse | TF1  | First question |
+      | questioncategory | qtype       | name | questiontext    | template    |
+      | Test questions   | truefalse   | TF1  | First question  |             |
+      | Test questions   | multichoice | MT1  | Second question | one_of_four |
     And quiz "Quiz 1" contains the following questions:
       | question | page |
       | TF1      | 1    |
+      | MT1      | 2    |
 
   @javascript
   Scenario: Attempt sheet, Answer sheet links do not exist for Student do not have any attempt yet
@@ -71,10 +73,22 @@ Feature: Attempt sheet, Review sheet and Answer sheet feature of the Answer shee
     And I should not see "Started on" in the "table.quizreviewsummary" "css_element"
     And I should not see "State" in the "table.quizreviewsummary" "css_element"
     And I should see "Select the correct answer" in the ".question-instruction" "css_element"
+    And I should not see "If incorrect:"
+    And I should not see "If partially correct:"
+    And I should not see "If correct:"
+    And I should not see "General feedback and further information:"
     And I press the "back" button in the browser
     When I click on "Right answer sheet" "link" in the "Student One" "table_row"
     Then I should see "First question"
     And the field "True" matches value "1"
+    And I should see "If incorrect:"
+    And I should see "If partially correct:"
+    And I should see "If correct:"
+    And I should see "General feedback and further information:"
+    And I should see "One is the oddest."
+    And I should see "Two is even."
+    And I should see "Three is odd."
+    And I should see "Four is even."
     And user "student1" has finished an attempt at quiz "Quiz 1"
     When I am on "Course 1" course homepage
     And I follow "Quiz 1"

@@ -74,6 +74,12 @@ class renderer extends plugin_renderer_base {
             $qtoutput = utils::get_question_renderer($this->page, $qa);
             $behaviouroutput = $this->page->get_renderer(get_class($qa->get_behaviour()));
 
+            if (utils::should_show_combined_feedback($qa->get_question()->get_type_name()) && $rightanswer) {
+                $displayoptions->generalfeedback = question_display_options::HIDDEN;
+                $displayoptions->numpartscorrect = question_display_options::HIDDEN;
+                $displayoptions->rightanswer = question_display_options::HIDDEN;
+            }
+
             if ($rightanswer && $attempt->state == quiz_attempt::IN_PROGRESS) {
                 $correctresponse = $qa->get_correct_response();
                 if (!is_null($correctresponse)) {
@@ -344,5 +350,81 @@ class core_question_override_renderer extends \core_question_renderer {
         }
 
         return $output;
+    }
+
+    public function question(question_attempt $qa, qbehaviour_renderer $behaviouroutput, qtype_renderer $qtoutput,
+            question_display_options $options, $number) {
+        $rightanswer = $this->page->url->get_param('rightanswer');
+        $output = '';
+        $output .= parent::question($qa, $behaviouroutput, $qtoutput, $options, $number);
+
+        if (utils::should_show_combined_feedback($qa->get_question()->get_type_name()) && $rightanswer) {
+            $output .= $this->render_question_combined_feedback($qa);
+        }
+
+        return $output;
+    }
+
+    /**
+     * Render question combined feedback
+     *
+     * @param question_attempt $qa Question attempt
+     * @return string HTML string
+     */
+    public function render_question_combined_feedback(question_attempt $qa) {
+        $feedback = '';
+        $incorrectfeedback = $this->get_combine_feedback($qa, 'incorrect');
+        $partiallycorrectfeedback = $this->get_combine_feedback($qa, 'partiallycorrect');
+        $correctfeedback = $this->get_combine_feedback($qa, 'correct');
+        $generalfeedback = $qa->get_question()->format_generalfeedback($qa);
+
+        if (!empty($incorrectfeedback)) {
+            $feedback .= \html_writer::tag('h3', get_string('combine_feedback_incorrect', 'quiz_answersheets'),
+                    ['class' => 'question-feedback-title']);
+            $feedback .= \html_writer::div($incorrectfeedback, 'question-feedback-content');
+        }
+        if (!empty($partiallycorrectfeedback)) {
+            $feedback .= \html_writer::tag('h3', get_string('combine_feedback_partially_correct', 'quiz_answersheets'),
+                    ['class' => 'question-feedback-title']);
+            $feedback .= \html_writer::div($partiallycorrectfeedback, 'question-feedback-content');
+        }
+        if (!empty($correctfeedback)) {
+            $feedback .= \html_writer::tag('h3', get_string('combine_feedback_correct', 'quiz_answersheets'),
+                    ['class' => 'question-feedback-title']);
+            $feedback .= \html_writer::div($correctfeedback, 'question-feedback-content');
+        }
+        if (!empty($generalfeedback)) {
+            $feedback .= \html_writer::tag('h3', get_string('combine_feedback_general', 'quiz_answersheets'),
+                    ['class' => 'question-feedback-title']);
+            $feedback .= \html_writer::div($generalfeedback, 'question-feedback-content');
+        }
+
+        if (!empty($feedback)) {
+            $feedback = \html_writer::div($feedback, 'question-feedback');
+        }
+
+        return $feedback;
+    }
+
+    /**
+     * Get the combine feedback for given question.
+     *
+     * @param question_attempt $qa Question attempt
+     * @param string $type Type of feedback
+     * @return string Combine feedback
+     */
+    public function get_combine_feedback(question_attempt $qa, string $type) {
+        $question = $qa->get_question();
+        $feedback = '';
+        $field = $type . 'feedback';
+        $format = $type . 'feedbackformat';
+        if (isset($question->$field) && $question->$field) {
+            $feedback .= $question->format_text($question->$field, $question->$format, $qa, 'question', $field, $question->id);
+            if ($type == 'partiallycorrect' && $question->get_type_name() == 'oumultiresponse') {
+                $feedback .= \html_writer::div(get_string('toomanyselected', 'qtype_multichoice'));
+            }
+        }
+
+        return $feedback;
     }
 }
