@@ -37,6 +37,7 @@ use quiz_answersheets\utils;
 defined('MOODLE_INTERNAL') || die();
 
 require_once($CFG->dirroot . '/question/type/combined/renderer.php');
+require_once($CFG->dirroot . '/question/type/combined/combinable/gapselect/renderer.php');
 require_once($CFG->dirroot . '/question/type/oumultiresponse/combinable/renderer.php');
 
 /**
@@ -143,6 +144,8 @@ class qtype_combined_override_renderer extends \qtype_combined_renderer {
         $qtypename = utils::get_reflection_property($questiontype, 'qtypename');
         if ($qtypename == 'oumultiresponse') {
             return new qtype_oumultiresponse_embedded_override_renderer($this->page, null);
+        } else if ($qtypename == 'gapselect') {
+            return new qtype_combined_gapselect_embedded_override_renderer($this->page, null);
         } else {
             return $questiontype->embedded_renderer();
         }
@@ -247,6 +250,59 @@ class qtype_oumultiresponse_embedded_override_renderer extends \qtype_oumultires
         $result = html_writer::tag($inputwraptag, $cbhtml, array('class' => 'answer'));
 
         return $result;
+    }
+
+}
+
+/**
+ * Class qtype_combined_gapselect_embedded_override_renderer
+ *
+ * @package quiz_answersheets\output\combined
+ */
+class qtype_combined_gapselect_embedded_override_renderer extends \qtype_combined_gapselect_embedded_renderer {
+
+    /**
+     * Render the sub question.
+     *
+     * @param question_attempt $qa
+     * @param question_display_options $options
+     * @param qtype_combined_combinable_base $subq
+     * @param $placeno
+     * @return string
+     */
+    public function subquestion(question_attempt $qa, question_display_options $options, qtype_combined_combinable_base $subq,
+            $placeno) {
+        if (utils::should_hide_inline_choice($this->page)) {
+            return parent::subquestion($qa, $options, $subq, $placeno);
+        }
+
+        $question = $subq->question;
+        $place = $placeno + 1;
+        $group = $question->places[$place];
+
+        $orderedchoices = $question->get_ordered_choices($group);
+        $selectoptions = array();
+        foreach ($orderedchoices as $orderedchoicevalue => $orderedchoice) {
+            $selectoptions[$orderedchoicevalue] = $orderedchoice->text;
+        }
+
+        return $this->render_choices($selectoptions);
+    }
+
+    /**
+     * Render the choice inline list.
+     *
+     * @param array $choices List of choices
+     * @return string HTML string
+     */
+    private function render_choices(array $choices): string {
+        $output = '';
+
+        if (!empty($choices)) {
+            $output .= html_writer::span('[' . implode(' | ', $choices) . ']', 'answer-list-inline');
+        }
+
+        return $output;
     }
 
 }

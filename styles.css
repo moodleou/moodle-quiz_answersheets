@@ -80,6 +80,22 @@
 }
 /* End for Record audio. */
 
+/* For Matching. */
+#page-mod-quiz-report-answersheets-attemptsheet .que.match .formulation .ablock .answer ul.answer-list {
+    margin-bottom: 0;
+}
+
+#page-mod-quiz-report-answersheets-attemptsheet .que.match .formulation .ablock .answer td.text {
+    vertical-align: top;
+}
+/* End for Matching. */
+
+#page-mod-quiz-report-answersheets-attemptsheet .que span.answer-list-inline,
+#page-mod-quiz-report-answersheets-attemptsheet .que span.answer-list-inline code {
+    font-style: italic;
+    color: #7e0d08;
+}
+
 #page-mod-quiz-report-answersheets-submitresponses .submit-responses {
     float: right;
 }

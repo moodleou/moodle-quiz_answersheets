@@ -437,4 +437,20 @@ class utils {
         return in_array($questiontype, self::COMBINED_FEEDBACK_QTYPES);
     }
 
+    /**
+     * Check if we should hide the inline choice or not
+     *
+     * @param moodle_page $page
+     * @return bool
+     */
+    public static function should_hide_inline_choice(moodle_page $page): bool {
+        $rightanswer = $page->url->get_param('rightanswer');
+        $attemptid = $page->url->get_param('attempt');
+        $attemptobj = quiz_attempt::create($attemptid);
+        $attempt = $attemptobj->get_attempt();
+
+        return $page->pagetype != 'mod-quiz-report-answersheets-attemptsheet' || $rightanswer ||
+                $attempt->state == quiz_attempt::FINISHED;
+    }
+
 }
