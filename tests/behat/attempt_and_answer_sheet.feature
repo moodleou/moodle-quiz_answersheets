@@ -35,10 +35,7 @@ Feature: Attempt sheet, Review sheet and Answer sheet feature of the Answer shee
 
   @javascript
   Scenario: Attempt sheet, Answer sheet links do not exist for Student do not have any attempt yet
-    Given I log in as "teacher"
-    And I am on "Course 1" course homepage
-    And I follow "Quiz 1"
-    And I navigate to "Results > Export attempts" in current page administration
+    Given I am on the "Quiz 1" "quiz_answersheets > Report" page logged in as "teacher"
     And I set the field "Attempts from" to "enrolled users who have attempted the quiz"
     When I press "Show report"
     Then I should see "Attempts: 0"
@@ -58,10 +55,7 @@ Feature: Attempt sheet, Review sheet and Answer sheet feature of the Answer shee
     And user "student1" has checked answers in their attempt at quiz "Quiz 1":
       | slot | response |
       | 1    | True     |
-    And I log in as "teacher"
-    And I am on "Course 1" course homepage
-    And I follow "Quiz 1"
-    When I navigate to "Results > Export attempts" in current page administration
+    When I am on the "Quiz 1" "quiz_answersheets > Report" page logged in as "teacher"
     Then I should see "Attempts: 1"
     And I should see "Student One"
     And "Student One" row "Attempt sheets" column of "answersheets" table should contain "Attempt sheet"

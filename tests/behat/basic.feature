@@ -33,10 +33,8 @@ Feature: Basic use of the Answer sheets report
 
   @javascript
   Scenario: Answer sheets report works when there are no attempts
-    Given I log in as "teacher"
-    And I am on "Course 1" course homepage
-    And I follow "Quiz 1"
-    And I navigate to "Results > Export attempts" in current page administration
+    Given I am on the "Quiz 1" "mod_quiz > View" page logged in as "teacher"
+    When I navigate to "Results > Export attempts" in current page administration
     And I set the field "Attempts from" to "enrolled users who have attempted the quiz"
     Then I press "Show report"
     Then I should see "Attempts: 0"
@@ -48,12 +46,9 @@ Feature: Basic use of the Answer sheets report
     Given user "student1" has attempted "Quiz 1" with responses:
       | slot | response |
       | 1    | True     |
-    And I log in as "teacher"
-    And I am on "Course 1" course homepage
-    And I follow "Quiz 1"
-    And I navigate to "Results > Export attempts" in current page administration
+    When I am on the "Quiz 1" "quiz_answersheets > Report" page logged in as "teacher"
     And I set the field "Attempts from" to "enrolled users who have attempted the quiz"
-    When I press "Show report"
+    And I press "Show report"
     Then I should see "Attempts: 1"
     And I should see "Student One"
     And I should not see "Student Two"
@@ -63,10 +58,7 @@ Feature: Basic use of the Answer sheets report
 
   @javascript
   Scenario: Instruction message will be displayed
-    Given I log in as "teacher"
-    And I am on "Course 1" course homepage
-    And I follow "Quiz 1"
-    When I navigate to "Results > Export attempts" in current page administration
+    When I am on the "Quiz 1" "quiz_answersheets > Report" page logged in as "teacher"
     Then ".instruction" "css_element" should not exist
     And the following config values are set as admin:
       | config              | value                    | plugin            |

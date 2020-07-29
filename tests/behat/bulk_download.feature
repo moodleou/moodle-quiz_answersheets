@@ -35,10 +35,7 @@ Feature: Test parts of the bulk download feature
     Given user "student1" has attempted "Quiz 1" with responses:
       | slot | response |
       | 1    | True     |
-    And I log in as "admin"
-    And I am on "Course 1" course homepage
-    And I follow "Quiz 1"
-    And I navigate to "Results > Export attempts" in current page administration
+    When I am on the "Quiz 1" "quiz_answersheets > Report" page logged in as "teacher"
     And I follow "Download review sheets in bulk"
     Then I should see "To be able to download review sheets in bulk"
     And following "bulk download steps file" should download between "400" and "600" bytes

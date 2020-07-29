@@ -34,13 +34,10 @@ Feature: Test show default instruction text of question
     Given user "student1" has attempted "Quiz 1" with responses:
       | slot | response |
       | 1    | True     |
-    And I log in as "admin"
-    And I am on "Course 1" course homepage
-    And I follow "Quiz 1"
-    And I navigate to "Results > Export attempts" in current page administration
+    When I am on the "Quiz 1" "quiz_answersheets > Report" page logged in as "teacher"
     And I click on "Show default instruction text?" "checkbox"
     And I click on "Show report" "button"
-    When I click on "Review sheet" "link" in the "Student One" "table_row"
+    And I click on "Review sheet" "link" in the "Student One" "table_row"
     Then I should see "First question"
     And I should not see "Select the correct answer."
 
@@ -49,10 +46,7 @@ Feature: Test show default instruction text of question
     Given user "student1" has attempted "Quiz 1" with responses:
       | slot | response |
       | 1    | True     |
-    And I log in as "admin"
-    And I am on "Course 1" course homepage
-    And I follow "Quiz 1"
-    And I navigate to "Results > Export attempts" in current page administration
-    When I click on "Review sheet" "link" in the "Student One" "table_row"
+    When I am on the "Quiz 1" "quiz_answersheets > Report" page logged in as "teacher"
+    And I click on "Review sheet" "link" in the "Student One" "table_row"
     Then I should see "First question"
     And I should see "Select the correct answer."
