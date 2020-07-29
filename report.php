@@ -313,13 +313,28 @@ class quiz_answersheets_report extends quiz_attempts_report {
             report_display_options $options): void {
         global $CFG;
 
+        $qtyperesponsefiles = $this->get_qtype_response_files();
+
         $table->setup();
         $table->query_db(10); // Page size does not matter since we are downloading.
 
-        $script = '';
-        $script .= 'zip-name ' . $zipfilename . "\n";
-        $script .= 'cookies ' . $this->obfuscate_cookies_for_script() . "\n";
+        // Start writing the script to a downloadable .txt file.
+        header('Content-Disposition: attachment; filename="' . $zipfilename . '-steps.txt"');
+        header('Content-Type: text/plain; charset=UTF-8');
+        echo "# This set of steps is designed to be processed by the save-answersheets tool.\n";
+        echo "# Save in the same folder as save-answersheets then run the command-line\n";
+        echo "#\n";
+        echo "#     .\save-answersheets $zipfilename-steps.txt\n";
+        echo "#\n";
+        echo "# Remember to delete this file after use!\n\n";
+
+        echo 'zip-name ' . $zipfilename . "\n";
+        echo 'cookies ' . $this->obfuscate_cookies_for_script() . "\n";
         foreach ($table->rawdata as $attempt) {
+            // Try to avoid time-outs.
+            core_php_time_limit::raise(60);
+            flush();
+
             if (empty($attempt->attempt)) {
                 // Not actually an attempt.
                 continue;
@@ -329,16 +344,20 @@ class quiz_answersheets_report extends quiz_attempts_report {
                 continue;
             }
 
-            // Load the attempt.
-            $attemptobj = quiz_create_attempt_handling_errors($attempt->attempt,
-                    $this->context->instanceid);
-
             // Save the Review sheet as a PDF.
             $folder = $this->generate_attempt_folder_name($attempt);
-            $script .= "\nsave-pdf " . $CFG->wwwroot .
+            echo "\nsave-pdf " . $CFG->wwwroot .
                     '/mod/quiz/report/answersheets/attemptsheet.php?attempt=' . $attempt->attempt .
                     '&userinfo=' . $options->combine_user_info_visibility() .
                     ' as ' . $folder . '/responses.pdf' . "\n";
+
+            if (!$this->attempt_has_any_questions_with_files($attempt->attempt, $qtyperesponsefiles)) {
+                continue;
+            }
+
+            // Load the attempt.
+            $attemptobj = quiz_create_attempt_handling_errors($attempt->attempt,
+                    $this->context->instanceid);
 
             // Save any response files.
             foreach ($attemptobj->get_slots() as $slot) {
@@ -359,7 +378,7 @@ class quiz_answersheets_report extends quiz_attempts_report {
                     // We have files to save.
                     $filefolder = 'q' . $attemptobj->get_question_number($slot) . '-files';
                     foreach ($files as $file) {
-                        $script .= 'save-file ' . $qa->get_response_file_url($file) .
+                        echo 'save-file ' . $qa->get_response_file_url($file) .
                                 ' as ' . $folder . '/' . $filefolder . '/' .
                                 $this->clean_filename($filearea) . '-' .
                                 $this->clean_filename($file->get_filename()) . "\n";
@@ -368,19 +387,53 @@ class quiz_answersheets_report extends quiz_attempts_report {
             }
         }
 
-        // Write out the script to a downloadable .txt file.
-        header('Content-Disposition: attachment; filename="' . $zipfilename . '-steps.txt"');
-        header('Content-Type: text/plain; charset=UTF-8');
-        echo "# This set of steps is designed to be processed by the save-answersheets tool.\n";
-        echo "# Save in the same folder as save-answersheets then run the command-line\n";
-        echo "#\n";
-        echo "#     .\save-answersheets $zipfilename-steps.txt\n";
-        echo "#\n";
-        echo "# Remember to delete this file after use!\n\n";
-        echo $script;
         echo "\n# The end -- presence of this line confirms all the steps were generated.\n";
-
         die;
+    }
+
+    /**
+     * Return an array listing all the question types which might have response files.
+     *
+     * @return array qtype name (e.g. essay) => array of response file area names.
+     */
+    protected function get_qtype_response_files(): array {
+        $qtypefileareas = [];
+
+        foreach (question_bank::get_all_qtypes() as $qtype) {
+            $areas = $qtype->response_file_areas();
+            if ($areas) {
+                $qtypefileareas[$qtype->name()] = $areas;
+            }
+        }
+
+        return $qtypefileareas;
+    }
+
+    /**
+     * Check a quiz attempt to see if it contains any questions which might have response files.
+     *
+     * @param int $attemptid quiz attempt id.
+     * @param array $qtyperesponsefiles the array returned by get_qtype_response_files();
+     * @return bool true if there are any question types where the response might contain files.
+     */
+    protected function attempt_has_any_questions_with_files(int $attemptid, array $qtyperesponsefiles): bool {
+        global $DB;
+
+        if (empty($qtyperesponsefiles)) {
+            return false;
+        }
+
+        [$qtypetest, $params] = $DB->get_in_or_equal(array_keys($qtyperesponsefiles));
+        $params[] = $attemptid;
+
+        return $DB->record_exists_sql("
+                SELECT 1
+                  FROM {quiz_attempts} quiza
+                  JOIN {question_attempts} qa ON qa.questionusageid = quiza.uniqueid
+                  JOIN {question} q ON q.id = qa.questionid
+                 WHERE q.qtype $qtypetest
+                   AND quiza.id = ?
+            ", $params);
     }
 
     /**
