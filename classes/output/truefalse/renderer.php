@@ -108,6 +108,14 @@ class qtype_truefalse_override_renderer extends \qtype_truefalse_renderer {
             $falseclass = ' ' . $this->feedback_class((int) (!$question->rightanswer));
             $falsefeedbackimg = $this->feedback_image((int) (!$question->rightanswer));
         }
+
+        $truefeedback = html_writer::tag('div',
+                $question->make_html_inline($question->format_text($question->truefeedback, $question->truefeedbackformat, $qa,
+                        'question', 'answerfeedback', $question->trueanswerid)), ['class' => 'specificfeedback']);
+        $falsefeedback = html_writer::tag('div',
+                $question->make_html_inline($question->format_text($question->falsefeedback, $question->falsefeedbackformat, $qa,
+                        'question', 'answerfeedback', $question->falseanswerid)), ['class' => 'specificfeedback']);
+
         // Modification ends.
 
         $radiotrue = html_writer::empty_tag('input', $trueattributes) .
@@ -126,10 +134,18 @@ class qtype_truefalse_override_renderer extends \qtype_truefalse_renderer {
                 array('class' => 'prompt'));
 
         $result .= html_writer::start_tag('div', array('class' => 'answer'));
+        // Modification starts.
+        /* Comment out core code.
         $result .= html_writer::tag('div', $radiotrue . ' ' . $truefeedbackimg,
                 array('class' => 'r0' . $trueclass));
         $result .= html_writer::tag('div', $radiofalse . ' ' . $falsefeedbackimg,
                 array('class' => 'r1' . $falseclass));
+        */
+        $result .= html_writer::tag('div', $radiotrue . ' ' . $truefeedbackimg . ' ' . $truefeedback,
+                ['class' => 'r0' . $trueclass]);
+        $result .= html_writer::tag('div', $radiofalse . ' ' . $falsefeedbackimg . ' ' . $falsefeedback,
+                ['class' => 'r1' . $falseclass]);
+        // Modification ends.
         $result .= html_writer::end_tag('div'); // Answer.
 
         $result .= html_writer::end_tag('div'); // Ablock.

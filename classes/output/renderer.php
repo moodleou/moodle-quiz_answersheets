@@ -259,6 +259,31 @@ class renderer extends plugin_renderer_base {
                 FORMAT_MARKDOWN, ['context' => $context]);
         return $output;
     }
+
+    /**
+     * Render the choice list.
+     *
+     * @param array $choices List of choices
+     * @param bool $inline Render the choices inline or not
+     * @return string HTML string
+     */
+    public function render_choices(array $choices, bool $inline): string {
+        $output = '';
+
+        if (!empty($choices)) {
+            if (!$inline) {
+                $output .= html_writer::start_tag('ul', ['class' => 'answer-list']);
+                foreach ($choices as $value => $choice) {
+                    $output .= html_writer::tag('li', $choice);
+                }
+                $output .= html_writer::end_tag('ul');
+            } else {
+                $output .= html_writer::span('[' . implode(' | ', $choices) . ']', 'answer-list-inline');
+            }
+        }
+
+        return $output;
+    }
 }
 
 

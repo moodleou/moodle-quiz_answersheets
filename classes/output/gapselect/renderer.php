@@ -54,7 +54,7 @@ class qtype_gapselect_override_renderer extends \qtype_gapselect_renderer {
         if (utils::should_hide_inline_choice($this->page)) {
             return parent::embedded_element($qa, $place, $options);
         }
-
+        $quizprintingrenderer = $this->page->get_renderer('quiz_answersheets');
         $question = $qa->get_question();
         $group = $question->places[$place];
 
@@ -63,23 +63,7 @@ class qtype_gapselect_override_renderer extends \qtype_gapselect_renderer {
         foreach ($orderedchoices as $orderedchoicevalue => $orderedchoice) {
             $selectoptions[$orderedchoicevalue] = format_string($orderedchoice->text);
         }
-        return $this->render_choices($selectoptions);
-    }
-
-    /**
-     * Render the choice inline list.
-     *
-     * @param array $choices List of choices
-     * @return string HTML string
-     */
-    private function render_choices(array $choices): string {
-        $output = '';
-
-        if (!empty($choices)) {
-            $output .= html_writer::span('[' . implode(' | ', $choices) . ']', 'answer-list-inline');
-        }
-
-        return $output;
+        return $quizprintingrenderer->render_choices($selectoptions, true);
     }
 
 }

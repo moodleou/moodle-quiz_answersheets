@@ -275,7 +275,7 @@ class qtype_combined_gapselect_embedded_override_renderer extends \qtype_combine
         if (utils::should_hide_inline_choice($this->page)) {
             return parent::subquestion($qa, $options, $subq, $placeno);
         }
-
+        $quizprintingrenderer = $this->page->get_renderer('quiz_answersheets');
         $question = $subq->question;
         $place = $placeno + 1;
         $group = $question->places[$place];
@@ -286,23 +286,7 @@ class qtype_combined_gapselect_embedded_override_renderer extends \qtype_combine
             $selectoptions[$orderedchoicevalue] = $orderedchoice->text;
         }
 
-        return $this->render_choices($selectoptions);
-    }
-
-    /**
-     * Render the choice inline list.
-     *
-     * @param array $choices List of choices
-     * @return string HTML string
-     */
-    private function render_choices(array $choices): string {
-        $output = '';
-
-        if (!empty($choices)) {
-            $output .= html_writer::span('[' . implode(' | ', $choices) . ']', 'answer-list-inline');
-        }
-
-        return $output;
+        return $quizprintingrenderer->render_choices($selectoptions, true);
     }
 
 }

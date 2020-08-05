@@ -176,8 +176,8 @@ class qtype_stack_override_renderer extends \qtype_stack_renderer {
      * @return string HTML string
      */
     private function render_choices(\stack_dropdown_input $input): string {
-        $output = '';
         $choices = [];
+        $quizprintingrenderer = $this->page->get_renderer('quiz_answersheets');
         $answer = utils::get_reflection_property($input, 'ddlvalues');
 
         foreach ($answer as $key => $value) {
@@ -186,11 +186,7 @@ class qtype_stack_override_renderer extends \qtype_stack_renderer {
             }
         }
 
-        if (!empty($choices)) {
-            $output .= html_writer::span('[' . implode(' | ', $choices) . ']', 'answer-list-inline');
-        }
-
-        return $output;
+        return $quizprintingrenderer->render_choices($choices, true);
     }
 
 }

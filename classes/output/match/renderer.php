@@ -53,13 +53,14 @@ class qtype_match_override_renderer extends \qtype_match_renderer {
         if (utils::should_hide_inline_choice($this->page)) {
             return parent::formulation_and_controls($qa, $options);
         }
+        $quizprintingrenderer = $this->page->get_renderer('quiz_answersheets');
         $question = $qa->get_question();
         $stemorder = $question->get_stem_order();
         $response = $qa->get_last_qt_data();
 
         $choices = $this->format_choices($question);
         // Modification starts.
-        $choiceslist = $this->render_choices($choices);
+        $choiceslist = $quizprintingrenderer->render_choices($choices, false);
         // Modification ends.
 
         $result = '';
@@ -126,26 +127,6 @@ class qtype_match_override_renderer extends \qtype_match_renderer {
         }
 
         return $result;
-    }
-
-    /**
-     * Render the choice list.
-     *
-     * @param array $choices List of choices
-     * @return string HTML string
-     */
-    private function render_choices(array $choices): string {
-        $output = '';
-
-        if (!empty($choices)) {
-            $output .= html_writer::start_tag('ul', ['class' => 'answer-list']);
-            foreach ($choices as $value => $choice) {
-                $output .= html_writer::tag('li', $choice);
-            }
-            $output .= html_writer::end_tag('ul');
-        }
-
-        return $output;
     }
 
 }

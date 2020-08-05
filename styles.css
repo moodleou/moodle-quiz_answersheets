@@ -90,6 +90,17 @@
 }
 /* End for Matching. */
 
+/* For TrueFalse. */
+#page-mod-quiz-report-answersheets-attemptsheet .que.truefalse .answer .specificfeedback {
+    display: inline;
+    background: #fff8eb;
+    border: 1px solid #fff8eb;
+    padding: 3px;
+    text-shadow: none;
+    text-indent: 0;
+}
+/* End for TrueFalse. */
+
 #page-mod-quiz-report-answersheets-attemptsheet .que span.answer-list-inline,
 #page-mod-quiz-report-answersheets-attemptsheet .que span.answer-list-inline code {
     font-style: italic;
