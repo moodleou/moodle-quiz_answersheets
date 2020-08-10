@@ -127,7 +127,7 @@
 
 @media print {
     /* Set the page to A4 size to prevent border lost. */
-    body:not(.gecko) {
+    body#page-mod-quiz-report-answersheets-attemptsheet:not(.gecko) {
         height: 297mm;
         width: 210mm;
     }
