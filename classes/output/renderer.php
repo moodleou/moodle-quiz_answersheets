@@ -67,6 +67,8 @@ class renderer extends plugin_renderer_base {
         $qoutput = $this->page->get_renderer('quiz_answersheets', 'core_question_override');
 
         foreach ($slots as $slot) {
+            // Clone the display option for each question.
+            $cloneddisplayoptions = clone($displayoptions);
             $originalslot = $attemptobj->get_original_slot($slot);
             $questionnumber = $attemptobj->get_question_number($originalslot);
 
@@ -75,9 +77,9 @@ class renderer extends plugin_renderer_base {
             $behaviouroutput = $this->page->get_renderer(get_class($qa->get_behaviour()));
 
             if (utils::should_show_combined_feedback($qa->get_question()->get_type_name()) && $rightanswer) {
-                $displayoptions->generalfeedback = question_display_options::HIDDEN;
-                $displayoptions->numpartscorrect = question_display_options::HIDDEN;
-                $displayoptions->rightanswer = question_display_options::HIDDEN;
+                $cloneddisplayoptions->generalfeedback = question_display_options::HIDDEN;
+                $cloneddisplayoptions->numpartscorrect = question_display_options::HIDDEN;
+                $cloneddisplayoptions->rightanswer = question_display_options::HIDDEN;
             }
 
             if ($rightanswer && $attempt->state == quiz_attempt::IN_PROGRESS) {
@@ -87,11 +89,10 @@ class renderer extends plugin_renderer_base {
                 }
             } else {
                 // Only adjust the display option for Attempt sheet and Submit responses.
-                $displayoptions = clone($displayoptions);
-                $qa->get_behaviour()->adjust_display_options($displayoptions);
+                $qa->get_behaviour()->adjust_display_options($cloneddisplayoptions);
             }
 
-            $output .= $qoutput->question($qa, $behaviouroutput, $qtoutput, $displayoptions, $questionnumber);
+            $output .= $qoutput->question($qa, $behaviouroutput, $qtoutput, $cloneddisplayoptions, $questionnumber);
         }
 
         return $output;
