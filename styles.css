@@ -266,4 +266,10 @@
     }
     /* End for Record audio. */
 
+    /* For Word Select. */
+    #page-mod-quiz-report-answersheets-attemptsheet .que.wordselect .qtext span.multiword {
+        border: none;
+    }
+    /* End for Word Select. */
+
 }
