@@ -102,19 +102,21 @@ class qtype_truefalse_override_renderer extends \qtype_truefalse_renderer {
             }
         }
         */
+        $truefeedback = '';
+        $falsefeedback = '';
         if ($options->correctness) {
             $trueclass = ' ' . $this->feedback_class((int) $question->rightanswer);
             $truefeedbackimg = $this->feedback_image((int) $question->rightanswer);
             $falseclass = ' ' . $this->feedback_class((int) (!$question->rightanswer));
             $falsefeedbackimg = $this->feedback_image((int) (!$question->rightanswer));
-        }
 
-        $truefeedback = html_writer::tag('div',
-                $question->make_html_inline($question->format_text($question->truefeedback, $question->truefeedbackformat, $qa,
-                        'question', 'answerfeedback', $question->trueanswerid)), ['class' => 'specificfeedback']);
-        $falsefeedback = html_writer::tag('div',
-                $question->make_html_inline($question->format_text($question->falsefeedback, $question->falsefeedbackformat, $qa,
-                        'question', 'answerfeedback', $question->falseanswerid)), ['class' => 'specificfeedback']);
+            $truefeedback = html_writer::tag('div',
+                    $question->make_html_inline($question->format_text($question->truefeedback, $question->truefeedbackformat, $qa,
+                            'question', 'answerfeedback', $question->trueanswerid)), ['class' => 'specificfeedback']);
+            $falsefeedback = html_writer::tag('div',
+                    $question->make_html_inline($question->format_text($question->falsefeedback, $question->falsefeedbackformat,
+                            $qa, 'question', 'answerfeedback', $question->falseanswerid)), ['class' => 'specificfeedback']);
+        }
 
         // Modification ends.
 
