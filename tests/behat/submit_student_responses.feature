@@ -74,6 +74,7 @@ Feature: Submit student responses feature of the Answer sheets report
     And "Student One" row "State" column of "answersheets" table should contain "Overdue"
     And "Student One" row "Submit student responses" column of "answersheets" table should contain "Submit responses..."
     And I click on "Submit responses..." "link" in the "Student One" "table_row"
+    And I should not see "You can preview this quiz, but if this were a real attempt, you would be blocked because:"
     And I should see "First question"
     And I set the field "False" to "1"
     And I click on "Submit responses on behalf of Student One (student1) and finish attempt" "button"

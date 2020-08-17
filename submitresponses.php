@@ -78,8 +78,6 @@ $sumdata = utils::prepare_summary_attempt_information($attemptobj, !$isattemptfi
                 $attemptobj->get_cm(), $attemptobj->get_course()));
 echo $quizrenderer->review_summary_table($sumdata, 'all');
 
-echo $quizrenderer->quiz_notices($messages);
-
 echo $renderer->render_question_attempt_form($attemptobj, $redirect);
 
 echo $OUTPUT->footer();
