@@ -34,7 +34,14 @@
     margin-top: 15px;
 }
 
-#page-mod-quiz-report-answersheets-attemptsheet .que .outcome {
+/* Only hide the feedback for COMBINED_FEEDBACK_QTYPES. */
+#page-mod-quiz-report-answersheets-attemptsheet .que.oumultiresponse .outcome,
+#page-mod-quiz-report-answersheets-attemptsheet .que.match .outcome,
+#page-mod-quiz-report-answersheets-attemptsheet .que.multichoice .outcome,
+#page-mod-quiz-report-answersheets-attemptsheet .que.gapselect .outcome,
+#page-mod-quiz-report-answersheets-attemptsheet .que.truefalse .outcome,
+#page-mod-quiz-report-answersheets-attemptsheet .que.wordselect .outcome,
+#page-mod-quiz-report-answersheets-attemptsheet .que.combined .outcome {
     display: none;
 }
 
