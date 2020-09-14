@@ -324,7 +324,7 @@ class quiz_answersheets_report extends quiz_attempts_report {
         echo "# This set of steps is designed to be processed by the save-answersheets tool.\n";
         echo "# Save in the same folder as save-answersheets then run the command-line\n";
         echo "#\n";
-        echo "#     .\save-answersheets $zipfilename-steps.txt\n";
+        echo "#     .\save-answersheets '$zipfilename-steps.txt'\n";
         echo "#\n";
         echo "# Remember to delete this file after use!\n\n";
 

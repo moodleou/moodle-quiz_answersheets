@@ -49,7 +49,7 @@ $string['bulkinstructions'] = 'To be able to download review sheets in bulk, you
 3. Save that file (which should be called `{$a->scriptname}-steps.txt`) in the same folder where you have `save-answersheets`
    on your computer.
 4. Open a command prompt and go to that folder.
-5. Type the command `.\save-answersheets {$a->scriptname}-steps.txt` and wait for it to run. It outputs what it is doing as it goes.
+5. Type the command `.\save-answersheets \'{$a->scriptname}-steps.txt\'` and wait for it to run. It outputs what it is doing as it goes.
 6. Once the script has finished, you should have a file `{$a->scriptname}.zip` inside the `output` folder.
 7. Remember to delete the `{$a->scriptname}-steps.txt` file.';
 $string['bulkinstructionstitle'] = 'Instructions for downloading review sheets in bulk';
