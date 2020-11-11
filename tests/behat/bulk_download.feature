@@ -38,4 +38,4 @@ Feature: Test parts of the bulk download feature
     When I am on the "Quiz 1" "quiz_answersheets > Report" page logged in as "teacher"
     And I follow "Download review sheets in bulk"
     Then I should see "To be able to download review sheets in bulk"
-    And following "bulk download steps file" should download between "400" and "600" bytes
+    And following "bulk download steps file" should download between "400" and "800" bytes
