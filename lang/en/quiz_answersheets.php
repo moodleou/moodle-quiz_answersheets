@@ -51,7 +51,13 @@ $string['bulkinstructions'] = 'To be able to download review sheets in bulk, you
 4. Open a command prompt and go to that folder.
 5. Type the command `.\save-answersheets \'{$a->scriptname}-steps.txt\'` and wait for it to run. It outputs what it is doing as it goes.
 6. Once the script has finished, you should have a file `{$a->scriptname}.zip` inside the `output` folder.
-7. Remember to delete the `{$a->scriptname}-steps.txt` file.';
+7. Remember to delete the `{$a->scriptname}-steps.txt` file.
+
+Once you have the file downloaded, if you only want the files for one student, you can run a command like
+`.\save-answersheets --download-only \'X1234567\' \'{$a->scriptname}-steps.txt\'`
+
+If you run any of these commands again, they will just download files which have not already been fetched. This can be helpful,
+for example if just a few additional students have attempted the quiz.';
 $string['bulkinstructionstitle'] = 'Instructions for downloading review sheets in bulk';
 $string['bulkinstructionswarning'] = '<b>Warning</b>! the file you download in Step 2 of the instructions below contains enough
 information for the tool to access the quiz attempts to be saved using your current login session. You <b>must</b> delete
