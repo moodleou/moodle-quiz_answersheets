@@ -368,6 +368,7 @@ class quiz_answersheets_report extends quiz_attempts_report {
                     continue;
                 }
 
+                $anyfilessaved = false;
                 foreach ($fileareas as $filearea) {
                     $files = $qa->get_last_qt_files($filearea, $this->context->id);
                     if (!$files) {
@@ -378,11 +379,19 @@ class quiz_answersheets_report extends quiz_attempts_report {
                     // We have files to save.
                     $filefolder = 'q' . $attemptobj->get_question_number($slot) . '-files';
                     foreach ($files as $file) {
+                        $anyfilessaved = true;
                         echo 'save-file ' . $qa->get_response_file_url($file) .
                                 ' as ' . $folder . '/' . $filefolder . '/' .
                                 $this->clean_filename($filearea) . '-' .
                                 $this->clean_filename($file->get_filename()) . "\n";
                     }
+                }
+
+                if (!$anyfilessaved) {
+                    // This question did not have any files at all
+                    echo 'save-text No_files_were_uploaded_in_response_to_this_question. as ' .
+                            $folder . '/' . 'q' . $attemptobj->get_question_number($slot) .
+                            '-has-no-files.txt' . "\n";
                 }
             }
         }
