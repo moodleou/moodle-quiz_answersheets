@@ -250,6 +250,7 @@ class quiz_answersheets_report extends quiz_attempts_report {
         if (!$table->is_downloading() && has_capability('quiz/answersheets:view', $this->context)) {
             $columns[] = 'attempt_sheet';
             $headers[] = get_string('column_attempt_sheet', 'quiz_answersheets');
+            $table->no_sorting('attempt_sheet');
         }
     }
 
@@ -264,6 +265,7 @@ class quiz_answersheets_report extends quiz_attempts_report {
         if (!$table->is_downloading() && has_capability('quiz/answersheets:viewrightanswers', $this->context)) {
             $columns[] = 'answer_sheet';
             $headers[] = get_string('column_answer_sheet', 'quiz_answersheets');
+            $table->no_sorting('answer_sheet');
         }
     }
 
@@ -278,6 +280,7 @@ class quiz_answersheets_report extends quiz_attempts_report {
         if (!$table->is_downloading() && has_capability('quiz/answersheets:submitresponses', $this->context)) {
             $columns[] = 'submit_student_responses';
             $headers[] = get_string('column_submit_student_responses', 'quiz_answersheets');
+            $table->no_sorting('submit_student_responses');
         }
     }
 
@@ -299,6 +302,7 @@ class quiz_answersheets_report extends quiz_attempts_report {
             ], 'quiz_answersheets');
             $columns[] = 'create_attempt';
             $headers[] = get_string('create_attempt', 'quiz_answersheets');
+            $table->no_sorting('create_attempt');
         }
     }
 
