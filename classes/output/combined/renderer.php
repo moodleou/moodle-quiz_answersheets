@@ -96,7 +96,7 @@ class qtype_combined_override_renderer extends \qtype_combined_renderer {
         foreach ($this->subqs as $subq) {
         */
         foreach ($subqs as $subq) {
-        // Modification ends.
+            // Modification ends.
             $embedcodes = $subq->question_text_embed_codes();
             $currentpos = 0;
             foreach ($embedcodes as $placeno => $embedcode) {
@@ -213,7 +213,9 @@ class qtype_oumultiresponse_embedded_override_renderer extends \qtype_oumultires
 
             $checkboxes[] = html_writer::empty_tag('input', $inputattributes + $commonattributes) .
                     html_writer::tag('label',
-                            html_writer::span(\qtype_combined\utils::number_in_style($value, $question->answernumbering), 'answernumber') .
+                            html_writer::span(
+                                    \qtype_combined\utils::number_in_style($value, $question->answernumbering),
+                                    'answernumber') .
                             $question->make_html_inline($question->format_text(
                                     $ans->answer, $ans->answerformat, $qa, 'question', 'answer', $ansid)),
                             ['for' => $inputattributes['id']]);
@@ -224,7 +226,7 @@ class qtype_oumultiresponse_embedded_override_renderer extends \qtype_oumultires
             if ($options->correctness && $isselected) {
             */
             if ($options->correctness) {
-            // Modification ends.
+                // Modification ends.
                 $iscbcorrect = ($ans->fraction > 0) ? 1 : 0;
                 $feedbackimg[] = $this->feedback_image($iscbcorrect);
                 $class .= ' ' . $this->feedback_class($iscbcorrect);

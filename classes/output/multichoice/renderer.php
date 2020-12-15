@@ -103,7 +103,7 @@ class qtype_multichoice_override_renderer extends \qtype_multichoice_single_rend
             */
             if ($options->feedback && empty($options->suppresschoicefeedback) &&
                     trim($ans->feedback)) {
-            // Modification ends.
+                // Modification ends.
                 $feedback[] = html_writer::tag('div',
                         $question->make_html_inline($question->format_text(
                                 $ans->feedback, $ans->feedbackformat,
@@ -118,7 +118,7 @@ class qtype_multichoice_override_renderer extends \qtype_multichoice_single_rend
             if ($options->correctness && $isselected) {
             */
             if ($options->correctness) {
-            // Modification ends.
+                // Modification ends.
                 $feedbackimg[] = $this->feedback_image($this->is_right($ans));
                 $class .= ' ' . $this->feedback_class($this->is_right($ans));
             } else {

@@ -388,7 +388,7 @@ class quiz_answersheets_report extends quiz_attempts_report {
                 }
 
                 if (!$anyfilessaved) {
-                    // This question did not have any files at all
+                    // This question did not have any files at all.
                     echo 'save-text No_files_were_uploaded_in_response_to_this_question. as ' .
                             $folder . '/' . 'q' . $attemptobj->get_question_number($slot) .
                             '-has-no-files.txt' . "\n";
