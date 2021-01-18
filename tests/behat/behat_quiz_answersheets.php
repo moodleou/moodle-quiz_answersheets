@@ -96,4 +96,17 @@ class behat_quiz_answersheets extends behat_question_base {
         $quiz = $this->get_quiz_by_name($name);
         return get_coursemodule_from_instance('quiz', $quiz->id, $quiz->course);
     }
+
+    /**
+     * Check that the given Question type already installed.
+     *
+     * @Given /^I check the "(?P<question_type_string>(?:[^"]|\\")*)" question type already installed for export attempts report$/
+     */
+    public function check_question_type_installed($questiontype) {
+        $qtypes = question_bank::get_creatable_qtypes();
+        if (!array_key_exists($questiontype, $qtypes)) {
+            // Question type not available.
+            throw new \Moodle\BehatExtension\Exception\SkippedException();
+        }
+    }
 }
