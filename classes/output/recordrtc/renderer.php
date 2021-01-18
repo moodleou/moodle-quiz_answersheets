@@ -48,9 +48,29 @@ class qtype_recordrtc_override_renderer extends \qtype_recordrtc_renderer {
 
         // Add custom class to original no recording message div, so we can control it by CSS selector easily.
         $output .= html_writer::div(parent::no_recording_message(), 'no-recording-warning');
-        $output .= $this->interactive_content_warning();
+        $output .= $this->no_response_recorded();
 
         return $output;
+    }
+
+    protected function playback_ui($recordingurl, string $mediatype, string $filename, $videowidth, $videoheight) {
+        $output = '';
+
+        // Add custom class to original playback ui div, so we can control it by CSS selector easily.
+        $output .= html_writer::div(parent::playback_ui($recordingurl, $mediatype, $filename, $videowidth, $videoheight),
+                'playback-ui-warning');
+        $output .= $this->response_recorded($filename);
+
+        return $output;
+    }
+
+    /**
+     * Render a message to say that no response recorded.
+     *
+     * @return string HTML to output.
+     */
+    protected function no_response_recorded(): string {
+        return html_writer::div(get_string('no_response_recorded', 'quiz_answersheets'), 'interactive-content-warning');
     }
 
     /**
@@ -60,6 +80,16 @@ class qtype_recordrtc_override_renderer extends \qtype_recordrtc_renderer {
      */
     protected function interactive_content_warning(): string {
         return html_writer::div(get_string('interactive_content_warning', 'quiz_answersheets'), 'interactive-content-warning');
+    }
+
+    /**
+     * Render a message to say that response recorded.
+     *
+     * @param string $filename
+     * @return string HTML to output.
+     */
+    protected function response_recorded(string $filename): string {
+        return html_writer::div(get_string('response_recorded', 'quiz_answersheets', $filename), 'interactive-content-warning');
     }
 
     protected function general_feedback(question_attempt $qa) {

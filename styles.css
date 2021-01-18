@@ -267,6 +267,7 @@
     }
 
     #page-mod-quiz-report-answersheets-attemptsheet .que.recordrtc .no-recording-warning,
+    #page-mod-quiz-report-answersheets-attemptsheet .que.recordrtc .playback-ui-warning,
     #page-mod-quiz-report-answersheets-attemptsheet .que.recordrtc .omp-wrapper,
     #page-mod-quiz-report-answersheets-attemptsheet .que.recordrtc .interactive-media-player {
         display: none;
