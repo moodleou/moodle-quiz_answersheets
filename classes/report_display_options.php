@@ -162,7 +162,8 @@ class report_display_options extends \mod_quiz_attempts_report_options {
 
         $settings = ['fullname' => true];
 
-        $userfields = get_extra_user_fields(context_module::instance($cm->id));
+        // TODO Does not support custom user profile fields (MDL-70456).
+        $userfields = \core_user\fields::get_identity_fields(context_module::instance($cm->id), false);
         foreach ($userfields as $field) {
             $settings[$field] = true;
         }
@@ -191,7 +192,7 @@ class report_display_options extends \mod_quiz_attempts_report_options {
             case 'fullname';
                 return get_string('fullnameuser');
             default:
-                return get_user_field_name($setting);
+                return \core_user\fields::get_display_name($setting);
         }
     }
 }
