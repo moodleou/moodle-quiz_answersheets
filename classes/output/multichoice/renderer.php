@@ -49,6 +49,7 @@ class qtype_multichoice_override_renderer extends \qtype_multichoice_single_rend
      * @return string
      */
     public function formulation_and_controls(question_attempt $qa, question_display_options $options) {
+        global $DB;
         $question = $qa->get_question();
         $response = $question->get_response($qa);
 
@@ -57,6 +58,14 @@ class qtype_multichoice_override_renderer extends \qtype_multichoice_single_rend
                 'type' => $this->get_input_type(),
                 'name' => $inputname,
         );
+        
+        // we overwrite the type if it is not a single multichoice
+        $questionid = $qa->get_question_id();
+        $specific_type = $DB->get_record('qtype_multichoice_options', ['questionid' => $questionid], 'single', MUST_EXIST);
+        if ($specific_type->single == 0){
+            $inputattributes['type'] = 'checkbox';
+        }
+        
 
         if ($options->readonly) {
             $inputattributes['disabled'] = 'disabled';
