@@ -43,7 +43,7 @@ require_once($CFG->dirroot . '/question/type/recordrtc/renderer.php');
 
 class qtype_recordrtc_override_renderer extends \qtype_recordrtc_renderer {
 
-    protected function no_recording_message() {
+    protected function no_recording_message(): string {
         $output = '';
 
         // Add custom class to original no recording message div, so we can control it by CSS selector easily.
@@ -53,7 +53,7 @@ class qtype_recordrtc_override_renderer extends \qtype_recordrtc_renderer {
         return $output;
     }
 
-    protected function playback_ui($recordingurl, string $mediatype, string $filename, $videowidth, $videoheight) {
+    protected function playback_ui($recordingurl, string $mediatype, string $filename, $videowidth, $videoheight): string {
         $output = '';
 
         // Add custom class to original playback ui div, so we can control it by CSS selector easily.
