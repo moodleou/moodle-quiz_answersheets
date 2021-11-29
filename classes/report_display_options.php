@@ -168,10 +168,8 @@ class report_display_options extends \mod_quiz_attempts_report_options {
             $settings[$field] = true;
         }
 
-        if (isset($settings['idnumber']) &&
-                is_readable($CFG->dirroot . '/mod/quiz/report/gradingstudents/examconfirmationcode.php')) {
-            require_once($CFG->dirroot . '/mod/quiz/report/gradingstudents/examconfirmationcode.php');
-            if (\quiz_gradingstudents_report_exam_confirmation_code::quiz_can_have_confirmation_code($cm->idnumber)) {
+        if (isset($settings['idnumber']) && class_exists('\quiz_gradingstudents_ou_confirmation_code')) {
+            if (\quiz_gradingstudents_ou_confirmation_code::quiz_can_have_confirmation_code($cm->idnumber)) {
                 $settings['examcode'] = true;
             }
         }

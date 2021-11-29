@@ -96,10 +96,7 @@ class report_table extends \quiz_attempts_report_table {
      * @return string HTML content to go inside the td.
      */
     public function col_examcode(\stdClass $row) {
-        global $CFG;
-        require_once($CFG->dirroot . '/mod/quiz/report/gradingstudents/examconfirmationcode.php');
-
-        return \quiz_gradingstudents_report_exam_confirmation_code::get_confirmation_code(
+        return \quiz_gradingstudents_ou_confirmation_code::get_confirmation_code(
                 $this->options->cm->idnumber, $row->idnumber);
     }
 
