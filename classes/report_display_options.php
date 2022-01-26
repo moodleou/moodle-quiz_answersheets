@@ -158,8 +158,6 @@ class report_display_options extends \mod_quiz_attempts_report_options {
      * @return array setting name => true
      */
     public static function possible_user_info_visibility_settings(\stdClass $cm): array {
-        global $CFG;
-
         $settings = ['fullname' => true];
 
         // TODO Does not support custom user profile fields (MDL-70456).

@@ -201,8 +201,6 @@ class utils {
      * @return string User detail string
      */
     public static function get_user_details(stdClass $attemptuser, stdClass $cm, $fieldoptions): string {
-        global $CFG;
-
         $fields = [];
         if ($fieldoptions instanceof report_display_options) {
             foreach ($fieldoptions->userinfovisibility as $field => $show) {

@@ -96,8 +96,10 @@ class report_table extends \quiz_attempts_report_table {
      * @return string HTML content to go inside the td.
      */
     public function col_examcode(\stdClass $row) {
+        $fakeuser = clone($row);
+        $fakeuser->id = $row->userid;
         return \quiz_gradingstudents_ou_confirmation_code::get_confirmation_code(
-                $this->options->cm->idnumber, $row->idnumber);
+                $this->options->cm, $fakeuser);
     }
 
     /**
@@ -187,7 +189,9 @@ class report_table extends \quiz_attempts_report_table {
             return self::DASH_VALUE;
         }
         if (!isset($this->userdetails[$row->userid])) {
-            $userdetails = utils::get_user_details($row, $this->options->cm, $this->options);
+            $fakeuser = clone($row);
+            $fakeuser->id = $row->userid;
+            $userdetails = utils::get_user_details($fakeuser, $this->options->cm, $this->options);
             $this->userdetails[$row->userid] = get_string('create_attempt_modal_description', 'quiz_answersheets', $userdetails);
         }
         $buttontext = get_string('create_attempt', 'quiz_answersheets');
