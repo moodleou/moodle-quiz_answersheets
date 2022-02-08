@@ -53,8 +53,13 @@ $string['bulkinstructions'] = 'To be able to download review sheets in bulk, you
 6. Once the script has finished, you should have a file `{$a->scriptname}.zip` inside the `output` folder.
 7. Remember to delete the `{$a->scriptname}-steps.txt` file.
 
-Once you have the file downloaded, if you only want the files for one student, you can run a command like
+If you only want the files for one student, you can run a command like
 `.\save-answersheets --download-only \'X1234567\' \'{$a->scriptname}-steps.txt\'`
+
+If you only need the attachments, without the PDF of the review page, then add `--skip-pdfs` to the command. This is much faster.
+Example command: `.\save-answersheets --skip-pdfs \'{$a->scriptname}-steps.txt\'`.
+
+These two options can be combined, e.g. `.\save-answersheets --skip-pdfs --download-only \'X1234567\' \'{$a->scriptname}-steps.txt\'`.
 
 If you run any of these commands again, they will just download files which have not already been fetched. This can be helpful,
 for example if just a few additional students have attempted the quiz.';
