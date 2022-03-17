@@ -1,5 +1,10 @@
 # Change log for the Export quiz attempts report
 
+## Changes in 1.3
+
+* This version works with Moodle 4.0.
+* Replaced uses of deprecated user fields functions. (Note, this plugin does not yet support the display of custom profile fields.)
+* Now shows improved instructions for bulk download.
 
 ## Changes in 1.2
 

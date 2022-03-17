@@ -16,7 +16,7 @@
 /**
  * Javascript for print event.
  *
- * @package   quiz_answersheets
+ * @module    quiz_answersheets/print
  * @copyright 2019 The Open University
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
