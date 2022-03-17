@@ -134,7 +134,7 @@ class quiz_answersheets_external extends external_api {
         $quba = question_engine::make_questions_usage_by_activity('mod_quiz', $quizobj->get_context());
         $quba->set_preferred_behaviour($quizobj->get_quiz()->preferredbehaviour);
 
-        // Create the new attempt and initialize the question sessions
+        // Create the new attempt and initialize the question sessions.
         $timenow = time(); // Update time now, in case the server is running really slowly.
         $attempt = quiz_create_attempt($quizobj, $attemptnumber, $lastattempt, $timenow, $ispreviewuser, $userid);
 

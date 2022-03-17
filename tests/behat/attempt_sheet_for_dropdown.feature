@@ -25,8 +25,7 @@ Feature: Attempt sheet the Export attempt report
 
   @javascript
   Scenario: Dropdown list in Attempt sheet will be converted to list
-    Given I log in as "admin"
-    And I am on "Course 1" course homepage
+    Given I am on the "Course 1" "Course" page logged in as "admin"
     And I navigate to "Question bank" in current page administration
     And I add a "Select missing words" question filling the form with:
       | Question name            | Select missing words          |
@@ -57,7 +56,7 @@ Feature: Attempt sheet the Export attempt report
     And user "student1" has started an attempt at quiz "Quiz 1"
     And I am on "Course 1" course homepage
     And I follow "Quiz 1"
-    And I navigate to "Results > Export attempts" in current page administration
+    And I am on the "Quiz 1" "quiz_answersheets > Report" page logged in as "admin"
     When I click on "Attempt sheet" "link" in the "Student One" "table_row"
     And I should see "[cat | sat | mat]"
     And I should see "London"

@@ -33,8 +33,7 @@ Feature: Basic use of the Answer sheets report
 
   @javascript
   Scenario: Answer sheets report works when there are no attempts
-    Given I am on the "Quiz 1" "mod_quiz > View" page logged in as "teacher"
-    When I navigate to "Results > Export attempts" in current page administration
+    Given I am on the "Quiz 1" "quiz_answersheets > Report" page logged in as "teacher"
     And I set the field "Attempts from" to "enrolled users who have attempted the quiz"
     Then I press "Show report"
     Then I should see "Attempts: 0"

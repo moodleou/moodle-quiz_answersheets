@@ -17,7 +17,6 @@
  * JavaScript for the create_attempt_dialog class.
  *
  * @module    quiz_answersheets/create_attempt_dialog
- * @package   quiz_answersheets
  * @copyright  2019 The Open University
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */

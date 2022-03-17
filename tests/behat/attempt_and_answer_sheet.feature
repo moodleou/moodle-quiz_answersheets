@@ -85,9 +85,7 @@ Feature: Attempt sheet, Review sheet and Answer sheet feature of the Answer shee
     And I should see "Three is odd."
     And I should see "Four is even."
     And user "student1" has finished an attempt at quiz "Quiz 1"
-    When I am on "Course 1" course homepage
-    And I follow "Quiz 1"
-    And I navigate to "Results > Export attempts" in current page administration
+    And I am on the "Quiz 1" "quiz_answersheets > Report" page logged in as "teacher"
     Then "Student One" row "Attempt sheets" column of "answersheets" table should contain "Review sheet"
     And "Student One" row "Answer sheets" column of "answersheets" table should contain "-"
     When I click on "Review sheet" "link" in the "Student One" "table_row"
@@ -123,7 +121,7 @@ Feature: Attempt sheet, Review sheet and Answer sheet feature of the Answer shee
       | question | page |
       | RTC1     | 1    |
     And I am on the "quiz2" "Activity" page logged in as "student1"
-    And I click on "Attempt quiz now" "button"
+    And I click on "Attempt quiz" "button"
     And "student1" has recorded "moodle-sharon.ogg" into the record RTC question
     And I press "Finish attempt ..."
     And I press "Submit all and finish"

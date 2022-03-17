@@ -59,16 +59,14 @@ Feature: Submit student responses feature of the Answer sheets report
   @javascript
   Scenario: Submit responses link available for overdue
     Given user "student1" has started an attempt at quiz "Quiz 1"
-    And I am on the "Quiz 1" "mod_quiz > View" page logged in as "teacher"
-    And I navigate to "Edit settings" in current page administration
+    And I am on the "Quiz 1" "quiz activity editing" page logged in as "teacher"
     And I set the following fields to these values:
       | id_timeclose_enabled | 1           |
       | id_timeclose_year    | 2018        |
       | id_overduehandling   | graceperiod |
     And I press "Save and display"
     And I run the scheduled task "mod_quiz\task\update_overdue_attempts"
-    When I am on the "Quiz 1" "mod_quiz > View" page
-    And I navigate to "Results > Export attempts" in current page administration
+    When I am on the "Quiz 1" "quiz_answersheets > Report" page logged in as "teacher"
     Then I should see "Attempts: 1"
     And I should see "Student One"
     And "Student One" row "State" column of "answersheets" table should contain "Overdue"

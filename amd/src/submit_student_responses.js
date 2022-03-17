@@ -16,7 +16,7 @@
 /**
  * Javascript for submit student responses
  *
- * @package   quiz_answersheets
+ * @module    quiz_answersheets/submit_student_responses
  * @copyright 2019 The Open University
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
