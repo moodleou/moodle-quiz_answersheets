@@ -74,7 +74,8 @@ class report_display_options extends \mod_quiz_attempts_report_options {
     public function setup_from_params() {
         parent::setup_from_params();
         $this->lastchanged = optional_param('lastchanged', 0, PARAM_INT);
-        $fields = optional_param('userinfo', null, PARAM_ALPHAEXT);
+        // Because phone and mobile is separated by number(phone1 and phone2).
+        $fields = optional_param('userinfo', null, PARAM_ALPHANUMEXT);
         if ($fields !== null) {
             $this->parse_user_info_visibility($fields);
         }
@@ -90,7 +91,8 @@ class report_display_options extends \mod_quiz_attempts_report_options {
 
     public function process_settings_from_form($fromform) {
         foreach ($this->userinfovisibility as $name => $notused) {
-            $this->userinfovisibility[$name] = (bool) $fromform->{'show' . $name};
+            // Unused field of userinfovisibility in filter form should not be added to report link.
+            $this->userinfovisibility[$name] = !empty($fromform->{'show' . $name});
         }
         $this->questioninstruction = (bool) $fromform->questioninstruction;
 
@@ -160,8 +162,7 @@ class report_display_options extends \mod_quiz_attempts_report_options {
     public static function possible_user_info_visibility_settings(\stdClass $cm): array {
         $settings = ['fullname' => true];
 
-        // TODO Does not support custom user profile fields (MDL-70456).
-        $userfields = \core_user\fields::get_identity_fields(context_module::instance($cm->id), false);
+        $userfields = \core_user\fields::get_identity_fields(context_module::instance($cm->id));
         foreach ($userfields as $field) {
             $settings[$field] = true;
         }

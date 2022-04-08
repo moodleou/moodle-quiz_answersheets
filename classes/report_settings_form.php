@@ -38,8 +38,7 @@ require_once($CFG->dirroot . '/mod/quiz/report/attemptsreport_form.php');
 class report_settings_form extends \mod_quiz_attempts_report_form {
 
     protected function other_preference_fields(\MoodleQuickForm $mform) {
-        $field = report_display_options::possible_user_info_visibility_settings(
-                $this->_customdata['quiz']->cmobject);
+        $field = report_display_options::possible_user_info_visibility_settings($this->_customdata['quiz']->cmobject);
 
         $userinfogroup = [];
         foreach ($field as $name => $notused) {

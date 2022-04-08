@@ -164,8 +164,10 @@ class report_table extends \quiz_attempts_report_table {
         if ($row->state == quiz_attempt::IN_PROGRESS || $row->state == quiz_attempt::OVERDUE) {
             $redirect = $this->options->get_url();
             $redirect->param('lastchanged', $row->attempt);
+            // Add userinfo params so that we only display fields that is used in the filter.
             return html_writer::link(new moodle_url('/mod/quiz/report/answersheets/submitresponses.php',
-                    ['attempt' => $row->attempt, 'redirect' => $redirect]),
+                ['attempt' => $row->attempt, 'redirect' => $redirect,
+                    'userinfo' => $this->options->combine_user_info_visibility()]),
                     get_string('submit_student_responses_label', 'quiz_answersheets'), ['class' => 'reviewlink']);
         } else {
             return self::DASH_VALUE;
