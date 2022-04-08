@@ -33,6 +33,9 @@ $cmid = optional_param('cmid', null, PARAM_INT);
 $redirect = optional_param('redirect', '', PARAM_LOCALURL);
 
 $attemptobj = quiz_create_attempt_handling_errors($attemptid, $cmid);
+$reportoptions = new report_display_options('answersheets', $attemptobj->get_quiz(),
+    $attemptobj->get_cm(), $attemptobj->get_course());
+$reportoptions->setup_from_params();
 
 // Check login.
 require_login($attemptobj->get_course(), false, $attemptobj->get_cm());
@@ -73,9 +76,7 @@ $quizrenderer = $PAGE->get_renderer('mod_quiz');
 $renderer = $PAGE->get_renderer('quiz_answersheets');
 
 // Add summary table.
-$sumdata = utils::prepare_summary_attempt_information($attemptobj, !$isattemptfinished,
-        new report_display_options('answersheets', $attemptobj->get_quiz(),
-                $attemptobj->get_cm(), $attemptobj->get_course()));
+$sumdata = utils::prepare_summary_attempt_information($attemptobj, !$isattemptfinished, $reportoptions);
 echo $quizrenderer->review_summary_table($sumdata, 'all');
 
 echo $renderer->render_question_attempt_form($attemptobj, $redirect);

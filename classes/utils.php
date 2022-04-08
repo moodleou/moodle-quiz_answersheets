@@ -86,7 +86,20 @@ class utils {
         $attempt = $attemptobj->get_attempt();
         $quiz = $attemptobj->get_quiz();
         $options = $attemptobj->get_display_options(true);
-        $student = $DB->get_record('user', ['id' => $attemptobj->get_userid()]);
+        $context = context_module::instance($attemptobj->get_cm()->id);
+        // Get student data with custom fields.
+        $userfieldsapi = \core_user\fields::for_identity($context);
+        [
+            'selects' => $userfieldsselects,
+            'joins' => $userfieldsjoin,
+            'params' => $userfieldsparams
+        ] = (array) $userfieldsapi->get_sql('u', false, '', '', false);
+
+        $param = array_merge($userfieldsparams, [$attemptobj->get_userid()]);
+        $sql = "SELECT u.*, $userfieldsselects
+                  FROM {user} u $userfieldsjoin
+                 WHERE u.id = ?";
+        $student = $DB->get_record_sql($sql, $param);
 
         if ($reportoptions->userinfovisibility['fullname']) {
             if (!self::is_example_user($student)) {
