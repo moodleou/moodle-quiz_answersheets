@@ -20,20 +20,19 @@ Feature: Attempt sheet the Export attempt report
       | contextlevel | reference | name           |
       | Course       | C1        | Test questions |
     And the following "activities" exist:
-      | activity   | name   | intro              | course | idnumber |
-      | quiz       | Quiz 1 | Quiz 1 description | C1     | quiz1    |
+      | activity | name   | intro              | course | idnumber |
+      | quiz     | Quiz 1 | Quiz 1 description | C1     | quiz1    |
 
   @javascript
   Scenario: Dropdown list in Attempt sheet will be converted to list
-    Given I am on the "Course 1" "Course" page logged in as "admin"
-    And I navigate to "Question bank" in current page administration
+    Given I am on the "Course 1" "core_question > course question bank" page logged in as admin
     And I add a "Select missing words" question filling the form with:
-      | Question name            | Select missing words          |
-      | Question text            | The [[1]] [[2]] on the [[3]]. |
-      | General feedback         | The cat sat on the mat.       |
-      | id_choices_0_answer      | cat                           |
-      | id_choices_1_answer      | sat                           |
-      | id_choices_2_answer      | mat                           |
+      | Question name       | Select missing words          |
+      | Question text       | The [[1]] [[2]] on the [[3]]. |
+      | General feedback    | The cat sat on the mat.       |
+      | id_choices_0_answer | cat                           |
+      | id_choices_1_answer | sat                           |
+      | id_choices_2_answer | mat                           |
     And I add a "Matching" question filling the form with:
       | Question name                      | Matching                                       |
       | Question text                      | Match the country with the capital city.       |
@@ -54,8 +53,6 @@ Feature: Attempt sheet the Export attempt report
       | Select missing words | 1    |
       | Matching             | 2    |
     And user "student1" has started an attempt at quiz "Quiz 1"
-    And I am on "Course 1" course homepage
-    And I follow "Quiz 1"
     And I am on the "Quiz 1" "quiz_answersheets > Report" page logged in as "admin"
     When I click on "Attempt sheet" "link" in the "Student One" "table_row"
     And I should see "[cat | sat | mat]"
