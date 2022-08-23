@@ -453,6 +453,11 @@ class utils {
     public static function should_hide_inline_choice(moodle_page $page): bool {
         $rightanswer = $page->url->get_param('rightanswer');
         $attemptid = $page->url->get_param('attempt');
+
+        if (empty($attemptid)) {
+            return $page->pagetype != 'mod-quiz-report-answersheets-attemptsheet' || $rightanswer;
+        }
+
         $attemptobj = quiz_attempt::create($attemptid);
         $attempt = $attemptobj->get_attempt();
 
