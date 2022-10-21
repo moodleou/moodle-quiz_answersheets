@@ -132,6 +132,18 @@
     background-color: #afa;
 }
 
+.path-mod-quiz-report-answersheets .que.truefalse .answer div.r0,
+.path-mod-quiz-report-answersheets .que.truefalse .answer div.r1 {
+    display: flex;
+    margin: 0.25rem 0;
+    align-items: flex-start;
+}
+
+#page-mod-quiz-report-answersheets-submitresponses .que.truefalse .answer div.r0,
+#page-mod-quiz-report-answersheets-submitresponses .que.truefalse .answer div.r1 {
+    align-items: center;
+}
+
 @media print {
     /* Set the page to A4 size to prevent border lost. */
     body#page-mod-quiz-report-answersheets-attemptsheet:not(.gecko) {
