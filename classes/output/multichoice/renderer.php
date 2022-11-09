@@ -92,9 +92,10 @@ class qtype_multichoice_override_renderer extends \qtype_multichoice_single_rend
             $choice = html_writer::div($choicetext, 'flex-fill ml-1');
 
             $radiobuttons[] = $hidden . html_writer::empty_tag('input', $inputattributes) .
-                    html_writer::div($choicenumber . $choice, 'd-flex w-auto ml-1', [
-                        'for' => $inputattributes['id'],
-                    ]);
+                    html_writer::tag('label', $choicenumber . $choice, [
+                            'class' => 'd-flex w-auto ml-1',
+                            'for' => $inputattributes['id']
+                        ]);
 
             // Param $options->suppresschoicefeedback is a hack specific to the
             // oumultiresponse question type. It would be good to refactor to

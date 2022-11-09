@@ -95,7 +95,8 @@ class qtype_oumultiresponse_override_renderer extends \qtype_oumultiresponse_ren
             $choicetext = $question->format_text($ans->answer, $ans->answerformat, $qa, 'question', 'answer', $ansid);
             $choice = html_writer::div($choicetext, 'flex-fill ml-1');
             $radiobuttons[] = $hidden . html_writer::empty_tag('input', $inputattributes) .
-                html_writer::div($choicenumber . $choice, 'd-flex w-auto ml-1', [
+                html_writer::tag('label', $choicenumber . $choice, [
+                    'class' => 'd-flex w-auto ml-1',
                     'for' => $inputattributes['id'],
                 ]);
 
