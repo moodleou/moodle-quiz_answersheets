@@ -26,13 +26,16 @@ Feature: Attempt sheet, Review sheet and Answer sheet feature of the Answer shee
       | quiz     | Quiz 1 | Quiz 1 description | C1     | quiz1    |
       | quiz     | Quiz 2 | Quiz 2 description | C1     | quiz2    |
     And the following "questions" exist:
-      | questioncategory | qtype       | name | questiontext    | template    |
-      | Test questions   | truefalse   | TF1  | First question  |             |
-      | Test questions   | multichoice | MT1  | Second question | one_of_four |
+      | questioncategory | qtype           | name         | questiontext    | template    |
+      | Test questions   | truefalse       | TF1          | First question  |             |
+      | Test questions   | multichoice     | MT1          | Second question | one_of_four |
+      | Test questions   | oumultiresponse | OUM response | Third question  | two_of_four |
+
     And quiz "Quiz 1" contains the following questions:
-      | question | page |
-      | TF1      | 1    |
-      | MT1      | 2    |
+      | question     | page |
+      | TF1          | 1    |
+      | MT1          | 2    |
+      | OUM response | 3    |
 
   @javascript
   Scenario: Attempt sheet, Answer sheet links do not exist for Student do not have any attempt yet
@@ -75,7 +78,15 @@ Feature: Attempt sheet, Review sheet and Answer sheet feature of the Answer shee
     And I press the "back" button in the browser
     When I click on "Right answer sheet" "link" in the "Student One" "table_row"
     Then I should see "First question"
+    And I should see "Second question"
+    And I should see "Third question"
+    # T/F answer.
     And the field "True" matches value "1"
+    # Multiple choice answer.
+    And the field "One" matches value "2"
+    # OU Multiple response answer.
+    And the field "Three" in the ".oumultiresponse" "css_element" matches value "1"
+    And the field "One" in the ".oumultiresponse" "css_element" matches value "1"
     And I should see "If incorrect:"
     And I should see "If partially correct:"
     And I should see "If correct:"
