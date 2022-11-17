@@ -26,6 +26,7 @@ namespace quiz_answersheets\output\stack;
 
 defined('MOODLE_INTERNAL') || die();
 
+use castext2_qa_processor;
 use html_writer;
 use qtype_stack_question;
 use question_attempt;
@@ -67,7 +68,16 @@ class qtype_stack_override_renderer extends \qtype_stack_renderer {
 
         $response = $qa->get_last_qt_data();
 
-        $questiontext = $question->questiontextinstantiated;
+        // Based on updating the Moodle-4.0 version of stacks,
+        // we need to provide a processor for the CASText2 post-processing,
+        // basically for targetting pluginfiles.
+        $question->castextprocessor = new castext2_qa_processor($qa);
+
+        if (is_string($question->questiontextinstantiated)) {
+            return $question->questiontextinstantiated;
+        }
+
+        $questiontext = $question->questiontextinstantiated->get_rendered($question->castextprocessor);
         // Replace inputs.
         $inputstovaldiate = array();
 
@@ -80,7 +90,7 @@ class qtype_stack_override_renderer extends \qtype_stack_renderer {
         // Now format the questiontext.
         $questiontext = $question->format_text(
                 stack_maths::process_display_castext($questiontext, $this),
-                $question->questiontextformat,
+            FORMAT_HTML,
                 $qa, 'question', 'questiontext', $question->id);
 
         // Get the list of placeholders after format_text.
@@ -137,7 +147,8 @@ class qtype_stack_override_renderer extends \qtype_stack_renderer {
                 // behaviour or adaptivemulipart does not show feedback if the input
                 // is invalid, but we want to show the CAS errors from the PRT.
                 $result = $question->get_prt_result($index, $response, $qa->get_state()->is_finished());
-                $feedback = html_writer::nonempty_tag('span', $result->errors,
+                $errors = implode(' ', $result->get_errors());
+                $feedback = html_writer::nonempty_tag('span', $errors,
                         array('class' => 'stackprtfeedback stackprtfeedback-' . $name));
             }
             $questiontext = str_replace("[[feedback:{$index}]]", $feedback, $questiontext);
