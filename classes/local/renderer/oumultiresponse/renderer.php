@@ -15,14 +15,14 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * The override qtype_multichoice_renderer for the quiz_answersheets module.
+ * The override qtype_oumultiresponse_renderer for the quiz_answersheets module.
  *
  * @package   quiz_answersheets
  * @copyright 2020 The Open University
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace quiz_answersheets\output\multichoice;
+namespace quiz_answersheets\local\renderer\oumultiresponse;
 
 use html_writer;
 use question_attempt;
@@ -31,18 +31,18 @@ use question_state;
 
 defined('MOODLE_INTERNAL') || die();
 
-require_once($CFG->dirroot . '/question/type/multichoice/renderer.php');
+require_once($CFG->dirroot . '/question/type/oumultiresponse/renderer.php');
 
 /**
- * The override qtype_multichoice_renderer for the quiz_answersheets module.
+ * The override qtype_oumultiresponse_renderer for the quiz_answersheets module.
  *
  * @copyright  2020 The Open University
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class qtype_multichoice_override_renderer extends \qtype_multichoice_single_renderer {
+class qtype_oumultiresponse_override_renderer extends \qtype_oumultiresponse_renderer {
 
     /**
-     * The code was copied from question/type/multichoice/renderer.php, with modifications.
+     * The code was copied from question/type/oumultiresponse/renderer.php, with modifications.
      *
      * @param question_attempt $qa
      * @param question_display_options $options
@@ -71,12 +71,17 @@ class qtype_multichoice_override_renderer extends \qtype_multichoice_single_rend
             $inputattributes['name'] = $this->get_input_name($qa, $value);
             $inputattributes['value'] = $this->get_input_value($value);
             $inputattributes['id'] = $this->get_input_id($qa, $value);
+            // Modification starts.
+            /* Comment out core code.
             $isselected = $question->is_choice_selected($response, $value);
             if ($isselected) {
                 $inputattributes['checked'] = 'checked';
             } else {
                 unset($inputattributes['checked']);
             }
+            */
+            $inputattributes['checked'] = 'checked';
+            // Modification ends.
             $hidden = '';
             if (!$options->readonly && $this->get_input_type() == 'checkbox') {
                 $hidden = html_writer::empty_tag('input', array(

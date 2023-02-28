@@ -410,11 +410,14 @@ class utils {
         global $CFG;
 
         $qtypename = $qa->get_question()->get_type_name();
-        $requirefile = $CFG->dirroot . '/mod/quiz/report/answersheets/classes/output/' . $qtypename . '/renderer.php';
+        $requirefile = $CFG->dirroot . '/mod/quiz/report/answersheets/classes/local/renderer/' . $qtypename . '/renderer.php';
         if (file_exists($requirefile)) {
             // Override supported question found.
             require_once($requirefile);
-            $classpath = sprintf('quiz_answersheets\output\\' . $qtypename . '\%s', 'qtype_' . $qtypename . '_override_renderer');
+            $classpath = sprintf(
+                'quiz_answersheets\local\renderer\\' . $qtypename . '\%s',
+                'qtype_' . $qtypename . '_override_renderer'
+            );
             return new $classpath($page, null);
         }
 

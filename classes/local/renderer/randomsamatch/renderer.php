@@ -22,7 +22,7 @@
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace quiz_answersheets\output\randomsamatch;
+namespace quiz_answersheets\local\renderer\randomsamatch;
 
 use quiz_answersheets\output\match\qtype_match_override_renderer;
 

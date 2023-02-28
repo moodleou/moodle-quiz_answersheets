@@ -22,7 +22,7 @@
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace quiz_answersheets\output\recordrtc;
+namespace quiz_answersheets\local\renderer\recordrtc;
 
 defined('MOODLE_INTERNAL') || die();
 

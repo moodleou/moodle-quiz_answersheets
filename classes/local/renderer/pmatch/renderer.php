@@ -22,7 +22,7 @@
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace quiz_answersheets\output\pmatch;
+namespace quiz_answersheets\local\renderer\pmatch;
 
 defined('MOODLE_INTERNAL') || die();
 
