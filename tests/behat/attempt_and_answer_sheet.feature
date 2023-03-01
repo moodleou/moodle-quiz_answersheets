@@ -136,7 +136,7 @@ Feature: Attempt sheet, Review sheet and Answer sheet feature of the Answer shee
     And "student1" has recorded "moodle-sharon.ogg" into the record RTC question
     And I press "Finish attempt ..."
     And I press "Submit all and finish"
-    And I click on "Submit all and finish" "button" in the "Confirmation" "dialogue"
+    And I click on "Submit all and finish" "button" in the "Submit all your answers and finish?" "dialogue"
     And I log out
     And I am on the "Quiz 2" "quiz_answersheets > Report" page logged in as "teacher"
     When I click on "Review sheet" "link" in the "Student One" "table_row"
