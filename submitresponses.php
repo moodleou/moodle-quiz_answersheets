@@ -79,6 +79,6 @@ $renderer = $PAGE->get_renderer('quiz_answersheets');
 $sumdata = utils::prepare_summary_attempt_information($attemptobj, !$isattemptfinished, $reportoptions);
 echo $quizrenderer->review_summary_table($sumdata, 0);
 
-echo $renderer->render_question_attempt_form($attemptobj, $redirect);
+echo $renderer->render_question_attempt_form($attemptobj, $reportoptions, $redirect);
 
 echo $OUTPUT->footer();
