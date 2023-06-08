@@ -114,7 +114,8 @@ class report_table extends \quiz_attempts_report_table {
                     [
                         'attempt' => $row->attempt,
                         'userinfo' => $this->options->combine_user_info_visibility(),
-                        'instruction' => $this->options->questioninstruction
+                        'instruction' => $this->options->questioninstruction,
+                        'marks' => $this->options->marks,
                     ]),
                     get_string('attempt_sheet_label', 'quiz_answersheets'),
                     ['class' => 'reviewlink']);
@@ -123,7 +124,8 @@ class report_table extends \quiz_attempts_report_table {
                     [
                         'attempt' => $row->attempt,
                         'userinfo' => $this->options->combine_user_info_visibility(),
-                        'instruction' => $this->options->questioninstruction
+                        'instruction' => $this->options->questioninstruction,
+                        'marks' => $this->options->marks,
                     ]),
                     get_string('review_sheet_label', 'quiz_answersheets'),
                     ['class' => 'reviewlink']);
@@ -145,7 +147,8 @@ class report_table extends \quiz_attempts_report_table {
                         'attempt' => $row->attempt,
                         'rightanswer' => 1,
                         'userinfo' => $this->options->combine_user_info_visibility(),
-                        'instruction' => $this->options->questioninstruction
+                        'instruction' => $this->options->questioninstruction,
+                        'marks' => $this->options->marks,
                     ]),
                     get_string('answer_sheet_label', 'quiz_answersheets'),
                     ['class' => 'reviewlink']);
@@ -166,7 +169,7 @@ class report_table extends \quiz_attempts_report_table {
             $redirect->param('lastchanged', $row->attempt);
             // Add userinfo params so that we only display fields that is used in the filter.
             return html_writer::link(new moodle_url('/mod/quiz/report/answersheets/submitresponses.php',
-                ['attempt' => $row->attempt, 'redirect' => $redirect,
+                ['attempt' => $row->attempt, 'redirect' => $redirect, 'marks' => $this->options->marks,
                     'userinfo' => $this->options->combine_user_info_visibility()]),
                     get_string('submit_student_responses_label', 'quiz_answersheets'), ['class' => 'reviewlink']);
         } else {

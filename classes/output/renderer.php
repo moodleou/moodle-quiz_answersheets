@@ -53,7 +53,8 @@ class renderer extends plugin_renderer_base {
      * @param bool $isreviewing True for review page, else attempt page
      * @return string HTML string
      */
-    public function render_question_attempt_content(quiz_attempt $attemptobj, bool $isreviewing = true): string {
+    public function render_question_attempt_content(quiz_attempt $attemptobj, report_display_options $reportoptions,
+            bool $isreviewing = true): string {
         $output = '';
 
         $slots = $attemptobj->get_slots();
@@ -63,7 +64,8 @@ class renderer extends plugin_renderer_base {
         $displayoptions->manualcommentlink = null;
         $displayoptions->context = context_module::instance($attemptobj->get_cmid());
         $displayoptions->history = question_display_options::HIDDEN;
-        $rightanswer = $this->page->url->get_param('rightanswer');
+        $displayoptions->marks = $reportoptions->marks;
+        $rightanswer = $reportoptions->rightanswer;
         $qoutput = $this->page->get_renderer('quiz_answersheets', 'core_question_override');
 
         foreach ($slots as $slot) {
@@ -106,7 +108,8 @@ class renderer extends plugin_renderer_base {
      * @param string $redirect
      * @return string HTML string
      */
-    public function render_question_attempt_form(quiz_attempt $attemptobj, string $redirect = ''): string {
+    public function render_question_attempt_form(quiz_attempt $attemptobj, report_display_options $reportoptions,
+            string $redirect = ''): string {
         $output = '';
 
         $attemptuser = \core_user::get_user($attemptobj->get_userid());
@@ -118,7 +121,7 @@ class renderer extends plugin_renderer_base {
                 'accept-charset' => 'utf-8', 'id' => 'responseform']);
         $output .= html_writer::start_tag('div');
 
-        $output .= $this->render_question_attempt_content($attemptobj, false);
+        $output .= $this->render_question_attempt_content($attemptobj, $reportoptions, false);
 
         // Some hidden fields to trach what is going on.
         $output .= html_writer::empty_tag('input',
@@ -193,7 +196,7 @@ class renderer extends plugin_renderer_base {
         $templatecontext = [
                 'questionattemptheader' => utils::get_attempt_sheet_print_header($attemptobj, $sheettype, $reportoptions),
                 'questionattemptsumtable' => $quizrenderer->review_summary_table($sumdata, 0),
-                'questionattemptcontent' => $this->render_question_attempt_content($attemptobj)
+                'questionattemptcontent' => $this->render_question_attempt_content($attemptobj, $reportoptions)
         ];
         $isgecko = \core_useragent::is_gecko();
         // We need to use specific layout for Gecko because it does not fully support display flex and table.

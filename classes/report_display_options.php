@@ -58,6 +58,16 @@ class report_display_options extends \mod_quiz_attempts_report_options {
      */
     public $questioninstruction = true;
 
+    /**
+     * @var bool whether marks has been displayed.
+     */
+    public $marks = true;
+
+    /**
+     * @var bool whether right answer has been displayed.
+     */
+    public $rightanswer = true;
+
     public function __construct($mode, $quiz, $cm, $course) {
         parent::__construct($mode, $quiz, $cm, $course);
         $this->attempts = quiz_attempts_report::ENROLLED_ALL;
@@ -82,12 +92,16 @@ class report_display_options extends \mod_quiz_attempts_report_options {
             $this->parse_user_info_visibility($fields);
         }
         $this->questioninstruction = optional_param('instruction', true, PARAM_BOOL);
+        $this->marks = optional_param('marks', true, PARAM_BOOL);
+        $this->rightanswer = optional_param('rightanswer', false, PARAM_BOOL);
     }
 
     protected function get_url_params() {
         $params = parent::get_url_params();
         $params['userinfo'] = $this->combine_user_info_visibility();
         $params['instruction'] = $this->questioninstruction;
+        $params['marks'] = $this->marks;
+        $params['rightanswer'] = $this->rightanswer;
         return $params;
     }
 
@@ -97,7 +111,7 @@ class report_display_options extends \mod_quiz_attempts_report_options {
             $this->userinfovisibility[$name] = !empty($fromform->{'show' . $name});
         }
         $this->questioninstruction = (bool) $fromform->questioninstruction;
-
+        $this->marks = (bool) $fromform->marks;
         parent::process_settings_from_form($fromform);
     }
 
@@ -108,6 +122,7 @@ class report_display_options extends \mod_quiz_attempts_report_options {
             $toform->{'show' . $name} = $show;
         }
         $toform->questioninstruction = $this->questioninstruction;
+        $toform->marks = $this->marks;
 
         return $toform;
     }

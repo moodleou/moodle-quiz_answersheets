@@ -98,6 +98,7 @@ $string['print_header_minimised'] = '{$a->courseshortname} {$a->quizname} genera
 $string['review_sheet_label'] = 'Review sheet';
 $string['review_sheet_title'] = '{$a->courseshortname} - {$a->quizname} - Review sheet';
 $string['response_recorded'] = 'Response recorded: {$a}.';
+$string['showmarkedoutoftext'] = 'Show "Marked out of" text?';
 $string['showquestioninstruction'] = 'Show default instruction text?';
 $string['showuserinfo'] = 'Identifying information to show about users';
 $string['submit_student_responses_label'] = 'Submit responses...';
