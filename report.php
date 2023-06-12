@@ -452,10 +452,10 @@ class quiz_answersheets_report extends quiz_attempts_report {
      * if all else fails, just call it 'attempts'.
      *
      * @param stdClass $quiz the quiz settings.
-     * @param stdClass $cm the course-module settings for the quiz.
+     * @param stdClass|cm_info $cm the course-module settings for the quiz.
      * @return string suggested filename.
      */
-    protected function generate_zip_filename(stdClass $quiz, stdClass $cm): string {
+    protected function generate_zip_filename(stdClass $quiz, stdClass|cm_info $cm): string {
         $filename = '';
         if ($cm->idnumber) {
             $filename = $this->clean_filename($cm->idnumber);

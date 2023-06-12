@@ -26,6 +26,8 @@ namespace quiz_answersheets;
 
 use context_module;
 use quiz_attempts_report;
+use stdClass;
+use cm_info;
 
 defined('MOODLE_INTERNAL') || die();
 
@@ -156,10 +158,10 @@ class report_display_options extends \mod_quiz_attempts_report_options {
     /**
      * Considering the site settings, work out what user info visibility settings there should be.
      *
-     * @param \stdClass $cm the course_module info for this quiz.
+     * @param stdClass|cm_info $cm the course_module info for this quiz.
      * @return array setting name => true
      */
-    public static function possible_user_info_visibility_settings(\stdClass $cm): array {
+    public static function possible_user_info_visibility_settings(stdClass|cm_info $cm): array {
         $settings = ['fullname' => true];
 
         $userfields = \core_user\fields::get_identity_fields(context_module::instance($cm->id));
