@@ -36,6 +36,7 @@ use question_display_options;
 use quiz_attempt;
 use ReflectionClass;
 use stdClass;
+use cm_info;
 use user_picture;
 
 defined('MOODLE_INTERNAL') || die();
@@ -208,12 +209,12 @@ class utils {
      * Get user detail with identity fields
      *
      * @param stdClass $attemptuser User info
-     * @param stdClass $cm quiz course_module.
+     * @param stdClass|cm_info $cm quiz course_module.
      * @param report_display_options|array $fieldoptions which use fields to show, either an options object,
      *      or just a array of field names.
      * @return string User detail string
      */
-    public static function get_user_details(stdClass $attemptuser, stdClass $cm, $fieldoptions): string {
+    public static function get_user_details(stdClass $attemptuser, stdClass|cm_info $cm, $fieldoptions): string {
         $fields = [];
         if ($fieldoptions instanceof report_display_options) {
             foreach ($fieldoptions->userinfovisibility as $field => $show) {
