@@ -26,6 +26,7 @@ namespace quiz_answersheets\output;
 
 use context_module;
 use html_writer;
+use mod_quiz\quiz_attempt;
 use moodle_url;
 use plugin_renderer_base;
 use qbehaviour_renderer;
@@ -34,7 +35,6 @@ use question_attempt;
 use question_display_options;
 use quiz_answersheets\report_display_options;
 use quiz_answersheets\utils;
-use quiz_attempt;
 
 defined('MOODLE_INTERNAL') || die();
 
@@ -102,7 +102,7 @@ class renderer extends plugin_renderer_base {
 
     /**
      * Render the questions attempt form of a particular quiz attempt.
-     * Part of code was copied from mod/quiz/renderer.php:attempt_form().
+     * Part of code was copied from mod_quiz\output\renderer::attempt_form().
      *
      * @param quiz_attempt $attemptobj
      * @param string $redirect

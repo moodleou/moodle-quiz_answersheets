@@ -51,7 +51,7 @@ $reportoptions->setup_from_params();
 
 // If the attempt is already closed, send them to the review sheet page.
 if ($attemptobj->is_finished()) {
-    throw new moodle_quiz_exception($attemptobj->get_quizobj(), 'attemptalreadyclosed', null,
+    throw new moodle_exception('attemptalreadyclosed', 'quiz',
             new moodle_url('/mod/quiz/report/answersheets/attemptsheet.php',
                     ['attempt' => $attemptid, 'userinfo' => $reportoptions->combine_user_info_visibility()]));
 }

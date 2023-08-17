@@ -24,17 +24,14 @@
 
 namespace quiz_answersheets;
 
-use context_module;
-use quiz_attempts_report;
-use stdClass;
 use cm_info;
+use context_module;
+use mod_quiz\local\reports\attempts_report_options;
+use stdClass;
 
 defined('MOODLE_INTERNAL') || die();
 
-require_once($CFG->dirroot . '/mod/quiz/report/default.php');
 require_once($CFG->dirroot . '/mod/quiz/report/reportlib.php');
-require_once($CFG->dirroot . '/mod/quiz/report/attemptsreport.php');
-require_once($CFG->dirroot . '/mod/quiz/report/attemptsreport_options.php');
 
 /**
  * This file defines the options for the quiz answersheets report.
@@ -43,7 +40,7 @@ require_once($CFG->dirroot . '/mod/quiz/report/attemptsreport_options.php');
  * @copyright 2019 The Open University
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class report_display_options extends \mod_quiz_attempts_report_options {
+class report_display_options extends attempts_report_options {
 
     /**@var int Last changed row id */
     public $lastchanged;

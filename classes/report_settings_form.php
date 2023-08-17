@@ -24,9 +24,10 @@
 
 namespace quiz_answersheets;
 
-defined('MOODLE_INTERNAL') || die();
+use mod_quiz\local\reports\attempts_report_options_form;
+use MoodleQuickForm;
 
-require_once($CFG->dirroot . '/mod/quiz/report/attemptsreport_form.php');
+defined('MOODLE_INTERNAL') || die();
 
 /**
  * This file defines the setting form for the quiz answersheets report.
@@ -35,9 +36,9 @@ require_once($CFG->dirroot . '/mod/quiz/report/attemptsreport_form.php');
  * @copyright 2019 The Open University
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class report_settings_form extends \mod_quiz_attempts_report_form {
+class report_settings_form extends attempts_report_options_form {
 
-    protected function other_preference_fields(\MoodleQuickForm $mform) {
+    protected function other_preference_fields(MoodleQuickForm $mform) {
         $field = report_display_options::possible_user_info_visibility_settings($this->_customdata['quiz']->cmobject);
 
         $userinfogroup = [];
