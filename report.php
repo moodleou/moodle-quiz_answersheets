@@ -22,14 +22,13 @@
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+use mod_quiz\local\reports\attempts_report;
+use mod_quiz\quiz_attempt;
 use quiz_answersheets\report_display_options;
 use quiz_answersheets\report_table;
-use quiz_answersheets\utils;
 
 defined('MOODLE_INTERNAL') || die();
 
-
-require_once($CFG->dirroot . '/mod/quiz/report/attemptsreport.php');
 
 /**
  * This file defines the export quiz attempts report class.
@@ -38,7 +37,7 @@ require_once($CFG->dirroot . '/mod/quiz/report/attemptsreport.php');
  * @copyright 2019 The Open University
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class quiz_answersheets_report extends quiz_attempts_report {
+class quiz_answersheets_report extends attempts_report {
 
     public function display($quiz, $cm, $course) {
         global $DB, $PAGE;

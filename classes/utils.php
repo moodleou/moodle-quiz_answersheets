@@ -25,18 +25,17 @@
 namespace quiz_answersheets;
 
 use action_link;
-use context;
+use cm_info;
 use context_module;
 use html_writer;
+use mod_quiz\quiz_attempt;
 use moodle_page;
 use moodle_url;
 use qtype_renderer;
 use question_attempt;
 use question_display_options;
-use quiz_attempt;
 use ReflectionClass;
 use stdClass;
-use cm_info;
 use user_picture;
 
 defined('MOODLE_INTERNAL') || die();

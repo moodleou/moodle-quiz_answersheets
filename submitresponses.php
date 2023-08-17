@@ -62,7 +62,7 @@ $slots = $attemptobj->get_slots();
 
 // Check.
 if (empty($slots)) {
-    throw new moodle_quiz_exception($attemptobj->get_quizobj(), 'noquestionsfound');
+    throw new moodle_exception('noquestionsfound', 'quiz', $quizobj->view_url());
 }
 
 // Initialise the JavaScript.

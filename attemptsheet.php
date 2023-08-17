@@ -22,6 +22,7 @@
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+use mod_quiz\quiz_attempt;
 use quiz_answersheets\report_display_options;
 use quiz_answersheets\utils;
 
@@ -75,7 +76,7 @@ if ($rightanswer) {
 $isrightanswer = $rightanswer && $attemptobj->get_state() == quiz_attempt::IN_PROGRESS;
 
 // Fire event.
-$context = context_module::instance((int) $attemptobj->get_cmid());
+$context = context_module::instance($attemptobj->get_cmid());
 $event = $rightanswer && $attemptobj->get_state() == quiz_attempt::IN_PROGRESS ? utils::RIGHT_ANSWER_SHEET_VIEWED :
         utils::ATTEMPT_SHEET_VIEWED;
 utils::create_events($event, $attemptobj->get_attemptid(), $attemptobj->get_userid(), $attemptobj->get_courseid(), $context,

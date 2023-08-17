@@ -80,7 +80,7 @@ class quiz_answersheets_external extends external_api {
 
         // Check questions.
         if (!$quizobj->has_questions()) {
-            throw new moodle_quiz_exception($quizobj, 'noquestionsfound');
+            throw new moodle_exception('noquestionsfound', 'quiz');
         }
 
         $attempts = quiz_get_user_attempts($params['quizid'], $params['userid'], 'all');
