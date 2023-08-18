@@ -26,6 +26,7 @@ namespace quiz_answersheets;
 
 use cm_info;
 use context_module;
+use mod_quiz\local\reports\attempts_report;
 use mod_quiz\local\reports\attempts_report_options;
 use stdClass;
 
@@ -67,7 +68,7 @@ class report_display_options extends attempts_report_options {
 
     public function __construct($mode, $quiz, $cm, $course) {
         parent::__construct($mode, $quiz, $cm, $course);
-        $this->attempts = quiz_attempts_report::ENROLLED_ALL;
+        $this->attempts = attempts_report::ENROLLED_ALL;
 
         $this->userinfovisibility = self::possible_user_info_visibility_settings($cm);
     }
@@ -77,7 +78,7 @@ class report_display_options extends attempts_report_options {
         // We only want to show the checkbox to delete attempts
         // if the user has permissions and if the report mode is showing attempts.
         $this->checkboxcolumn = has_capability('mod/quiz:deleteattempts', context_module::instance($this->cm->id))
-                && ($this->attempts != quiz_attempts_report::ENROLLED_WITHOUT);
+                && ($this->attempts != attempts_report::ENROLLED_WITHOUT);
     }
 
     public function setup_from_params() {
