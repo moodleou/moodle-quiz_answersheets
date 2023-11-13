@@ -119,7 +119,9 @@
 }
 
 #page-mod-quiz-report-answersheets-attemptsheet .im-controls input[type=submit],
-#page-mod-quiz-report-answersheets-submitresponses .im-controls input[type=submit] {
+#page-mod-quiz-report-answersheets-submitresponses .im-controls input[type=submit],
+#page-mod-quiz-report-answersheets-attemptsheet .im-controls button[type=submit],
+#page-mod-quiz-report-answersheets-submitresponses .im-controls button[type=submit] {
     display: none;
 }
 

@@ -22,9 +22,9 @@ Feature: Attempt sheet, Review sheet and Answer sheet feature of the Answer shee
       | contextlevel | reference | name           |
       | Course       | C1        | Test questions |
     And the following "activities" exist:
-      | activity | name   | intro              | course | idnumber |
-      | quiz     | Quiz 1 | Quiz 1 description | C1     | quiz1    |
-      | quiz     | Quiz 2 | Quiz 2 description | C1     | quiz2    |
+      | activity | name   | intro              | course | idnumber | preferredbehaviour |
+      | quiz     | Quiz 1 | Quiz 1 description | C1     | quiz1    | interactive        |
+      | quiz     | Quiz 2 | Quiz 2 description | C1     | quiz2    | deferredfeedback   |
     And the following "questions" exist:
       | questioncategory | qtype           | name         | questiontext    | template    |
       | Test questions   | truefalse       | TF1          | First question  |             |
@@ -66,6 +66,7 @@ Feature: Attempt sheet, Review sheet and Answer sheet feature of the Answer shee
     And "Student One" row "Answer sheets" column of "answersheets" table should contain "Right answer sheet"
     When I click on "Attempt sheet" "link" in the "Student One" "table_row"
     Then I should see "First question"
+    And I should not see "Check"
     And "table.quizreviewsummary" "css_element" should exist
     And I should see "Student One" in the "table.quizreviewsummary" "css_element"
     And I should not see "Started on" in the "table.quizreviewsummary" "css_element"
