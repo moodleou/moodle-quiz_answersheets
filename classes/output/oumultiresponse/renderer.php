@@ -31,7 +31,13 @@ use question_state;
 
 defined('MOODLE_INTERNAL') || die();
 
-require_once($CFG->dirroot . '/question/type/oumultiresponse/renderer.php');
+// Work-around when the class does not exist.
+if (class_exists('\qtype_oumultiresponse_renderer')) {
+    class_alias('\qtype_oumultiresponse_renderer', '\qtype_oumultiresponse_renderer_alias');
+    require_once($CFG->dirroot . '/question/type/oumultiresponse/renderer.php');
+} else {
+    class_alias('\qtype_renderer', '\qtype_oumultiresponse_renderer_alias');
+}
 
 /**
  * The override qtype_oumultiresponse_renderer for the quiz_answersheets module.
@@ -39,7 +45,7 @@ require_once($CFG->dirroot . '/question/type/oumultiresponse/renderer.php');
  * @copyright  2020 The Open University
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class qtype_oumultiresponse_override_renderer extends \qtype_oumultiresponse_renderer {
+class qtype_oumultiresponse_override_renderer extends \qtype_oumultiresponse_renderer_alias {
 
     /**
      * The code was copied from question/type/oumultiresponse/renderer.php, with modifications.
