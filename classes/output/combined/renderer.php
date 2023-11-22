@@ -36,9 +36,27 @@ use quiz_answersheets\utils;
 
 defined('MOODLE_INTERNAL') || die();
 
-require_once($CFG->dirroot . '/question/type/combined/renderer.php');
-require_once($CFG->dirroot . '/question/type/combined/combinable/gapselect/renderer.php');
-require_once($CFG->dirroot . '/question/type/oumultiresponse/combinable/renderer.php');
+// Work-around when the class does not exist.
+if (class_exists('\qtype_combined_renderer')) {
+    class_alias('\qtype_combined_renderer', '\qtype_combined_renderer_alias');
+    require_once($CFG->dirroot . '/question/type/combined/renderer.php');
+} else {
+    class_alias('\qtype_renderer', '\qtype_combined_renderer_alias');
+}
+
+if (class_exists('\qtype_oumultiresponse_embedded_renderer')) {
+    class_alias('\qtype_oumultiresponse_embedded_renderer', '\qtype_oumultiresponse_embedded_renderer_alias');
+    require_once($CFG->dirroot . '/question/type/oumultiresponse/combinable/renderer.php');
+} else {
+    class_alias('\qtype_renderer', '\qtype_oumultiresponse_embedded_renderer_alias');
+}
+
+if (class_exists('\qtype_combined_gapselect_embedded_renderer')) {
+    class_alias('\qtype_combined_gapselect_embedded_renderer', '\qtype_combined_gapselect_embedded_renderer_alias');
+    require_once($CFG->dirroot . '/question/type/combined/combinable/gapselect/renderer.php');
+} else {
+    class_alias('\qtype_renderer', '\qtype_combined_gapselect_embedded_renderer_alias');
+}
 
 /**
  * The override qtype_combined_renderer for the quiz_answersheets module.
@@ -46,7 +64,7 @@ require_once($CFG->dirroot . '/question/type/oumultiresponse/combinable/renderer
  * @copyright  2020 The Open University
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class qtype_combined_override_renderer extends \qtype_combined_renderer {
+class qtype_combined_override_renderer extends \qtype_combined_renderer_alias {
 
     /**
      * The code was copied from question/type/combined/renderer.php, with modifications.
@@ -158,7 +176,7 @@ class qtype_combined_override_renderer extends \qtype_combined_renderer {
  *
  * @package quiz_answersheets\output\combined
  */
-class qtype_oumultiresponse_embedded_override_renderer extends \qtype_oumultiresponse_embedded_renderer {
+class qtype_oumultiresponse_embedded_override_renderer extends \qtype_oumultiresponse_embedded_renderer_alias {
 
     /**
      * The code was copied from question/type/oumultiresponse/combinable/renderer.php, with modifications.
@@ -261,7 +279,7 @@ class qtype_oumultiresponse_embedded_override_renderer extends \qtype_oumultires
  *
  * @package quiz_answersheets\output\combined
  */
-class qtype_combined_gapselect_embedded_override_renderer extends \qtype_combined_gapselect_embedded_renderer {
+class qtype_combined_gapselect_embedded_override_renderer extends \qtype_combined_gapselect_embedded_renderer_alias {
 
     /**
      * Render the sub question.

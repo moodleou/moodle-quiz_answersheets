@@ -29,7 +29,13 @@ defined('MOODLE_INTERNAL') || die();
 use qtype_pmatch_question;
 use question_display_options;
 
-require_once($CFG->dirroot . '/question/type/pmatch/renderer.php');
+// Work-around when the class does not exist.
+if (class_exists('\qtype_pmatch_renderer')) {
+    class_alias('\qtype_pmatch_renderer', '\qtype_pmatch_renderer_alias');
+    require_once($CFG->dirroot . '/question/type/pmatch/renderer.php');
+} else {
+    class_alias('\qtype_renderer', '\qtype_pmatch_renderer_alias');
+}
 
 /**
  * The override qtype_pmatch_renderer for the quiz_answersheets module.
@@ -37,7 +43,7 @@ require_once($CFG->dirroot . '/question/type/pmatch/renderer.php');
  * @copyright  2020 The Open University
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class qtype_pmatch_override_renderer extends \qtype_pmatch_renderer {
+class qtype_pmatch_override_renderer extends \qtype_pmatch_renderer_alias {
 
     public function question_tests_link(qtype_pmatch_question $question, question_display_options $options) {
         // Do not show the question test link.

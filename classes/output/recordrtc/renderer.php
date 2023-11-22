@@ -32,7 +32,13 @@ use html_writer;
 use question_attempt;
 use question_display_options;
 
-require_once($CFG->dirroot . '/question/type/recordrtc/renderer.php');
+// Work-around when the class does not exist.
+if (class_exists('\qtype_recordrtc_renderer')) {
+    class_alias('\qtype_recordrtc_renderer', '\qtype_recordrtc_renderer_alias');
+    require_once($CFG->dirroot . '/question/type/recordrtc/renderer.php');
+} else {
+    class_alias('\qtype_renderer', '\qtype_recordrtc_renderer_alias');
+}
 
 /**
  * The override qtype_recordrtc_renderer for the quiz_answersheets module.
@@ -41,7 +47,7 @@ require_once($CFG->dirroot . '/question/type/recordrtc/renderer.php');
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-class qtype_recordrtc_override_renderer extends \qtype_recordrtc_renderer {
+class qtype_recordrtc_override_renderer extends \qtype_recordrtc_renderer_alias {
 
     protected function no_recording_message(): string {
         $output = '';

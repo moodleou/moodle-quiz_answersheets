@@ -35,7 +35,13 @@ use quiz_answersheets\utils;
 use stack_maths;
 use stack_utils;
 
-require_once($CFG->dirroot . '/question/type/stack/renderer.php');
+// Work-around when the class does not exist.
+if (class_exists('\qtype_stack_renderer')) {
+    class_alias('\qtype_stack_renderer', '\qtype_stack_renderer_alias');
+    require_once($CFG->dirroot . '/question/type/stack/renderer.php');
+} else {
+    class_alias('\qtype_renderer', '\qtype_stack_renderer_alias');
+}
 
 /**
  * The override qtype_stack_renderer for the quiz_answersheets module.
@@ -43,7 +49,7 @@ require_once($CFG->dirroot . '/question/type/stack/renderer.php');
  * @copyright  2020 The Open University
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class qtype_stack_override_renderer extends \qtype_stack_renderer {
+class qtype_stack_override_renderer extends \qtype_stack_renderer_alias {
 
     protected function question_tests_link(qtype_stack_question $question, question_display_options $options) {
         // Do not show the question test link.
