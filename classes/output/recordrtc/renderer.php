@@ -111,7 +111,7 @@ class qtype_recordrtc_override_renderer extends \qtype_recordrtc_renderer {
     private function process_feedback_interactive_content(string $feedback): string {
         $doc = new DOMDocument;
         libxml_use_internal_errors(true);
-        $doc->loadHTML(mb_convert_encoding($feedback, 'HTML-ENTITIES', 'UTF-8'));
+        $doc->loadHTML(html_entity_decode($feedback));
         libxml_clear_errors();
         $finder = new DomXPath($doc);
 
