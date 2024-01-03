@@ -26,16 +26,18 @@ Feature: Attempt sheet, Review sheet and Answer sheet feature of the Answer shee
       | quiz     | Quiz 1 | Quiz 1 description | C1     | quiz1    | interactive        |
       | quiz     | Quiz 2 | Quiz 2 description | C1     | quiz2    | deferredfeedback   |
     And the following "questions" exist:
-      | questioncategory | qtype           | name         | questiontext    | template    |
-      | Test questions   | truefalse       | TF1          | First question  |             |
-      | Test questions   | multichoice     | MT1          | Second question | one_of_four |
-      | Test questions   | oumultiresponse | OUM response | Third question  | two_of_four |
+      | questioncategory | qtype           | name         | questiontext     | template      |
+      | Test questions   | truefalse       | TF1          | First question   |               |
+      | Test questions   | multichoice     | MT1          | Second question  | one_of_four   |
+      | Test questions   | oumultiresponse | OUM response | Third question   | two_of_four   |
+      | Test questions   | oumatrix        | oumatrix-001 | Fourth question  |animals_single |
 
     And quiz "Quiz 1" contains the following questions:
       | question     | page |
       | TF1          | 1    |
       | MT1          | 2    |
       | OUM response | 3    |
+      | oumatrix-001 | 4    |
 
   @javascript
   Scenario: Attempt sheet, Answer sheet links do not exist for Student do not have any attempt yet
@@ -81,6 +83,7 @@ Feature: Attempt sheet, Review sheet and Answer sheet feature of the Answer shee
     Then I should see "First question"
     And I should see "Second question"
     And I should see "Third question"
+    And I should see "Fourth question"
     # T/F answer.
     And the field "True" matches value "1"
     # Multiple choice answer.
@@ -96,6 +99,20 @@ Feature: Attempt sheet, Review sheet and Answer sheet feature of the Answer shee
     And I should see "Two is even."
     And I should see "Three is odd."
     And I should see "Four is even."
+    # OU Matrix response answer.
+    Then I should see "Feedback" in the "Insects" "table_row"
+    And I should see "Flies and Bees are insects." in the "Bee" "table_row"
+    And I should see "Cod, Salmon and Trout are fish." in the "Salmon" "table_row"
+    And I should see "Gulls and Owls are birds." in the "Seagull" "table_row"
+    And I should see "Cows, Dogs and Horses are mammals." in the "Dog" "table_row"
+    # General feedback.
+    And I should see "Well done!"
+    And I should see "We are recognising different type of animals."
+    And I should see "The correct answers are:"
+    And I should see "Bee → Insects"
+    And I should see "Salmon → Fish"
+    And I should see "Seagull → Birds"
+    And I should see "Dog → Mammals"
     And user "student1" has finished an attempt at quiz "Quiz 1"
     And I am on the "Quiz 1" "quiz_answersheets > Report" page logged in as "teacher"
     Then "Student One" row "Attempt sheets" column of "answersheets" table should contain "Review sheet"
