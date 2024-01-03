@@ -29,6 +29,14 @@ use MoodleQuickForm;
 
 defined('MOODLE_INTERNAL') || die();
 
+// This work-around is required until Moodle 4.2 is the lowest version we support.
+if (class_exists('\mod_quiz\local\reports\attempts_report_options_form')) {
+    class_alias('\mod_quiz\local\reports\attempts_report_options_form', '\mod_quiz_attempts_report_form_parent_class_alias');
+} else {
+    require_once($CFG->dirroot . '/mod/quiz/report/attemptsreport_form.php');
+    class_alias('\mod_quiz_attempts_report_form', '\mod_quiz_attempts_report_form_parent_class_alias');
+}
+
 /**
  * This file defines the setting form for the quiz answersheets report.
  *
@@ -36,7 +44,7 @@ defined('MOODLE_INTERNAL') || die();
  * @copyright 2019 The Open University
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class report_settings_form extends attempts_report_options_form {
+class report_settings_form extends \mod_quiz_attempts_report_form_parent_class_alias {
 
     protected function other_preference_fields(MoodleQuickForm $mform) {
         $field = report_display_options::possible_user_info_visibility_settings($this->_customdata['quiz']->cmobject);
