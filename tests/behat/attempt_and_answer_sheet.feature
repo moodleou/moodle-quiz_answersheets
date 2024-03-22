@@ -126,7 +126,7 @@ Feature: Attempt sheet, Review sheet and Answer sheet feature of the Answer shee
 
   @javascript
   Scenario: Sheet's special message for un-submitted RecordRTC question type
-    Given I check the "recordrtc" question type already installed for export attempts report
+    Given the qtype_recordrtc plugin is installed
     And the following "questions" exist:
       | questioncategory | qtype     | name | questiontext   | template |
       | Test questions   | recordrtc | RTC1 | Third question | audio    |
@@ -142,7 +142,7 @@ Feature: Attempt sheet, Review sheet and Answer sheet feature of the Answer shee
   @javascript
   Scenario: Sheet's special message for submitted RecordRTC question type
     # We need to work around for this case because Moodle is creating response file for current logged in user.
-    Given I check the "recordrtc" question type already installed for export attempts report
+    Given the qtype_recordrtc plugin is installed
     And the following "questions" exist:
       | questioncategory | qtype     | name | questiontext   | template |
       | Test questions   | recordrtc | RTC1 | Third question | audio    |
