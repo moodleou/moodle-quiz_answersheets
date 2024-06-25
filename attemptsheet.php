@@ -24,6 +24,7 @@
 
 use quiz_answersheets\report_display_options;
 use quiz_answersheets\utils;
+use mod_quiz\quiz_attempt;
 
 require_once(__DIR__ . '/../../../../config.php');
 require_once($CFG->dirroot . '/mod/quiz/locallib.php');
@@ -33,8 +34,10 @@ $cmid = optional_param('cmid', null, PARAM_INT);
 $rightanswer = optional_param('rightanswer', 0, PARAM_BOOL);
 
 $attemptobj = quiz_create_attempt_handling_errors($attemptid, $cmid);
-$reportoptions = new report_display_options('answersheets', $attemptobj->get_quiz(),
-        $attemptobj->get_cm(), $attemptobj->get_course());
+if (isset($attemptobj)) {
+    $reportoptions = new report_display_options('answersheets', $attemptobj->get_quiz(),
+            $attemptobj->get_cm(), $attemptobj->get_course());
+}
 $reportoptions->setup_from_params();
 
 // Check login.
