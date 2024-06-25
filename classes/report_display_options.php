@@ -25,14 +25,12 @@
 namespace quiz_answersheets;
 
 use context_module;
-use quiz_attempts_report;
+use mod_quiz\local\reports\attempts_report_options;
+use mod_quiz\local\reports\attempts_report;
 
 defined('MOODLE_INTERNAL') || die();
 
-require_once($CFG->dirroot . '/mod/quiz/report/default.php');
 require_once($CFG->dirroot . '/mod/quiz/report/reportlib.php');
-require_once($CFG->dirroot . '/mod/quiz/report/attemptsreport.php');
-require_once($CFG->dirroot . '/mod/quiz/report/attemptsreport_options.php');
 
 /**
  * This file defines the options for the quiz answersheets report.
@@ -41,7 +39,7 @@ require_once($CFG->dirroot . '/mod/quiz/report/attemptsreport_options.php');
  * @copyright 2019 The Open University
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class report_display_options extends \mod_quiz_attempts_report_options {
+class report_display_options extends attempts_report_options {
 
     /**@var int Last changed row id */
     public $lastchanged;
@@ -58,7 +56,7 @@ class report_display_options extends \mod_quiz_attempts_report_options {
 
     public function __construct($mode, $quiz, $cm, $course) {
         parent::__construct($mode, $quiz, $cm, $course);
-        $this->attempts = quiz_attempts_report::ENROLLED_ALL;
+        $this->attempts = attempts_report::ENROLLED_ALL;
 
         $this->userinfovisibility = self::possible_user_info_visibility_settings($cm);
     }
@@ -68,7 +66,7 @@ class report_display_options extends \mod_quiz_attempts_report_options {
         // We only want to show the checkbox to delete attempts
         // if the user has permissions and if the report mode is showing attempts.
         $this->checkboxcolumn = has_capability('mod/quiz:deleteattempts', context_module::instance($this->cm->id))
-                && ($this->attempts != quiz_attempts_report::ENROLLED_WITHOUT);
+                && ($this->attempts != attempts_report::ENROLLED_WITHOUT);
     }
 
     public function setup_from_params() {
@@ -97,7 +95,8 @@ class report_display_options extends \mod_quiz_attempts_report_options {
         parent::process_settings_from_form($fromform);
     }
 
-    public function get_initial_form_data() {
+    public function get_initial_form_data(): \cm_info| \stdClass
+    {
         $toform = parent::get_initial_form_data();
 
         foreach ($this->userinfovisibility as $name => $show) {
@@ -157,7 +156,8 @@ class report_display_options extends \mod_quiz_attempts_report_options {
      * @param \stdClass $cm the course_module info for this quiz.
      * @return array setting name => true
      */
-    public static function possible_user_info_visibility_settings(\stdClass $cm): array {
+    public static function possible_user_info_visibility_settings( \cm_info|\stdClass  $cm): array {
+
         $settings = ['fullname' => true];
 
         // TODO Does not support custom user profile fields (MDL-70456).

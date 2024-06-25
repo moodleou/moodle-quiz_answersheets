@@ -33,7 +33,7 @@ use moodle_url;
 use qtype_renderer;
 use question_attempt;
 use question_display_options;
-use quiz_attempt;
+use mod_quiz\quiz_attempt;
 use ReflectionClass;
 use stdClass;
 use user_picture;
@@ -77,7 +77,7 @@ class utils {
      * @param report_display_options $reportoptions controls which user info is shown.
      * @return array List of summary information
      */
-    public static function prepare_summary_attempt_information(quiz_attempt $attemptobj,
+    public static function prepare_summary_attempt_information(\mod_quiz\quiz_attempt $attemptobj,
             bool $minimal, report_display_options $reportoptions): array {
 
         global $CFG, $DB;
@@ -200,7 +200,7 @@ class utils {
      *      or just a array of field names.
      * @return string User detail string
      */
-    public static function get_user_details(stdClass $attemptuser, stdClass $cm, $fieldoptions): string {
+    public static function get_user_details(stdClass $attemptuser, \stdClass | \cm_info $cm, $fieldoptions): string {
         $fields = [];
         if ($fieldoptions instanceof report_display_options) {
             foreach ($fieldoptions->userinfovisibility as $field => $show) {

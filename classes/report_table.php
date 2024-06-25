@@ -26,11 +26,10 @@ namespace quiz_answersheets;
 
 use html_writer;
 use moodle_url;
-use quiz_attempt;
+use mod_quiz\local\reports\attempts_report_table;
+use mod_quiz\quiz_attempt;
 
 defined('MOODLE_INTERNAL') || die();
-
-require_once($CFG->dirroot . '/mod/quiz/report/attemptsreport_table.php');
 
 /**
  * This file defines the quiz answersheets table for showing last try at question
@@ -39,7 +38,7 @@ require_once($CFG->dirroot . '/mod/quiz/report/attemptsreport_table.php');
  * @copyright 2019 The Open University
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class report_table extends \quiz_attempts_report_table {
+class report_table extends attempts_report_table {
 
     /** @var report_display_options Option */
     protected $options;

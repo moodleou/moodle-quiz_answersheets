@@ -24,6 +24,7 @@
 
 use quiz_answersheets\report_display_options;
 use quiz_answersheets\utils;
+use mod_quiz\quiz_attempt;
 
 require_once(__DIR__ . '/../../../../config.php');
 require_once($CFG->dirroot . '/mod/quiz/locallib.php');
