@@ -71,8 +71,8 @@ Feature: Attempt sheet, Review sheet and Answer sheet feature of the Answer shee
     And I should not see "Check"
     And "table.quizreviewsummary" "css_element" should exist
     And I should see "Student One" in the "table.quizreviewsummary" "css_element"
-    And I should not see "Started on" in the "table.quizreviewsummary" "css_element"
-    And I should not see "State" in the "table.quizreviewsummary" "css_element"
+    And I should not see "Started" in the "table.quizreviewsummary" "css_element"
+    And I should not see "Status" in the "table.quizreviewsummary" "css_element"
     And I should see "Select the correct answer" in the ".question-instruction" "css_element"
     And I should not see "If incorrect:"
     And I should not see "If partially correct:"
@@ -121,8 +121,8 @@ Feature: Attempt sheet, Review sheet and Answer sheet feature of the Answer shee
     Then I should see "First question"
     And "table.quizreviewsummary" "css_element" should exist
     And I should see "Student One" in the "table.quizreviewsummary" "css_element"
-    And I should see "Started on" in the "table.quizreviewsummary" "css_element"
-    And I should see "State" in the "table.quizreviewsummary" "css_element"
+    And I should see "Started" in the "table.quizreviewsummary" "css_element"
+    And I should see "Status" in the "table.quizreviewsummary" "css_element"
 
   @javascript
   Scenario: Sheet's special message for un-submitted RecordRTC question type
