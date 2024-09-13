@@ -22,6 +22,7 @@
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+use mod_quiz\output\attempt_summary_information;
 use mod_quiz\quiz_attempt;
 use quiz_answersheets\report_display_options;
 use quiz_answersheets\utils;
@@ -78,7 +79,7 @@ $renderer = $PAGE->get_renderer('quiz_answersheets');
 
 // Add summary table.
 $sumdata = utils::prepare_summary_attempt_information($attemptobj, !$isattemptfinished, $reportoptions);
-echo $quizrenderer->review_summary_table($sumdata, 0);
+echo $quizrenderer->review_attempt_summary(attempt_summary_information::create_from_legacy_array($sumdata), 0);
 
 echo $renderer->render_question_attempt_form($attemptobj, $reportoptions, $redirect);
 

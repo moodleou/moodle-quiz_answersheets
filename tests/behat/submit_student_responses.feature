@@ -54,7 +54,7 @@ Feature: Submit student responses feature of the Answer sheets report
     And I click on "Submit responses on behalf of Student One (student1) and finish attempt" "button"
     And I should see "Are you sure you want to submit?" in the ".modal-body" "css_element"
     And I click on "Save changes" "button"
-    And "Student One" row "State" column of "answersheets" table should contain "Finished"
+    And "Student One" row "Status" column of "answersheets" table should contain "Finished"
 
   @javascript
   Scenario: Submit responses link available for overdue
@@ -69,7 +69,7 @@ Feature: Submit student responses feature of the Answer sheets report
     When I am on the "Quiz 1" "quiz_answersheets > Report" page logged in as "teacher"
     Then I should see "Attempts: 1"
     And I should see "Student One"
-    And "Student One" row "State" column of "answersheets" table should contain "Overdue"
+    And "Student One" row "Status" column of "answersheets" table should contain "Overdue"
     And "Student One" row "Submit student responses" column of "answersheets" table should contain "Submit responses..."
     And I click on "Submit responses..." "link" in the "Student One" "table_row"
     And I should not see "You can preview this quiz, but if this were a real attempt, you would be blocked because:"
@@ -78,4 +78,4 @@ Feature: Submit student responses feature of the Answer sheets report
     And I click on "Submit responses on behalf of Student One (student1) and finish attempt" "button"
     And I should see "Are you sure you want to submit?" in the ".modal-body" "css_element"
     And I click on "Save changes" "button"
-    And "Student One" row "State" column of "answersheets" table should contain "Never submitted"
+    And "Student One" row "Status" column of "answersheets" table should contain "Never submitted"

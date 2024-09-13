@@ -156,7 +156,7 @@ class utils {
                 // Cannot display grade.
             } else if (is_null($grade)) {
                 $sumdata['grade'] = [
-                        'title' => get_string('grade', 'quiz'),
+                        'title' => get_string('gradenoun'),
                         'content' => quiz_format_grade($quiz, $grade),
                 ];
             } else {
@@ -183,7 +183,7 @@ class utils {
                     $formattedgrade = get_string('outof', 'quiz', $a);
                 }
                 $sumdata['grade'] = [
-                        'title' => get_string('grade', 'quiz'),
+                        'title' => get_string('gradenoun'),
                         'content' => $formattedgrade,
                 ];
             }

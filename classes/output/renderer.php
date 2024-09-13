@@ -26,6 +26,7 @@ namespace quiz_answersheets\output;
 
 use context_module;
 use html_writer;
+use mod_quiz\output\attempt_summary_information;
 use mod_quiz\quiz_attempt;
 use moodle_url;
 use plugin_renderer_base;
@@ -195,7 +196,8 @@ class renderer extends plugin_renderer_base {
         $quizrenderer = $this->page->get_renderer('mod_quiz');
         $templatecontext = [
                 'questionattemptheader' => utils::get_attempt_sheet_print_header($attemptobj, $sheettype, $reportoptions),
-                'questionattemptsumtable' => $quizrenderer->review_summary_table($sumdata, 0),
+                'questionattemptsumtable' => $quizrenderer->review_attempt_summary(
+                    attempt_summary_information::create_from_legacy_array($sumdata), 0),
                 'questionattemptcontent' => $this->render_question_attempt_content($attemptobj, $reportoptions)
         ];
         $isgecko = \core_useragent::is_gecko();
