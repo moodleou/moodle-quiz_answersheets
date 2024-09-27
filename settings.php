@@ -27,5 +27,5 @@ defined('MOODLE_INTERNAL') || die;
 if ($ADMIN->fulltree) {
     $settings->add(new admin_setting_confightmleditor('quiz_answersheets/instruction_message',
             get_string('admin_instruction_message', 'quiz_answersheets'),
-            get_string('admin_instruction_message_des', 'quiz_answersheets'), null));
+            get_string('admin_instruction_message_des', 'quiz_answersheets'), ''));
 }
