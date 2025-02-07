@@ -78,4 +78,27 @@ Feature: Submit student responses feature of the Answer sheets report
     And I click on "Submit responses on behalf of Student One (student1) and finish attempt" "button"
     And I should see "Are you sure you want to submit?" in the ".modal-body" "css_element"
     And I click on "Save changes" "button"
-    And "Student One" row "Status" column of "answersheets" table should contain "Never submitted"
+    And "Student One" row "Status" column of "answersheets" table should contain "Finished"
+
+  @javascript
+  Scenario: Submit responses for a closed quiz
+    Given I am on the "Quiz 1" "quiz activity editing" page logged in as "teacher"
+    And I set the following fields to these values:
+      | id_timeclose_enabled | 1    |
+      | timeclose[year]      | 2018 |
+    And I press "Save and display"
+    When I am on the "Quiz 1" "quiz_answersheets > Report" page logged in as "teacher"
+    And I should see "Student One"
+    And I click on "Create Attempt" "button" in the "Student One" "table_row"
+    And I should see "Are you sure you want to create a quiz attempt for Student One (student1@example.com)?" in the ".modal .modal-body" "css_element"
+    And I click on "Create" "button" in the ".modal.show" "css_element"
+    And "Student One" row "Submit student responses" column of "answersheets" table should contain "Submit responses..."
+    And I click on "Submit responses..." "link" in the "Student One" "table_row"
+    And I should see "First question"
+    And I set the field "True" to "1"
+    And I click on "Submit responses on behalf of Student One (student1) and finish attempt" "button"
+    And I should see "Are you sure you want to submit?" in the ".modal-body" "css_element"
+    And I click on "Save changes" "button"
+    And "Student One" row "Status" column of "answersheets" table should contain "Finished"
+    And I click on "Review sheet" "link"
+    And I should see "1.00/1.00" in the "Marks" "table_row"
