@@ -21,8 +21,8 @@
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-define(['jquery', 'core/modal_factory', 'core/modal_events', 'core/notification'],
-    function($, ModalFactory, ModalEvents, Notification) {
+define(['jquery', 'core/modal_events', 'core/notification', 'core/modal_save_cancel'],
+    function($, ModalEvents, Notification, ModalSaveCancel) {
 
     var t = {
 
@@ -43,10 +43,10 @@ define(['jquery', 'core/modal_factory', 'core/modal_events', 'core/notification'
             submitResponsesButton.click(function(e) {
                 e.preventDefault();
                 submitResponsesButton.attr('disabled', 'disabled');
-                ModalFactory.create({
-                    type: ModalFactory.types.SAVE_CANCEL,
+                ModalSaveCancel.create({
                     title: lang.title,
-                    body: lang.body
+                    body: lang.body,
+                    removeOnClose: true,
                 }).then(function(modal) {
                     modal.show();
                     modal.getRoot().on(ModalEvents.save, function(e) {
@@ -62,7 +62,7 @@ define(['jquery', 'core/modal_factory', 'core/modal_events', 'core/notification'
                         submitResponsesButton.removeAttr('disabled');
                     });
                     return modal;
-                }).fail(function(err) {
+                }).catch(function(err) {
                     Notification.exception(err);
                     submitResponsesButton.removeAttr('disabled');
                 });

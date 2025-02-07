@@ -20,8 +20,8 @@
  * @copyright  2019 The Open University
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-define(['jquery', 'core/modal_factory', 'core/modal_events', 'core/ajax', 'core/notification'],
-    function($, ModalFactory, ModalEvents, Ajax, Notification) {
+define(['jquery', 'core/modal_events', 'core/ajax', 'core/notification', 'core/modal_save_cancel'],
+    function($, ModalEvents, Ajax, Notification, ModalSaveCancel) {
         var t = {
             SELECTOR: '.create-attempt-btn',
             init: function() {
@@ -30,18 +30,19 @@ define(['jquery', 'core/modal_factory', 'core/modal_events', 'core/ajax', 'core/
                     var target = $(this).closest('table').find('button');
                     t.disableButton(target, true);
                     var message = $(this).data('message');
-                    var modalButton = M.util.get_string('create_attempt_modal_button', 'quiz_answersheets');
                     var params = {
                         quizid: $(this).data('quiz-id'),
                         userid: $(this).data('user-id'),
                         url: $(this).data('url')
                     };
-                    ModalFactory.create({
-                        type: ModalFactory.types.SAVE_CANCEL,
+                    ModalSaveCancel.create({
                         title: M.util.get_string('create_attempt_modal_title', 'quiz_answersheets'),
-                        body: message
-                    }).done(function(modal) {
-                        modal.setSaveButtonText(modalButton);
+                        body: message,
+                        buttons: {
+                            save: M.util.get_string('create_attempt_modal_button', 'quiz_answersheets'),
+                        },
+                        show: true,
+                    }).then((modal) => {
                         modal.getRoot().on(ModalEvents.save, params, t.createAttempt);
                         modal.show();
                         // Handle hidden event.
