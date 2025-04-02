@@ -60,7 +60,8 @@ if ($attemptobj->is_finished()) {
 }
 
 // Process the attempt, getting the new status for the attempt.
-// If we are trying to create and update the student response for closed quizzes, then we will have to set processing time to quiz timeclose.
+// If we are trying to create and update the student response for closed quizzes.
+// Then we will have to set processing time to quiz timeclose.
 // Otherwise, the attempt would not get updated, considering it to be too late in the process_attempt function.
 $quiz = $attemptobj->get_quiz();
 if ($timenow > $quiz->timeclose) {

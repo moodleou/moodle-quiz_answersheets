@@ -24,8 +24,6 @@
 
 namespace quiz_answersheets\event;
 
-defined('MOODLE_INTERNAL') || die();
-
 /**
  * Base event class.
  *
@@ -35,14 +33,13 @@ defined('MOODLE_INTERNAL') || die();
  */
 class base_event extends \core\event\base {
 
-    /**
-     * Init method.
-     */
+    #[\Override]
     protected function init() {
         $this->data['crud'] = 'r';
         $this->data['edulevel'] = self::LEVEL_TEACHING;
     }
 
+    #[\Override]
     protected function validate_data() {
         parent::validate_data();
         if (!isset($this->relateduserid)) {
@@ -58,7 +55,8 @@ class base_event extends \core\event\base {
         }
     }
 
-    public static function get_objectid_mapping() {
+    #[\Override]
+    public static function get_objectid_mapping(): int {
         return \core\event\base::NOT_MAPPED;
     }
 

@@ -24,8 +24,6 @@
 
 namespace quiz_answersheets\event;
 
-defined('MOODLE_INTERNAL') || die();
-
 /**
  * Right answer sheet printed event class.
  *
@@ -35,17 +33,20 @@ defined('MOODLE_INTERNAL') || die();
  */
 class right_answer_printed extends base_event {
 
-    public static function get_name() {
+    #[\Override]
+    public static function get_name(): string {
         return get_string('event_right_answer_printed', 'quiz_answersheets');
     }
 
-    public function get_description() {
+    #[\Override]
+    public function get_description(): string {
         return 'The user with id ' . $this->userid . ' has printed the right answer sheet with id ' . $this->other['attemptid'] .
                 ' belonging to the user with id ' . $this->relateduserid . ' for the quiz with course module id ' .
                 $this->contextinstanceid . '.';
     }
 
-    public function get_url() {
+    #[\Override]
+    public function get_url(): \moodle_url {
         return new \moodle_url('/mod/quiz/report/answersheets/attemptsheet.php',
                 ['attempt' => $this->other['attemptid'], 'rightanswer' => 1]);
     }

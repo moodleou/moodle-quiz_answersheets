@@ -24,8 +24,6 @@
 
 namespace quiz_answersheets\event;
 
-defined('MOODLE_INTERNAL') || die();
-
 /**
  * Responses submitted event class.
  *
@@ -35,17 +33,20 @@ defined('MOODLE_INTERNAL') || die();
  */
 class responses_submitted extends base_event {
 
-    public static function get_name() {
+    #[\Override]
+    public static function get_name(): string {
         return get_string('event_responses_submitted', 'quiz_answersheets');
     }
 
-    public function get_description() {
+    #[\Override]
+    public function get_description(): string {
         return 'The user with id ' . $this->userid . ' has submitted the responses for the attempt sheet with id ' .
                 $this->other['attemptid'] . ' on behalf of user with id ' . $this->relateduserid .
                 ' for the quiz with course module id ' . $this->contextinstanceid . '.';
     }
 
-    public function get_url() {
+    #[\Override]
+    public function get_url(): \moodle_url {
         return new \moodle_url('/mod/quiz/report/answersheets/attemptsheet.php',
                 ['attempt' => $this->other['attemptid']]);
     }

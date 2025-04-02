@@ -1,5 +1,21 @@
 # Change log for the Export quiz attempts report
 
+
+## Changes in 1.4
+
+* This version works with Moodle 4.5
+* Support custom profile fields.
+* Users can now export all embedded questions with student responses from the Embedded Question Report page.
+* PrintQuiz: some display issues, mostly with equations, have been fixed.
+* Users can now create attempt and update/upload responses even after quiz is closed.
+* Export quiz attempts/STACK: preg_match_all() argument type exception when viewing Attempt sheet fixed.
+* Fixed an exception in Quiz Answer sheets that was caused by an incorrect argument type being passed to
+  the possible_user_info_visibility_settings function.
+* Added a new feature for export attempt that can show/hide mark.
+* Added oumatrix question to the answer sheet.
+* Fixed a few other minor bugs.
+
+
 ## Changes in 1.3
 
 * This version works with Moodle 4.0.

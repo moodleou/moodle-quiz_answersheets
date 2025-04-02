@@ -24,8 +24,6 @@
 
 namespace quiz_answersheets\privacy;
 
-defined('MOODLE_INTERNAL') || die();
-
 /**
  * Privacy Subsystem implementation for quiz_answersheets.
  *

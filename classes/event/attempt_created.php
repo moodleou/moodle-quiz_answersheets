@@ -24,8 +24,6 @@
 
 namespace quiz_answersheets\event;
 
-defined('MOODLE_INTERNAL') || die();
-
 /**
  * Attempt created event class.
  *
@@ -35,25 +33,26 @@ defined('MOODLE_INTERNAL') || die();
  */
 class attempt_created extends base_event {
 
-    /**
-     * Init method.
-     */
+    #[\Override]
     protected function init() {
         $this->data['crud'] = 'w';
         $this->data['edulevel'] = self::LEVEL_TEACHING;
     }
 
-    public static function get_name() {
+    #[\Override]
+    public static function get_name(): string {
         return get_string('event_attempt_created', 'quiz_answersheets');
     }
 
+    #[\Override]
     public function get_description() {
         return 'The user with id ' . $this->userid . ' has created the attempt with id ' . $this->other['attemptid'] .
                 ' for the user with id ' . $this->relateduserid . ' for the quiz with course module id ' .
                 $this->contextinstanceid . '.';
     }
 
-    public function get_url() {
+    #[\Override]
+    public function get_url(): \moodle_url {
         return new \moodle_url('/mod/quiz/report/answersheets/attemptsheet.php', ['attempt' => $this->other['attemptid']]);
     }
 }

@@ -38,7 +38,7 @@ Feature: Creating attempts using the Answer sheets report
   @javascript
   Scenario: "Create attempt" button should be visible when student does not have any attempts
     When I am on the "Quiz 1" "quiz_answersheets > Report" page logged in as "teacher"
-    Then I set the field "Attempts from" to "enrolled users who have, or have not, attempted the quiz"
+    Then I set the field "Attempts from" to "enrolled_any"
     And I click on "Show report" "button"
     And "Create Attempt" "button" should exist in the "Student One" "table_row"
 
@@ -47,7 +47,7 @@ Feature: Creating attempts using the Answer sheets report
     Given user "student2" has started an attempt at quiz "Quiz 1"
     And user "student2" has finished an attempt at quiz "Quiz 1"
     When I am on the "Quiz 1" "quiz_answersheets > Report" page logged in as "teacher"
-    Then I set the field "Attempts from" to "enrolled users who have, or have not, attempted the quiz"
+    Then I set the field "Attempts from" to "enrolled_any"
     And I click on "Show report" "button"
     And "Create Attempt" "button" should exist in the "Student Two" "table_row"
 
@@ -55,14 +55,14 @@ Feature: Creating attempts using the Answer sheets report
   Scenario: "Create attempt" button should not be visible when student have "in progress" attempt.
     Given user "student3" has started an attempt at quiz "Quiz 1"
     When I am on the "Quiz 1" "quiz_answersheets > Report" page logged in as "teacher"
-    Then I set the field "Attempts from" to "enrolled users who have, or have not, attempted the quiz"
+    Then I set the field "Attempts from" to "enrolled_any"
     And I click on "Show report" "button"
     And "Create Attempt" "button" should not exist in the "Student Three" "table_row"
 
   @javascript
   Scenario: "Create attempt" button should show dialog and create new attempt with highlight
     When I am on the "Quiz 1" "quiz_answersheets > Report" page logged in as "teacher"
-    Then I set the field "Attempts from" to "enrolled users who have, or have not, attempted the quiz"
+    Then I set the field "Attempts from" to "enrolled_any"
     And I click on "Show report" "button"
     And I click on "Create Attempt" "button" in the "Student One" "table_row"
     And I should see "Are you sure you want to create a quiz attempt for Student One (student1@example.com)?" in the ".modal .modal-body" "css_element"
@@ -73,7 +73,7 @@ Feature: Creating attempts using the Answer sheets report
   @javascript
   Scenario: Cancel button in the dialogue really cancels
     When I am on the "Quiz 1" "quiz_answersheets > Report" page logged in as "teacher"
-    Then I set the field "Attempts from" to "enrolled users who have, or have not, attempted the quiz"
+    Then I set the field "Attempts from" to "enrolled_any"
     And I click on "Show report" "button"
     And I click on "Create Attempt" "button" in the "Student One" "table_row"
     And I should see "Are you sure you want to create a quiz attempt for Student One (student1@example.com)?" in the ".modal .modal-body" "css_element"

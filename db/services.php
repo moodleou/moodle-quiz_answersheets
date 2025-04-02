@@ -25,21 +25,21 @@
 defined('MOODLE_INTERNAL') || die;
 
 $functions = [
-        'quiz_answersheets_create_attempt' => [
-                'classname' => 'quiz_answersheets_external',
-                'methodname' => 'create_attempt',
-                'classpath' => '',
-                'description' => 'Create attempt for users',
-                'type' => 'write',
-                'ajax' => true,
-                'capabilities' => 'quiz/answersheets:createattempt'
-        ],
-        'quiz_answersheets_create_event' => [
-                'classname' => 'quiz_answersheets_external',
-                'methodname' => 'create_event',
-                'classpath' => '',
-                'description' => 'Record log events from answer sheet',
-                'type' => 'write',
-                'ajax' => true
-        ]
+    'quiz_answersheets_create_attempt' => [
+        'classname' => 'quiz_answersheets_external',
+        'methodname' => 'create_attempt',
+        'classpath' => '',
+        'description' => 'Create attempt for users',
+        'type' => 'write',
+        'ajax' => true,
+        'capabilities' => 'quiz/answersheets:createattempt',
+    ],
+    'quiz_answersheets_create_event' => [
+        'classname' => 'quiz_answersheets_external',
+        'methodname' => 'create_event',
+        'classpath' => '',
+        'description' => 'Record log events from answer sheet',
+        'type' => 'write',
+        'ajax' => true,
+    ],
 ];

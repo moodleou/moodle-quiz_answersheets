@@ -53,18 +53,18 @@ class qtype_truefalse_override_renderer extends \qtype_truefalse_renderer {
         $response = $qa->get_last_qt_var('answer', '');
 
         $inputname = $qa->get_qt_field_name('answer');
-        $trueattributes = array(
-                'type' => 'radio',
-                'name' => $inputname,
-                'value' => 1,
-                'id' => $inputname . 'true',
-        );
-        $falseattributes = array(
-                'type' => 'radio',
-                'name' => $inputname,
-                'value' => 0,
-                'id' => $inputname . 'false',
-        );
+        $trueattributes = [
+            'type' => 'radio',
+            'name' => $inputname,
+            'value' => 1,
+            'id' => $inputname . 'true',
+        ];
+        $falseattributes = [
+            'type' => 'radio',
+            'name' => $inputname,
+            'value' => 0,
+            'id' => $inputname . 'false',
+        ];
 
         if ($options->readonly) {
             $trueattributes['disabled'] = 'disabled';
@@ -72,17 +72,15 @@ class qtype_truefalse_override_renderer extends \qtype_truefalse_renderer {
         }
 
         // Work out which radio button to select (if any).
-        $truechecked = false;
-        $falsechecked = false;
-        $responsearray = array();
+        $responsearray = [];
         if ($response) {
             $trueattributes['checked'] = 'checked';
             $truechecked = true;
-            $responsearray = array('answer' => 1);
+            $responsearray = ['answer' => 1];
         } else if ($response !== '') {
             $falseattributes['checked'] = 'checked';
             $falsechecked = true;
-            $responsearray = array('answer' => 1);
+            $responsearray = ['answer' => 1];
         }
 
         // Work out visual feedback for answer correctness.
@@ -102,6 +100,7 @@ class qtype_truefalse_override_renderer extends \qtype_truefalse_renderer {
             }
         }
         */
+
         $truefeedback = '';
         $falsefeedback = '';
         if ($options->correctness) {
@@ -129,19 +128,17 @@ class qtype_truefalse_override_renderer extends \qtype_truefalse_renderer {
             );
         $radiofalse = html_writer::empty_tag('input', $falseattributes) .
             html_writer::tag('label', $choicefalse, [
-                'for' => $trueattributes['id'],
-                'class' => 'd-flex w-auto ml-1'
+                'for' => $falseattributes['id'],
+                'class' => 'd-flex w-auto ml-1',
             ]);
 
         $result = '';
-        $result .= html_writer::tag('div', $question->format_questiontext($qa),
-                array('class' => 'qtext'));
+        $result .= html_writer::tag('div', $question->format_questiontext($qa), ['class' => 'qtext']);
 
-        $result .= html_writer::start_tag('div', array('class' => 'ablock'));
-        $result .= html_writer::tag('div', get_string('selectone', 'qtype_truefalse'),
-                array('class' => 'prompt'));
+        $result .= html_writer::start_tag('div', ['class' => 'ablock']);
+        $result .= html_writer::tag('div', get_string('selectone', 'qtype_truefalse'), ['class' => 'prompt']);
 
-        $result .= html_writer::start_tag('div', array('class' => 'answer'));
+        $result .= html_writer::start_tag('div', ['class' => 'answer']);
         // Modification starts.
         /* Comment out core code.
         $result .= html_writer::tag('div', $radiotrue . ' ' . $truefeedbackimg,
@@ -160,8 +157,7 @@ class qtype_truefalse_override_renderer extends \qtype_truefalse_renderer {
 
         if ($qa->get_state() == question_state::$invalid) {
             $result .= html_writer::nonempty_tag('div',
-                    $question->get_validation_error($responsearray),
-                    array('class' => 'validationerror'));
+                $question->get_validation_error($responsearray), ['class' => 'validationerror']);
         }
 
         return $result;

@@ -32,11 +32,11 @@ Feature: Submit student responses feature of the Answer sheets report
   @javascript
   Scenario: Submit responses link do not exist for Student do not have any attempt yet
     When I am on the "Quiz 1" "quiz_answersheets > Report" page logged in as "teacher"
-    And I set the field "Attempts from" to "enrolled users who have attempted the quiz"
+    And I set the field "Attempts from" to "enrolled_with"
     And I press "Show report"
     Then I should see "Attempts: 0"
     And I should see "Nothing to display"
-    And I set the field "Attempts from" to "enrolled users who have, or have not, attempted the quiz"
+    And I set the field "Attempts from" to "enrolled_any"
     And I press "Show report"
     And I should see "Student One"
     And "Student One" row "Submit student responses" column of "answersheets" table should contain "-"
