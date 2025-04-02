@@ -26,8 +26,6 @@ namespace quiz_answersheets\output\randomsamatch;
 
 use quiz_answersheets\output\match\qtype_match_override_renderer;
 
-defined('MOODLE_INTERNAL') || die();
-
 /**
  * The override qtype_randomsamatch_renderer for the quiz_answersheets module.
  *

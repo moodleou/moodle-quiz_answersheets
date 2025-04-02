@@ -50,29 +50,29 @@ class qtype_oumultiresponse_override_renderer extends \qtype_oumultiresponse_ren
      */
     public function formulation_and_controls(question_attempt $qa, question_display_options $options) {
         $question = $qa->get_question();
-        $response = $question->get_response($qa);
 
         $inputname = $qa->get_qt_field_name('answer');
-        $inputattributes = array(
-                'type' => $this->get_input_type(),
-                'name' => $inputname,
-        );
+        $inputattributes = [
+            'type' => $this->get_input_type(),
+            'name' => $inputname,
+        ];
 
         if ($options->readonly) {
             $inputattributes['disabled'] = 'disabled';
         }
 
-        $radiobuttons = array();
-        $feedbackimg = array();
-        $feedback = array();
-        $classes = array();
+        $radiobuttons = [];
+        $feedbackimg = [];
+        $feedback = [];
+        $classes = [];
         foreach ($question->get_order($qa) as $value => $ansid) {
             $ans = $question->answers[$ansid];
             $inputattributes['name'] = $this->get_input_name($qa, $value);
             $inputattributes['value'] = $this->get_input_value($value);
             $inputattributes['id'] = $this->get_input_id($qa, $value);
             // Modification starts.
-            /* Comment out core code.
+            // Comment out core code.
+            /*
             $isselected = $question->is_choice_selected($response, $value);
             if ($isselected) {
                 $inputattributes['checked'] = 'checked';
@@ -84,11 +84,11 @@ class qtype_oumultiresponse_override_renderer extends \qtype_oumultiresponse_ren
             // Modification ends.
             $hidden = '';
             if (!$options->readonly && $this->get_input_type() == 'checkbox') {
-                $hidden = html_writer::empty_tag('input', array(
-                        'type' => 'hidden',
-                        'name' => $inputattributes['name'],
-                        'value' => 0,
-                ));
+                $hidden = html_writer::empty_tag('input', [
+                    'type' => 'hidden',
+                    'name' => $inputattributes['name'],
+                    'value' => 0,
+                ]);
             }
             $choicenumber = html_writer::span(
                 $this->number_in_style($value, $question->answernumbering), 'answernumber');
@@ -112,10 +112,10 @@ class qtype_oumultiresponse_override_renderer extends \qtype_oumultiresponse_ren
                     trim($ans->feedback)) {
                 // Modification ends.
                 $feedback[] = html_writer::tag('div',
-                        $question->make_html_inline($question->format_text(
-                                $ans->feedback, $ans->feedbackformat,
-                                $qa, 'question', 'answerfeedback', $ansid)),
-                        array('class' => 'specificfeedback'));
+                    $question->make_html_inline($question->format_text(
+                        $ans->feedback, $ans->feedbackformat,
+                        $qa, 'question', 'answerfeedback', $ansid)),
+                    ['class' => 'specificfeedback']);
             } else {
                 $feedback[] = '';
             }
@@ -136,15 +136,15 @@ class qtype_oumultiresponse_override_renderer extends \qtype_oumultiresponse_ren
 
         $result = '';
         $result .= html_writer::tag('div', $question->format_questiontext($qa),
-                array('class' => 'qtext'));
+            ['class' => 'qtext']);
 
-        $result .= html_writer::start_tag('div', array('class' => 'ablock'));
-        $result .= html_writer::tag('div', $this->prompt(), array('class' => 'prompt'));
+        $result .= html_writer::start_tag('div', ['class' => 'ablock']);
+        $result .= html_writer::tag('div', $this->prompt(), ['class' => 'prompt']);
 
-        $result .= html_writer::start_tag('div', array('class' => 'answer'));
+        $result .= html_writer::start_tag('div', ['class' => 'answer']);
         foreach ($radiobuttons as $key => $radio) {
             $result .= html_writer::tag('div', $radio . ' ' . $feedbackimg[$key] . $feedback[$key],
-                            array('class' => $classes[$key])) . "\n";
+                ['class' => $classes[$key]]) . "\n";
         }
         $result .= html_writer::end_tag('div'); // Answer.
 
@@ -154,8 +154,7 @@ class qtype_oumultiresponse_override_renderer extends \qtype_oumultiresponse_ren
 
         if ($qa->get_state() == question_state::$invalid) {
             $result .= html_writer::nonempty_tag('div',
-                    $question->get_validation_error($qa->get_last_qt_data()),
-                    array('class' => 'validationerror'));
+                $question->get_validation_error($qa->get_last_qt_data()), ['class' => 'validationerror']);
         }
 
         return $result;

@@ -39,9 +39,16 @@ require_once($CFG->dirroot . '/question/type/pmatch/renderer.php');
  */
 class qtype_pmatch_override_renderer extends \qtype_pmatch_renderer {
 
-    public function question_tests_link(qtype_pmatch_question $question, question_display_options $options) {
+    /**
+     * The code was copied from question/type/pmatch/renderer.php, with modifications.
+     *
+     * @param qtype_pmatch_question $question The question object.
+     * @param question_display_options $options The display options.
+     * @return string HTML string.
+     */
+    public function question_tests_link(qtype_pmatch_question $question, question_display_options $options): string {
         // Do not show the question test link.
-        return;
+        return '';
     }
 
 }

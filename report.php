@@ -27,9 +27,6 @@ use mod_quiz\quiz_attempt;
 use quiz_answersheets\report_display_options;
 use quiz_answersheets\report_table;
 
-defined('MOODLE_INTERNAL') || die();
-
-
 /**
  * This file defines the export quiz attempts report class.
  *
@@ -39,7 +36,15 @@ defined('MOODLE_INTERNAL') || die();
  */
 class quiz_answersheets_report extends attempts_report {
 
-    public function display($quiz, $cm, $course) {
+    /**
+     * Display the report.
+     *
+     * @param stdClass $quiz the quiz settings.
+     * @param stdClass $cm the course-module settings for the quiz.
+     * @param stdClass $course the course settings.
+     * @return bool success.
+     */
+    public function display($quiz, $cm, $course): bool {
         global $DB, $PAGE;
 
         $bulkinstructions = optional_param('bulk', false, PARAM_BOOL);
@@ -216,7 +221,7 @@ class quiz_answersheets_report extends attempts_report {
             $headers[] = '';
         }
 
-        foreach ($options->userinfovisibility as $field => $show) {
+        foreach (array_keys($options->userinfovisibility) as $field) {
             if ($field === 'fullname') {
                 if (!$table->is_downloading()) {
                     $columns[] = 'fullname';
@@ -290,9 +295,9 @@ class quiz_answersheets_report extends attempts_report {
             global $PAGE;
             $PAGE->requires->js_call_amd('quiz_answersheets/create_attempt_dialog', 'init');
             $PAGE->requires->strings_for_js([
-                    'create_attempt_modal_title',
-                    'create_attempt_modal_button',
-                    'create_attempt_modal_description'
+                'create_attempt_modal_title',
+                'create_attempt_modal_button',
+                'create_attempt_modal_description',
             ], 'quiz_answersheets');
             $columns[] = 'create_attempt';
             $headers[] = get_string('create_attempt', 'quiz_answersheets');

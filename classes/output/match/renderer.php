@@ -64,25 +64,22 @@ class qtype_match_override_renderer extends \qtype_match_renderer {
         // Modification ends.
 
         $result = '';
-        $result .= html_writer::tag('div', $question->format_questiontext($qa),
-                array('class' => 'qtext'));
+        $result .= html_writer::tag('div', $question->format_questiontext($qa), ['class' => 'qtext']);
 
-        $result .= html_writer::start_tag('div', array('class' => 'ablock'));
-        $result .= html_writer::start_tag('table', array('class' => 'answer'));
+        $result .= html_writer::start_tag('div', ['class' => 'ablock']);
+        $result .= html_writer::start_tag('table', ['class' => 'answer']);
         $result .= html_writer::start_tag('tbody');
 
         $parity = 0;
         $i = 1;
         foreach ($stemorder as $key => $stemid) {
 
-            $result .= html_writer::start_tag('tr', array('class' => 'r' . $parity));
+            $result .= html_writer::start_tag('tr', ['class' => 'r' . $parity]);
             $fieldname = 'sub' . $key;
 
-            $result .= html_writer::tag('td', $this->format_stem_text($qa, $stemid),
-                    array('class' => 'text'));
+            $result .= html_writer::tag('td', $this->format_stem_text($qa, $stemid), ['class' => 'text']);
 
             $classes = 'control';
-            $feedbackimage = '';
 
             if (array_key_exists($fieldname, $response)) {
                 $selected = $response[$fieldname];
@@ -97,16 +94,17 @@ class qtype_match_override_renderer extends \qtype_match_renderer {
                 $feedbackimage = $this->feedback_image($fraction);
             }
 
-            // Modification starts.
+            // Modification starts here.
+            // The following original core code has been commented out for customization purposes.
             /* Comment out core code.
-            $result .= html_writer::tag('td',
-                    html_writer::label(get_string('answer', 'qtype_match', $i),
-                            'menu' . $qa->get_qt_field_name('sub' . $key), false,
-                            array('class' => 'accesshide')) .
-                    html_writer::select($choices, $qa->get_qt_field_name('sub' . $key), $selected,
-                            array('0' => 'choose'), array('disabled' => $options->readonly, 'class' => 'custom-select ml-1')) .
-                    ' ' . $feedbackimage, array('class' => $classes));
-            */
+           $result .= html_writer::tag('td',
+                   html_writer::label(get_string('answer', 'qtype_match', $i),
+                           'menu' . $qa->get_qt_field_name('sub' . $key), false,
+                           array('class' => 'accesshide')) .
+                   html_writer::select($choices, $qa->get_qt_field_name('sub' . $key), $selected,
+                           array('0' => 'choose'), array('disabled' => $options->readonly, 'class' => 'custom-select ml-1')) .
+                   ' ' . $feedbackimage, array('class' => $classes));
+           */
 
             $result .= html_writer::tag('td', $choiceslist, ['class' => $classes]);
             // Modification ends.
@@ -122,8 +120,7 @@ class qtype_match_override_renderer extends \qtype_match_renderer {
 
         if ($qa->get_state() == question_state::$invalid) {
             $result .= html_writer::nonempty_tag('div',
-                    $question->get_validation_error($response),
-                    array('class' => 'validationerror'));
+                    $question->get_validation_error($response), ['class' => 'validationerror']);
         }
 
         return $result;

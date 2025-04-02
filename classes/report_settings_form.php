@@ -46,27 +46,31 @@ if (class_exists('\mod_quiz\local\reports\attempts_report_options_form')) {
  */
 class report_settings_form extends \mod_quiz_attempts_report_form_parent_class_alias {
 
-    protected function other_preference_fields(MoodleQuickForm $mform) {
+    /**
+     * Add the custom fields to the form.
+     *
+     * @param MoodleQuickForm $mform The form.
+     */
+    protected function other_preference_fields(MoodleQuickForm $mform): void {
         $field = report_display_options::possible_user_info_visibility_settings($this->_customdata['quiz']->cmobject);
 
         $userinfogroup = [];
-        foreach ($field as $name => $notused) {
+        foreach (array_keys($field) as $name) {
             $userinfogroup[] = $mform->createElement('advcheckbox', 'show' . $name, '',
-                    report_display_options::user_info_visibility_settings_name($name));
+                report_display_options::user_info_visibility_settings_name($name));
             $mform->setDefault('show' . $name, 1);
         }
-        $mform->addGroup($userinfogroup, 'userinfo',
-                get_string('showuserinfo', 'quiz_answersheets'), array(' '), false);
+        $mform->addGroup($userinfogroup, 'userinfo', get_string('showuserinfo', 'quiz_answersheets'), [' '], false);
 
-        $instructionandmarkedcheckboxes = [];
-        $instructionandmarkedcheckboxes[] = $mform->createElement('advcheckbox', 'questioninstruction',
+        $instandmarkedcbs = [];
+        $instandmarkedcbs[] = $mform->createElement('advcheckbox', 'questioninstruction',
             get_string('showquestioninstruction', 'quiz_answersheets'));
         $mform->setDefault('questioninstruction', 1);
 
-        $instructionandmarkedcheckboxes[] = $mform->createElement('advcheckbox', 'marks',
+        $instandmarkedcbs[] = $mform->createElement('advcheckbox', 'marks',
             get_string('showmarkedoutoftext', 'quiz_answersheets'));
         $mform->setDefault('marks', 1);
-        $mform->addGroup($instructionandmarkedcheckboxes, 'instructionandmarkedcheckboxes', '', '',
+        $mform->addGroup($instandmarkedcbs, 'instructionandmarkedcheckboxes', '', '',
             false);
     }
 }

@@ -66,6 +66,14 @@ class report_display_options extends attempts_report_options {
      */
     public $rightanswer = true;
 
+    /**
+     * Constructor.
+     *
+     * @param string $mode which report these options are for.
+     * @param stdClass $quiz the settings for the quiz being reported on.
+     * @param stdClass $cm the course module objects for the quiz being reported on.
+     * @param stdClass $course the course settings for the coures this quiz is in.
+     */
     public function __construct($mode, $quiz, $cm, $course) {
         parent::__construct($mode, $quiz, $cm, $course);
         $this->attempts = attempts_report::ENROLLED_ALL;
@@ -73,6 +81,9 @@ class report_display_options extends attempts_report_options {
         $this->userinfovisibility = self::possible_user_info_visibility_settings($cm);
     }
 
+    /**
+     * Resolve the dependencies of the options.
+     */
     public function resolve_dependencies() {
         parent::resolve_dependencies();
         // We only want to show the checkbox to delete attempts
@@ -81,6 +92,9 @@ class report_display_options extends attempts_report_options {
                 && ($this->attempts != attempts_report::ENROLLED_WITHOUT);
     }
 
+    /**
+     * Setup the options from the URL parameters.
+     */
     public function setup_from_params() {
         parent::setup_from_params();
         $this->lastchanged = optional_param('lastchanged', 0, PARAM_INT);
@@ -94,7 +108,12 @@ class report_display_options extends attempts_report_options {
         $this->rightanswer = optional_param('rightanswer', false, PARAM_BOOL);
     }
 
-    protected function get_url_params() {
+    /**
+     * Get the URL parameters for the report.
+     *
+     * @return array The URL parameters.
+     */
+    protected function get_url_params(): array {
         $params = parent::get_url_params();
         $params['userinfo'] = $this->combine_user_info_visibility();
         $params['instruction'] = $this->questioninstruction;
@@ -103,8 +122,13 @@ class report_display_options extends attempts_report_options {
         return $params;
     }
 
-    public function process_settings_from_form($fromform) {
-        foreach ($this->userinfovisibility as $name => $notused) {
+    /**
+     * Process the settings from the form.
+     *
+     * @param stdClass $fromform the form data.
+     */
+    public function process_settings_from_form($fromform): void {
+        foreach (array_keys($this->userinfovisibility) as $name) {
             // Unused field of userinfovisibility in filter form should not be added to report link.
             $this->userinfovisibility[$name] = !empty($fromform->{'show' . $name});
         }
@@ -113,7 +137,11 @@ class report_display_options extends attempts_report_options {
         parent::process_settings_from_form($fromform);
     }
 
-    public function get_initial_form_data() {
+    /**
+     * Get the initial form data for the report settings.
+     * @return stdClass The form data.
+     */
+    public function get_initial_form_data(): stdClass {
         $toform = parent::get_initial_form_data();
 
         foreach ($this->userinfovisibility as $name => $show) {
@@ -125,7 +153,11 @@ class report_display_options extends attempts_report_options {
         return $toform;
     }
 
-    public function setup_from_user_preferences() {
+    /**
+     * Setup the user preferences so they match the settings in this object.
+     * (For those settings that are backed by user-preferences).
+     */
+    public function setup_from_user_preferences(): void {
         parent::setup_from_user_preferences();
         $this->parse_user_info_visibility(
                 get_user_preferences('quiz_answersheets_userinfovisibility',
@@ -163,7 +195,7 @@ class report_display_options extends attempts_report_options {
      */
     protected function parse_user_info_visibility(string $combined): void {
         $fields = explode('-', $combined);
-        foreach ($this->userinfovisibility as $name => $notused) {
+        foreach (array_keys($this->userinfovisibility) as $name) {
             $this->userinfovisibility[$name] = in_array($name, $fields);
         }
     }

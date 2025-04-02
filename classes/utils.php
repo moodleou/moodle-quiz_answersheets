@@ -38,8 +38,6 @@ use ReflectionClass;
 use stdClass;
 use user_picture;
 
-defined('MOODLE_INTERNAL') || die();
-
 /**
  * Quiz answer sheet utils.
  *
@@ -49,23 +47,31 @@ defined('MOODLE_INTERNAL') || die();
  */
 class utils {
 
+    /** @var string Attempt sheet created */
     const ATTEMPT_SHEET_CREATED = 'attempt_created';
+    /** @var string Attempt sheet printed */
     const ATTEMPT_SHEET_PRINTED = 'attempt_printed';
+    /** @var string Attempt sheet viewed */
     const ATTEMPT_SHEET_VIEWED = 'attempt_viewed';
+    /** @var string Right answer sheet printed */
     const RIGHT_ANSWER_SHEET_PRINTED = 'right_answer_printed';
+    /** @var string Right answer sheet viewed */
     const RIGHT_ANSWER_SHEET_VIEWED = 'right_answer_viewed';
+    /** @var string Responses submitted */
     const RESPONSES_SUBMITTED = 'responses_submitted';
+    /** @var string Example tutor */
     const EXAMPLE_TUTOR = 'example tutor';
+    /** @var string Example student */
     const EXAMPLE_STUDENT = 'example student';
     /** @var string[] Supported question types for new combine feedback. */
     const COMBINED_FEEDBACK_QTYPES = [
-            'oumultiresponse',
-            'match',
-            'multichoice',
-            'gapselect',
-            'truefalse',
-            'wordselect',
-            'combined'
+        'oumultiresponse',
+        'match',
+        'multichoice',
+        'gapselect',
+        'truefalse',
+        'wordselect',
+        'combined',
     ];
 
     /**
@@ -80,7 +86,7 @@ class utils {
     public static function prepare_summary_attempt_information(quiz_attempt $attemptobj,
             bool $minimal, report_display_options $reportoptions): array {
 
-        global $CFG, $DB;
+        global $DB;
 
         $sumdata = [];
         $attempt = $attemptobj->get_attempt();
@@ -106,9 +112,11 @@ class utils {
                 $userpicture = new user_picture($student);
                 $userpicture->courseid = $attemptobj->get_courseid();
                 $sumdata['user'] = [
-                        'title' => $userpicture,
-                        'content' => new action_link(new moodle_url('/user/view.php',
-                                ['id' => $student->id, 'course' => $attemptobj->get_courseid()]), fullname($student, true))
+                    'title' => $userpicture,
+                    'content' => new action_link(new moodle_url('/user/view.php', [
+                        'id' => $student->id,
+                        'course' => $attemptobj->get_courseid(),
+                    ]), fullname($student, true)),
                 ];
             }
         }
@@ -308,13 +316,13 @@ class utils {
     private static function prepare_event_data(int $attemptid, int $userid, int $courseid, context_module $context,
             int $quizid): array {
         $params = [
-                'relateduserid' => $userid,
-                'courseid' => $courseid,
-                'context' => $context,
-                'other' => [
-                        'quizid' => $quizid,
-                        'attemptid' => $attemptid
-                ]
+            'relateduserid' => $userid,
+            'courseid' => $courseid,
+            'context' => $context,
+            'other' => [
+                'quizid' => $quizid,
+                'attemptid' => $attemptid,
+            ],
         ];
 
         return $params;
@@ -366,7 +374,6 @@ class utils {
             report_display_options $reportoptions): string {
         $generatedtime = time();
         $attemptuser = \core_user::get_user($attemptobj->get_userid());
-        $context = context_module::instance((int) $attemptobj->get_cmid());
 
         $headerinfo = new \stdClass();
         $headerinfo->courseshortname = $attemptobj->get_course()->shortname;

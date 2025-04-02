@@ -24,8 +24,6 @@
 
 namespace quiz_answersheets\event;
 
-defined('MOODLE_INTERNAL') || die();
-
 /**
  * Base event class.
  *
@@ -43,6 +41,9 @@ class base_event extends \core\event\base {
         $this->data['edulevel'] = self::LEVEL_TEACHING;
     }
 
+    /**
+     * Returns the context instance id.
+     */
     protected function validate_data() {
         parent::validate_data();
         if (!isset($this->relateduserid)) {
@@ -58,7 +59,12 @@ class base_event extends \core\event\base {
         }
     }
 
-    public static function get_objectid_mapping() {
+    /**
+     * Returns the context instance id.
+     *
+     * @return int The context instance id.
+     */
+    public static function get_objectid_mapping(): int {
         return \core\event\base::NOT_MAPPED;
     }
 

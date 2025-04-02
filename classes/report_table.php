@@ -24,12 +24,13 @@
 
 namespace quiz_answersheets;
 
+use core\dml\sql_join;
 use html_writer;
 use moodle_url;
 use mod_quiz\local\reports\attempts_report_table;
 use mod_quiz\quiz_attempt;
-
-defined('MOODLE_INTERNAL') || die();
+use context_module;
+use stdClass;
 
 /**
  * This file defines the quiz answersheets table for showing last try at question
@@ -49,6 +50,18 @@ class report_table extends attempts_report_table {
     /** @var string Dash value for table cell */
     const DASH_VALUE = '-';
 
+    /**
+     * Constructor.
+     *
+     * @param stdClass $quiz
+     * @param context_module $context
+     * @param string $qmsubselect
+     * @param report_display_options $options
+     * @param sql_join $groupstudentsjoins Contains joins, wheres, params
+     * @param sql_join $studentsjoins Contains joins, wheres, params
+     * @param array $questions
+     * @param moodle_url $reporturl
+     */
     public function __construct($quiz, $context, $qmsubselect, report_display_options $options,
             \core\dml\sql_join $groupstudentsjoins, \core\dml\sql_join $studentsjoins, $questions, $reporturl) {
         parent::__construct('mod-quiz-report-answersheets-report', $quiz, $context,
@@ -56,6 +69,9 @@ class report_table extends attempts_report_table {
         $this->options = $options;
     }
 
+    /**
+     * Build the table.
+     */
     public function build_table() {
         if (!$this->rawdata) {
             return;
@@ -200,12 +216,12 @@ class report_table extends attempts_report_table {
         }
         $buttontext = get_string('create_attempt', 'quiz_answersheets');
         $attributes = [
-                'class' => 'btn btn-secondary mr-1 create-attempt-btn',
-                'name' => 'create_attempt',
-                'data-message' => $this->userdetails[$row->userid],
-                'data-user-id' => $row->userid,
-                'data-quiz-id' => $this->quiz->id,
-                'data-url' => $this->options->get_url()->out(false)
+            'class' => 'btn btn-secondary mr-1 create-attempt-btn',
+            'name' => 'create_attempt',
+            'data-message' => $this->userdetails[$row->userid],
+            'data-user-id' => $row->userid,
+            'data-quiz-id' => $this->quiz->id,
+            'data-url' => $this->options->get_url()->out(false),
         ];
         return html_writer::tag('button', $buttontext, $attributes);
     }
