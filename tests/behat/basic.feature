@@ -37,7 +37,7 @@ Feature: Basic use of the Answer sheets report
   @javascript
   Scenario: Answer sheets report works when there are no attempts
     Given I am on the "Quiz 1" "quiz_answersheets > Report" page logged in as "teacher"
-    And I set the field "Attempts from" to "enrolled users who have attempted the quiz"
+    And I set the field "Attempts from" to "enrolled_with"
     Then I press "Show report"
     Then I should see "Attempts: 0"
     And I should see "Nothing to display"
@@ -49,12 +49,12 @@ Feature: Basic use of the Answer sheets report
       | slot | response |
       | 1    | True     |
     When I am on the "Quiz 1" "quiz_answersheets > Report" page logged in as "teacher"
-    And I set the field "Attempts from" to "enrolled users who have attempted the quiz"
+    And I set the field "Attempts from" to "enrolled_with"
     And I press "Show report"
     Then I should see "Attempts: 1"
     And I should see "Student One"
     And I should not see "Student Two"
-    And I set the field "Attempts from" to "enrolled users who have, or have not, attempted the quiz"
+    And I set the field "Attempts from" to "enrolled_any"
     And I press "Show report"
     And I should see "Student Two"
 
@@ -77,7 +77,7 @@ Feature: Basic use of the Answer sheets report
       | slot | response |
       | 1    | True     |
     When I am on the "Quiz 1" "quiz_answersheets > Report" page logged in as "teacher"
-    And I set the field "Attempts from" to "enrolled users who have attempted the quiz"
+    And I set the field "Attempts from" to "enrolled_with"
     And I press "Show report"
     Then "Student One" row "Alias" column of "answersheets" table should contain "S1"
     And "Student One" row "Email address" column of "answersheets" table should contain "student1@asd.com"
@@ -109,7 +109,7 @@ Feature: Basic use of the Answer sheets report
     When the following config values are set as admin:
       | showuseridentity | username |
     And I am on the "Quiz 1" "quiz_answersheets > Report" page logged in as "teacher"
-    And I set the field "Attempts from" to "enrolled users who have attempted the quiz"
+    And I set the field "Attempts from" to "enrolled_with"
     And I press "Show report"
     Then "Student One" row "Username" column of "answersheets" table should contain "student1"
     And "Student One" row "Alias" column of "answersheets" table should not contain "S1"
