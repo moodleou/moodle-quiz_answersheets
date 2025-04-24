@@ -61,6 +61,8 @@ Feature: Attempt sheet, Review sheet and Answer sheet feature of the Answer shee
     And I should see "Student One"
     And "Student One" row "Attempt sheets" column of "answersheets" table should contain "Attempt sheet"
     And "Student One" row "Answer sheets" column of "answersheets" table should contain "Right answer sheet"
+    And I click on "Show \"General Feedback\"?" "checkbox"
+    And I click on "Show report" "button"
     When I click on "Attempt sheet" "link" in the "Student One" "table_row"
     Then I should see "First question"
     And I should not see "Check"
@@ -74,6 +76,8 @@ Feature: Attempt sheet, Review sheet and Answer sheet feature of the Answer shee
     And I should not see "If correct:"
     And I should not see "General feedback and further information:"
     And I press the "back" button in the browser
+    And I click on "Show \"General Feedback\"?" "checkbox"
+    And I click on "Show report" "button"
     When I click on "Right answer sheet" "link" in the "Student One" "table_row"
     Then I should see "First question"
     And I should see "Second question"

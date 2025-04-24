@@ -23,15 +23,17 @@ Feature: Review sheet of the Export attempt report
       | activity | name   | intro              | course | idnumber |
       | quiz     | Quiz 1 | Quiz 1 description | C1     | quiz1    |
     And the following "questions" exist:
-      | questioncategory | qtype     | name | questiontext    |
-      | Test questions   | truefalse | TF1  | First question  |
-      | Test questions   | essay     | ES1  | Second question |
-      | Test questions   | truefalse | TF2  | Third question  |
+      | questioncategory | qtype       | name | questiontext    | template    |
+      | Test questions   | truefalse   | TF1  | First question  |             |
+      | Test questions   | essay       | ES1  | Second question |             |
+      | Test questions   | truefalse   | TF2  | Third question  |             |
+      | Test questions   | multichoice | MT1  | Second question | one_of_four |
     And quiz "Quiz 1" contains the following questions:
       | question | page |
       | TF1      | 1    |
       | ES1      | 2    |
       | TF2      | 3    |
+      | MT1      | 4    |
 
   @javascript
   Scenario: Review sheet will show the correct and incorrect feedback for both normal and open question
@@ -125,3 +127,22 @@ Feature: Review sheet of the Export attempt report
     And I click on "Create" "button" in the ".modal.show" "css_element"
     And I click on "Right answer sheet" "link"
     And I should see "You should have selected true."
+    And I should see "That is not right at all."
+    And I should see "Parts, but only parts, of your response are correct."
+    And I should see "Well done!"
+    And I should see "The oddest number is One."
+    And I should see "This is the right answer."
+    And I should see "One is the oddest."
+    And I am on the "Quiz 1" "quiz_answersheets > Report" page logged in as "admin"
+    And I click on "Show \"Combined Feedback\"?" "checkbox"
+    And I click on "Show all inline feedback?" "checkbox"
+    And I click on "Show \"General Feedback\"?" "checkbox"
+    And I click on "Show report" "button"
+    And I click on "Right answer sheet" "link"
+    And I should not see "You should have selected true."
+    And I should not see "That is not right at all."
+    And I should not see "This is the right answer."
+    And I should not see "One is the oddest."
+    And I should not see "Parts, but only parts, of your response are correct."
+    And I should not see "Well done!"
+    And I should not see "The oddest number is One."

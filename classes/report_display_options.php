@@ -67,6 +67,21 @@ class report_display_options extends attempts_report_options {
     public $rightanswer = true;
 
     /**
+     * @var bool whether show combined feedback has been displayed.
+     */
+    public $showcombinefeedback = true;
+
+    /**
+     * @var bool whether show inline feedback has been displayed.
+     */
+    public $showinlinefeedback = true;
+
+    /**
+     * @var bool whether show general feedback has been displayed.
+     */
+    public $showgeneralfeedback = true;
+
+    /**
      * Constructor.
      *
      * @param string $mode which report these options are for.
@@ -102,6 +117,9 @@ class report_display_options extends attempts_report_options {
         $this->questioninstruction = optional_param('instruction', true, PARAM_BOOL);
         $this->marks = optional_param('marks', true, PARAM_BOOL);
         $this->rightanswer = optional_param('rightanswer', false, PARAM_BOOL);
+        $this->showcombinefeedback = optional_param('showcombinefeedback', true, PARAM_BOOL);
+        $this->showinlinefeedback = optional_param('showinlinefeedback', true, PARAM_BOOL);
+        $this->showgeneralfeedback = optional_param('showgeneralfeedback', true, PARAM_BOOL);
     }
 
     #[\Override]
@@ -111,6 +129,9 @@ class report_display_options extends attempts_report_options {
         $params['instruction'] = $this->questioninstruction;
         $params['marks'] = $this->marks;
         $params['rightanswer'] = $this->rightanswer;
+        $params['showcombinefeedback'] = $this->showcombinefeedback;
+        $params['showinlinefeedback'] = $this->showinlinefeedback;
+        $params['showgeneralfeedback'] = $this->showgeneralfeedback;
         return $params;
     }
 
@@ -122,6 +143,9 @@ class report_display_options extends attempts_report_options {
         }
         $this->questioninstruction = (bool) $fromform->questioninstruction;
         $this->marks = (bool) $fromform->marks;
+        $this->showcombinefeedback = (bool) $fromform->showcombinefeedback;
+        $this->showinlinefeedback = (bool) $fromform->showinlinefeedback;
+        $this->showgeneralfeedback = (bool) $fromform->showgeneralfeedback;
         parent::process_settings_from_form($fromform);
     }
 
@@ -134,6 +158,9 @@ class report_display_options extends attempts_report_options {
         }
         $toform->questioninstruction = $this->questioninstruction;
         $toform->marks = $this->marks;
+        $toform->showcombinefeedback = $this->showcombinefeedback;
+        $toform->showinlinefeedback = $this->showinlinefeedback;
+        $toform->showgeneralfeedback = $this->showgeneralfeedback;
 
         return $toform;
     }

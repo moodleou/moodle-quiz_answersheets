@@ -52,6 +52,9 @@ $url = new moodle_url('/mod/quiz/report/answersheets/attemptsheet.php',
             'userinfo' => $reportoptions->combine_user_info_visibility(),
             'instruction' => $reportoptions->questioninstruction,
             'marks' => $reportoptions->marks,
+            'showcombinefeedback' => $reportoptions->showcombinefeedback,
+            'showinlinefeedback' => $reportoptions->showinlinefeedback,
+            'showgeneralfeedback' => $reportoptions->showgeneralfeedback,
         ]);
 
 // Work out the page title.

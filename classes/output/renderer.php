@@ -390,14 +390,53 @@ class core_question_override_renderer extends \core_question_renderer {
     public function question(question_attempt $qa, qbehaviour_renderer $behaviouroutput, qtype_renderer $qtoutput,
             question_display_options $options, $number): string {
         $rightanswer = $this->page->url->get_param('rightanswer');
-        $output = '';
-        $output .= parent::question($qa, $behaviouroutput, $qtoutput, $options, $number);
+        $showinlinefeedback = (bool) $this->page->url->get_param('showinlinefeedback');
+        $showcombinefeedback = (bool) $this->page->url->get_param('showcombinefeedback');
+        $showgeneralfeedback = (bool) $this->page->url->get_param('showgeneralfeedback');
 
-        if (utils::should_show_combined_feedback($qa->get_question()->get_type_name()) && $rightanswer) {
-            $output .= $this->render_question_combined_feedback($qa);
+        $output = '';
+        if (!$showinlinefeedback && isset($options->feedback)) {
+            $options->feedback = question_display_options::HIDDEN;
+        }
+        if (!$showgeneralfeedback && isset($options->generalfeedback)) {
+            $options->generalfeedback = question_display_options::HIDDEN;
         }
 
+        $output .= parent::question($qa, $behaviouroutput, $qtoutput, $options, $number);
+        $feedback = '';
+        if (utils::should_show_combined_feedback($qa->get_question()->get_type_name()) && $rightanswer &&
+                $showcombinefeedback) {
+            $feedback .= $this->render_question_combined_feedback($qa);
+            if ($showgeneralfeedback) {
+                $feedback .= $this->render_question_general_feedback($qa);
+            }
+        }
+
+        if (!empty($feedback)) {
+            $feedback = \html_writer::div($feedback, 'question-feedback');
+        }
+
+        $output .= $feedback;
+
         return $output;
+    }
+
+    /**
+     * Render question general feedback.
+     *
+     * @param question_attempt $qa Question attempt.
+     * @return string HTML string.
+     */
+    public function render_question_general_feedback(question_attempt $qa): string {
+        $generalfeedback = $qa->get_question()->format_generalfeedback($qa);
+        $feedback = '';
+        if (!empty($generalfeedback)) {
+            $feedback .= \html_writer::tag('h3', get_string('combine_feedback_general', 'quiz_answersheets'),
+                ['class' => 'question-feedback-title']);
+            $feedback .= \html_writer::div($generalfeedback, 'question-feedback-content');
+        }
+
+        return $feedback;
     }
 
     /**
@@ -411,7 +450,6 @@ class core_question_override_renderer extends \core_question_renderer {
         $incorrectfeedback = $this->get_combine_feedback($qa, 'incorrect');
         $partialfeedback = $this->get_combine_feedback($qa, 'partiallycorrect');
         $correctfeedback = $this->get_combine_feedback($qa, 'correct');
-        $generalfeedback = $qa->get_question()->format_generalfeedback($qa);
 
         if (!empty($incorrectfeedback)) {
             $feedback .= \html_writer::tag('h3', get_string('combine_feedback_incorrect', 'quiz_answersheets'),
@@ -427,15 +465,6 @@ class core_question_override_renderer extends \core_question_renderer {
             $feedback .= \html_writer::tag('h3', get_string('combine_feedback_correct', 'quiz_answersheets'),
                     ['class' => 'question-feedback-title']);
             $feedback .= \html_writer::div($correctfeedback, 'question-feedback-content');
-        }
-        if (!empty($generalfeedback)) {
-            $feedback .= \html_writer::tag('h3', get_string('combine_feedback_general', 'quiz_answersheets'),
-                    ['class' => 'question-feedback-title']);
-            $feedback .= \html_writer::div($generalfeedback, 'question-feedback-content');
-        }
-
-        if (!empty($feedback)) {
-            $feedback = \html_writer::div($feedback, 'question-feedback');
         }
 
         return $feedback;
