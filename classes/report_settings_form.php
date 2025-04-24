@@ -72,5 +72,19 @@ class report_settings_form extends \mod_quiz_attempts_report_form_parent_class_a
         $mform->setDefault('marks', 1);
         $mform->addGroup($instandmarkedcbs, 'instructionandmarkedcheckboxes', '', '',
             false);
+
+        $feedbackoptions = [];
+        $feedbackoptions[] = $mform->createElement('html',
+            \html_writer::div(get_string('rightanswersheet', 'quiz_answersheets'), 'mr-2'));
+        $feedbackoptions[] = $mform->createElement('advcheckbox', 'showcombinefeedback',
+            get_string('showcombinefeedback', 'quiz_answersheets'));
+        $mform->setDefault('showcombinefeedback', 1);
+        $feedbackoptions[] = $mform->createElement('advcheckbox', 'showinlinefeedback',
+            get_string('showinlinefeedback', 'quiz_answersheets'));
+        $mform->setDefault('showinlinefeedback', 1);
+        $feedbackoptions[] = $mform->createElement('advcheckbox', 'showgeneralfeedback',
+            get_string('showgeneralfeedback', 'quiz_answersheets'));
+        $mform->setDefault('showgeneralfeedback', 1);
+        $mform->addGroup($feedbackoptions, 'combineandinlinefeedbackcheckboxes', '', '', false);
     }
 }

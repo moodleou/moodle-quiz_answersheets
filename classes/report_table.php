@@ -129,6 +129,9 @@ class report_table extends attempts_report_table {
                         'userinfo' => $this->options->combine_user_info_visibility(),
                         'instruction' => $this->options->questioninstruction,
                         'marks' => $this->options->marks,
+                        'showcombinefeedback' => $this->options->showcombinefeedback,
+                        'showinlinefeedback' => $this->options->showinlinefeedback,
+                        'showgeneralfeedback' => $this->options->showgeneralfeedback,
                     ]),
                     get_string('attempt_sheet_label', 'quiz_answersheets'),
                     ['class' => 'reviewlink']);
@@ -139,6 +142,9 @@ class report_table extends attempts_report_table {
                         'userinfo' => $this->options->combine_user_info_visibility(),
                         'instruction' => $this->options->questioninstruction,
                         'marks' => $this->options->marks,
+                        'showcombinefeedback' => $this->options->showcombinefeedback,
+                        'showinlinefeedback' => $this->options->showinlinefeedback,
+                        'showgeneralfeedback' => $this->options->showgeneralfeedback,
                     ]),
                     get_string('review_sheet_label', 'quiz_answersheets'),
                     ['class' => 'reviewlink']);
@@ -162,6 +168,9 @@ class report_table extends attempts_report_table {
                         'userinfo' => $this->options->combine_user_info_visibility(),
                         'instruction' => $this->options->questioninstruction,
                         'marks' => $this->options->marks,
+                        'showcombinefeedback' => $this->options->showcombinefeedback,
+                        'showinlinefeedback' => $this->options->showinlinefeedback,
+                        'showgeneralfeedback' => $this->options->showgeneralfeedback,
                     ]),
                     get_string('answer_sheet_label', 'quiz_answersheets'),
                     ['class' => 'reviewlink']);
@@ -181,10 +190,14 @@ class report_table extends attempts_report_table {
             $redirect = $this->options->get_url();
             $redirect->param('lastchanged', $row->attempt);
             // Add userinfo params so that we only display fields that is used in the filter.
-            return html_writer::link(new moodle_url('/mod/quiz/report/answersheets/submitresponses.php',
-                ['attempt' => $row->attempt, 'redirect' => $redirect, 'marks' => $this->options->marks,
-                    'userinfo' => $this->options->combine_user_info_visibility()]),
-                    get_string('submit_student_responses_label', 'quiz_answersheets'), ['class' => 'reviewlink']);
+            return html_writer::link(new moodle_url('/mod/quiz/report/answersheets/submitresponses.php', [
+                'attempt' => $row->attempt, 'redirect' => $redirect,
+                'marks' => $this->options->marks,
+                'userinfo' => $this->options->combine_user_info_visibility(),
+                'showcombinefeedback' => $this->options->showcombinefeedback,
+                'showinlinefeedback' => $this->options->showinlinefeedback,
+                'showgeneralfeedback' => $this->options->showgeneralfeedback,
+            ]), get_string('submit_student_responses_label', 'quiz_answersheets'), ['class' => 'reviewlink']);
         } else {
             return self::DASH_VALUE;
         }
