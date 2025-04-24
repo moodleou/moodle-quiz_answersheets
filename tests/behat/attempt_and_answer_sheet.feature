@@ -30,9 +30,9 @@ Feature: Attempt sheet, Review sheet and Answer sheet feature of the Answer shee
       | Test questions   | truefalse   | TF1  | First question  |             |
       | Test questions   | multichoice | MT1  | Second question | one_of_four |
     And quiz "Quiz 1" contains the following questions:
-      | question     | page |
-      | TF1          | 1    |
-      | MT1          | 2    |
+      | question | page |
+      | TF1      | 1    |
+      | MT1      | 2    |
 
   @javascript
   Scenario: Attempt sheet, Answer sheet links do not exist for Student do not have any attempt yet
@@ -114,8 +114,8 @@ Feature: Attempt sheet, Review sheet and Answer sheet feature of the Answer shee
   Scenario: Sheet's special message for submitted oumaxtrix question type
     Given the qtype_oumatrix plugin is installed
     When the following "questions" exist:
-      | questioncategory | qtype     | name | questiontext   | template      |
-      | Test questions   | oumatrix  | OUM1 | Fourth question | animals_single |
+      | questioncategory | qtype    | name | questiontext    | template       |
+      | Test questions   | oumatrix | OUM1 | Fourth question | animals_single |
     And quiz "Quiz 2" contains the following questions:
       | question | page |
       | OUM1     | 1    |
@@ -140,8 +140,8 @@ Feature: Attempt sheet, Review sheet and Answer sheet feature of the Answer shee
   Scenario: Review sheet link available for finished attempt for oumatrix
     Given the qtype_oumatrix plugin is installed
     When the following "questions" exist:
-      | questioncategory | qtype     | name | questiontext   | template      |
-      | Test questions   | oumatrix  | OUM1 | Fourth question | animals_single |
+      | questioncategory | qtype    | name | questiontext    | template       |
+      | Test questions   | oumatrix | OUM1 | Fourth question | animals_single |
     And quiz "Quiz 2" contains the following questions:
       | question | page |
       | OUM1     | 1    |
@@ -168,10 +168,10 @@ Feature: Attempt sheet, Review sheet and Answer sheet feature of the Answer shee
   Scenario: Sheet's special messgae for submitted oumultiresponse question type
     Given the qtype_oumultiresponse plugin is installed
     When the following "questions" exist:
-      | questioncategory | qtype           | name         | questiontext   | template    |
+      | questioncategory | qtype           | name          | questiontext   | template    |
       | Test questions   | oumultiresponse | OUM response1 | Third question | two_of_four |
     And quiz "Quiz 2" contains the following questions:
-      | question     | page |
+      | question      | page |
       | OUM response1 | 1    |
     And I am on the "quiz2" "Activity" page logged in as "student1"
     And I click on "Attempt quiz" "button"

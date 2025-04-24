@@ -301,15 +301,7 @@ class renderer extends plugin_renderer_base {
  */
 class core_question_override_renderer extends \core_question_renderer {
 
-    /**
-     * Render the question.
-     *
-     * @param question_attempt $qa The question attempt.
-     * @param qbehaviour_renderer $behaviouroutput The behaviour renderer.
-     * @param qtype_renderer $qtoutput The question type renderer.
-     * @param question_display_options $options The display options.
-     * @return string The HTML.
-     */
+    #[\Override]
     protected function formulation(question_attempt $qa, qbehaviour_renderer $behaviouroutput, qtype_renderer $qtoutput,
             question_display_options $options): string {
         global $attemptobj;
