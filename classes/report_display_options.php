@@ -66,14 +66,7 @@ class report_display_options extends attempts_report_options {
      */
     public $rightanswer = true;
 
-    /**
-     * Constructor.
-     *
-     * @param string $mode which report these options are for.
-     * @param stdClass $quiz the settings for the quiz being reported on.
-     * @param stdClass $cm the course module objects for the quiz being reported on.
-     * @param stdClass $course the course settings for the coures this quiz is in.
-     */
+    #[\Override]
     public function __construct($mode, $quiz, $cm, $course) {
         parent::__construct($mode, $quiz, $cm, $course);
         $this->attempts = attempts_report::ENROLLED_ALL;
@@ -81,9 +74,7 @@ class report_display_options extends attempts_report_options {
         $this->userinfovisibility = self::possible_user_info_visibility_settings($cm);
     }
 
-    /**
-     * Resolve the dependencies of the options.
-     */
+    #[\Override]
     public function resolve_dependencies() {
         parent::resolve_dependencies();
         // We only want to show the checkbox to delete attempts
@@ -92,9 +83,7 @@ class report_display_options extends attempts_report_options {
                 && ($this->attempts != attempts_report::ENROLLED_WITHOUT);
     }
 
-    /**
-     * Setup the options from the URL parameters.
-     */
+    #[\Override]
     public function setup_from_params() {
         parent::setup_from_params();
         $this->lastchanged = optional_param('lastchanged', 0, PARAM_INT);
@@ -108,11 +97,7 @@ class report_display_options extends attempts_report_options {
         $this->rightanswer = optional_param('rightanswer', false, PARAM_BOOL);
     }
 
-    /**
-     * Get the URL parameters for the report.
-     *
-     * @return array The URL parameters.
-     */
+    #[\Override]
     protected function get_url_params(): array {
         $params = parent::get_url_params();
         $params['userinfo'] = $this->combine_user_info_visibility();
@@ -122,11 +107,7 @@ class report_display_options extends attempts_report_options {
         return $params;
     }
 
-    /**
-     * Process the settings from the form.
-     *
-     * @param stdClass $fromform the form data.
-     */
+    #[\Override]
     public function process_settings_from_form($fromform): void {
         foreach (array_keys($this->userinfovisibility) as $name) {
             // Unused field of userinfovisibility in filter form should not be added to report link.
@@ -137,10 +118,7 @@ class report_display_options extends attempts_report_options {
         parent::process_settings_from_form($fromform);
     }
 
-    /**
-     * Get the initial form data for the report settings.
-     * @return stdClass The form data.
-     */
+    #[\Override]
     public function get_initial_form_data(): stdClass {
         $toform = parent::get_initial_form_data();
 
@@ -153,10 +131,7 @@ class report_display_options extends attempts_report_options {
         return $toform;
     }
 
-    /**
-     * Setup the user preferences so they match the settings in this object.
-     * (For those settings that are backed by user-preferences).
-     */
+    #[\Override]
     public function setup_from_user_preferences(): void {
         parent::setup_from_user_preferences();
         $this->parse_user_info_visibility(
@@ -164,10 +139,7 @@ class report_display_options extends attempts_report_options {
                     $this->combine_user_info_visibility()));
     }
 
-    /**
-     * Update the user preferences so they match the settings in this object.
-     * (For those settings that are backed by user-preferences).
-     */
+    #[\Override]
     public function update_user_preferences() {
         parent::update_user_preferences();
         set_user_preference('quiz_answersheets_userinfovisibility', $this->combine_user_info_visibility());

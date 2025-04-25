@@ -42,13 +42,7 @@ require_once($CFG->dirroot . '/question/type/match/renderer.php');
  */
 class qtype_match_override_renderer extends \qtype_match_renderer {
 
-    /**
-     * The code was copied from question/type/match/renderer.php, with modifications.
-     *
-     * @param question_attempt $qa
-     * @param question_display_options $options
-     * @return string
-     */
+    #[\Override]
     public function formulation_and_controls(question_attempt $qa, question_display_options $options) {
         if (utils::should_hide_inline_choice($this->page)) {
             return parent::formulation_and_controls($qa, $options);

@@ -40,14 +40,7 @@ require_once($CFG->dirroot . '/question/type/gapselect/renderer.php');
  */
 class qtype_gapselect_override_renderer extends \qtype_gapselect_renderer {
 
-    /**
-     * Render the embedded element
-     *
-     * @param question_attempt $qa
-     * @param $place
-     * @param question_display_options $options
-     * @return string
-     */
+    #[\Override]
     protected function embedded_element(question_attempt $qa, $place, question_display_options $options) {
         if (utils::should_hide_inline_choice($this->page)) {
             return parent::embedded_element($qa, $place, $options);

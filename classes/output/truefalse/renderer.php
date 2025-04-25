@@ -41,13 +41,7 @@ require_once($CFG->dirroot . '/question/type/truefalse/renderer.php');
  */
 class qtype_truefalse_override_renderer extends \qtype_truefalse_renderer {
 
-    /**
-     * The code was copied from question/type/truefalse/renderer.php, with modifications.
-     *
-     * @param question_attempt $qa
-     * @param question_display_options $options
-     * @return string
-     */
+    #[\Override]
     public function formulation_and_controls(question_attempt $qa, question_display_options $options) {
         $question = $qa->get_question();
         $response = $qa->get_last_qt_var('answer', '');

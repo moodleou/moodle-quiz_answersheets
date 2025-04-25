@@ -33,17 +33,13 @@ namespace quiz_answersheets\event;
  */
 class base_event extends \core\event\base {
 
-    /**
-     * Init method.
-     */
+    #[\Override]
     protected function init() {
         $this->data['crud'] = 'r';
         $this->data['edulevel'] = self::LEVEL_TEACHING;
     }
 
-    /**
-     * Returns the context instance id.
-     */
+    #[\Override]
     protected function validate_data() {
         parent::validate_data();
         if (!isset($this->relateduserid)) {
@@ -59,11 +55,7 @@ class base_event extends \core\event\base {
         }
     }
 
-    /**
-     * Returns the context instance id.
-     *
-     * @return int The context instance id.
-     */
+    #[\Override]
     public static function get_objectid_mapping(): int {
         return \core\event\base::NOT_MAPPED;
     }

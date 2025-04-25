@@ -50,18 +50,7 @@ class report_table extends attempts_report_table {
     /** @var string Dash value for table cell */
     const DASH_VALUE = '-';
 
-    /**
-     * Constructor.
-     *
-     * @param stdClass $quiz
-     * @param context_module $context
-     * @param string $qmsubselect
-     * @param report_display_options $options
-     * @param sql_join $groupstudentsjoins Contains joins, wheres, params
-     * @param sql_join $studentsjoins Contains joins, wheres, params
-     * @param array $questions
-     * @param moodle_url $reporturl
-     */
+    #[\Override]
     public function __construct($quiz, $context, $qmsubselect, report_display_options $options,
             \core\dml\sql_join $groupstudentsjoins, \core\dml\sql_join $studentsjoins, $questions, $reporturl) {
         parent::__construct('mod-quiz-report-answersheets-report', $quiz, $context,
@@ -69,9 +58,7 @@ class report_table extends attempts_report_table {
         $this->options = $options;
     }
 
-    /**
-     * Build the table.
-     */
+    #[\Override]
     public function build_table() {
         if (!$this->rawdata) {
             return;
@@ -80,12 +67,7 @@ class report_table extends attempts_report_table {
         parent::build_table();
     }
 
-    /**
-     * Generate the display of the user's full name column.
-     *
-     * @param object $row the table row being output.
-     * @return string HTML content to go inside the td.
-     */
+    #[\Override]
     public function col_fullname($row) {
         global $COURSE;
 
@@ -226,12 +208,7 @@ class report_table extends attempts_report_table {
         return html_writer::tag('button', $buttontext, $attributes);
     }
 
-    /**
-     * Add highlight class to last changed row
-     *
-     * @param \stdClass $attempt
-     * @return string
-     */
+    #[\Override]
     public function get_row_class($attempt): string {
         $options = $this->options;
         $class = parent::get_row_class($attempt);
@@ -243,16 +220,7 @@ class report_table extends attempts_report_table {
         return $class;
     }
 
-    /**
-     * A chance for subclasses to modify the SQL after the count query has been generated,
-     * and before the full query is constructed.
-     *
-     * @param string $fields SELECT list.
-     * @param string $from JOINs part of the SQL.
-     * @param string $where WHERE clauses.
-     * @param array $params Query params.
-     * @return array with 4 elements ($fields, $from, $where, $params) as from base_sql.
-     */
+    #[\Override]
     protected function update_sql_after_count($fields, $from, $where, $params) {
         [$fields, $from, $where, $params] = parent::update_sql_after_count($fields, $from, $where, $params);
         $fields .= ", quiza.attempt AS attemptno

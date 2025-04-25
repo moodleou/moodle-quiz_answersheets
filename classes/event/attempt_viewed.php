@@ -33,31 +33,19 @@ namespace quiz_answersheets\event;
  */
 class attempt_viewed extends base_event {
 
-    /**
-     * Returns the name of the event.
-     *
-     * @return string The name.
-     */
+    #[\Override]
     public static function get_name(): string {
         return get_string('event_attempt_viewed', 'quiz_answersheets');
     }
 
-    /**
-     * Returns the description of the event.
-     *
-     * @return string The description.
-     */
+    #[\Override]
     public function get_description(): string {
         return 'The user with id ' . $this->userid . ' has viewed the attempt sheet with id ' . $this->other['attemptid'] .
                 ' belonging to the user with id ' . $this->relateduserid . ' for the quiz with course module id ' .
                 $this->contextinstanceid . '.';
     }
 
-    /**
-     * Returns the URL where the event can be viewed.
-     *
-     * @return \moodle_url The URL.
-     */
+    #[\Override]
     public function get_url(): \moodle_url {
         return new \moodle_url('/mod/quiz/report/answersheets/attemptsheet.php', ['attempt' => $this->other['attemptid']]);
     }

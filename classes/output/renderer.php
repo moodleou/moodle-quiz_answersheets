@@ -327,12 +327,7 @@ class core_question_override_renderer extends \core_question_renderer {
         return $output;
     }
 
-    /**
-     * Render the question instruction.
-     *
-     * @param question_attempt $qa Question attempt
-     * @return string HTML string
-     */
+    #[\Override]
     protected function status(question_attempt $qa, qbehaviour_renderer $behaviouroutput,
             question_display_options $options): string {
         // Do not show the question status.
@@ -391,16 +386,7 @@ class core_question_override_renderer extends \core_question_renderer {
         return $output;
     }
 
-    /**
-     * Render the question.
-     *
-     * @param question_attempt $qa The question attempt.
-     * @param qbehaviour_renderer $behaviouroutput The behaviour renderer.
-     * @param qtype_renderer $qtoutput The question type renderer.
-     * @param question_display_options $options The display options.
-     * @param int $number The question number.
-     * @return string The HTML.
-     */
+    #[\Override]
     public function question(question_attempt $qa, qbehaviour_renderer $behaviouroutput, qtype_renderer $qtoutput,
             question_display_options $options, $number): string {
         $rightanswer = $this->page->url->get_param('rightanswer');

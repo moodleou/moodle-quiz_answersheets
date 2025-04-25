@@ -188,14 +188,7 @@ class quiz_answersheets_report extends attempts_report {
         return true;
     }
 
-    /**
-     * Initialise some parts of $PAGE and start output.
-     *
-     * @param object $cm the course_module information.
-     * @param object $course the course object.
-     * @param object $quiz the quiz settings.
-     * @param string $reportmode the report name.
-     */
+    #[\Override]
     public function print_header_and_tabs($cm, $course, $quiz, $reportmode = 'overview') {
         parent::print_header_and_tabs($cm, $course, $quiz, $reportmode);
         $instruction = get_config('quiz_answersheets', 'instruction_message');
