@@ -50,7 +50,19 @@ class report_table extends attempts_report_table {
     /** @var string Dash value for table cell */
     const DASH_VALUE = '-';
 
-    #[\Override]
+    /**
+     * Constructor.
+     *
+     * @param string $uniqueid
+     * @param stdClass $quiz
+     * @param context_module $context
+     * @param string $qmsubselect
+     * @param attempts_report_options $options
+     * @param \core\dml\sql_join $groupstudentsjoins Contains joins, wheres, params
+     * @param \core\dml\sql_join $studentsjoins Contains joins, wheres, params
+     * @param array $questions
+     * @param moodle_url $reporturl
+     */
     public function __construct($quiz, $context, $qmsubselect, report_display_options $options,
             \core\dml\sql_join $groupstudentsjoins, \core\dml\sql_join $studentsjoins, $questions, $reporturl) {
         parent::__construct('mod-quiz-report-answersheets-report', $quiz, $context,

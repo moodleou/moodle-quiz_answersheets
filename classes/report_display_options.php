@@ -66,7 +66,14 @@ class report_display_options extends attempts_report_options {
      */
     public $rightanswer = true;
 
-    #[\Override]
+    /**
+     * Constructor.
+     *
+     * @param string $mode which report these options are for.
+     * @param stdClass $quiz the settings for the quiz being reported on.
+     * @param stdClass $cm the course module objects for the quiz being reported on.
+     * @param stdClass $course the course settings for the coures this quiz is in.
+     */
     public function __construct($mode, $quiz, $cm, $course) {
         parent::__construct($mode, $quiz, $cm, $course);
         $this->attempts = attempts_report::ENROLLED_ALL;
