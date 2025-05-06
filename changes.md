@@ -1,6 +1,11 @@
 # Change log for the Export quiz attempts report
 
 
+## Changes in 1.5
+
+* Fix coding style.
+
+
 ## Changes in 1.4
 
 * This version works with Moodle 4.5
