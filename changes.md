@@ -1,6 +1,13 @@
 # Change log for the Export quiz attempts report
 
 
+## Changes in 1.6
+
+* This version works with Moodle 4.5 and 5.0.
+* There are new settings added to control the display of feedbacks (combined feedback, inline feedback and
+  general feedback) in the Right answer sheet.
+
+
 ## Changes in 1.5
 
 * Fix coding style.
