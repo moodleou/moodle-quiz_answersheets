@@ -4,8 +4,8 @@
 ## Changes in 1.6
 
 * This version works with Moodle 4.5 and 5.0.
-* There are new settings added to control the display of feedbacks (combined feedback, inline feedback and
-  general feedback) in the Right answer sheet.
+* There are new settings added to control the feedbacks displayed (combined feedback, inline feedback and
+  general feedback) on the Right answer sheet.
 
 
 ## Changes in 1.5
